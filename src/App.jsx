@@ -3,7 +3,9 @@ import "./App.css";
 function App() {
   return (
     <>
-      <h1 className="text-4xl font-bold underline">Hello world!</h1>
+      <div className="text-base bg-brand-primary font-regular underline">
+        Hello world! <br /> Hello world!
+      </div>
     </>
   );
 }
