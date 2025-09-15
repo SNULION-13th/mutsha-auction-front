@@ -1,12 +1,13 @@
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
+import { router } from "./Router";
+import { Suspense } from "react";
 
 function App() {
   return (
-    <>
-      <div className="text-base bg-brand-primary font-regular underline">
-        Hello world! <br /> Hello world!
-      </div>
-    </>
+    <Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 }
 
