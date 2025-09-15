@@ -1,5 +1,11 @@
+import { LandingBg } from "../assets/image";
+
 function HomePage() {
-  return <div className="text-text-content">홈페이지닷</div>;
+  return (
+    <div>
+      <img src={LandingBg} />
+    </div>
+  );
 }
 
 export default HomePage;

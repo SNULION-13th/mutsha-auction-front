@@ -1,8 +1,12 @@
 import { lazy } from "react";
 
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 import { ROUTES } from "./constants/router";
+import HomeLayout from "./layouts/HomeLayout";
+import AuctionLayout from "./layouts/AuctionLayout";
+import CreateLayout from "./layouts/CreateLayout";
+import HistoryLayout from "./layouts/HistoryLayout";
 
 const HomePage = lazy(() => import("@page/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
@@ -13,50 +17,50 @@ const HistoryPage = lazy(() => import("@page/HistoryPage"));
 const homeRoutes = [
   {
     path: ROUTES.HOME.ROOT,
-    Component: HomePage,
+    element: <HomePage />,
   },
 ];
 
 const auctionRoutes = [
   {
     path: ROUTES.AUCTION.ROOT,
-    Component: AuctionSearchPage,
+    element: <AuctionSearchPage />,
   },
   {
     path: ROUTES.AUCTION.ROOM,
-    Component: AuctionRoomPage,
+    element: <AuctionRoomPage />,
   },
 ];
 
 const createRoutes = [
   {
     path: ROUTES.CREATE.ROOT,
-    Component: AuctionCreatePage,
+    element: <AuctionCreatePage />,
   },
 ];
 
 const historyRoutes = [
   {
     path: ROUTES.HISTORY.ROOT,
-    Component: HistoryPage,
+    element: <HistoryPage />,
   },
 ];
 
 export const router = createBrowserRouter([
   {
-    Component: Outlet,
+    element: <HomeLayout />,
     children: homeRoutes,
   },
   {
-    Component: Outlet,
+    element: <AuctionLayout />,
     children: auctionRoutes,
   },
   {
-    Component: Outlet,
+    element: <CreateLayout />,
     children: createRoutes,
   },
   {
-    Component: Outlet,
+    element: <HistoryLayout />,
     children: historyRoutes,
   },
 ]);
