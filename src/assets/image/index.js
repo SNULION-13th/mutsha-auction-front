@@ -10,6 +10,7 @@ import LionCoin3 from "./lioncoin3.svg";
 import LionCoin4 from "./lioncoin4.svg";
 import LionCoin5 from "./lioncoin5.svg";
 import Logo from "./logo.svg";
+import LogoWhite from "./logo_white.svg";
 import Phone from "./phone.svg";
 import Cup from "./cup.svg";
 import Heart from "./heart.svg";
@@ -32,6 +33,7 @@ export {
   LionCoin4,
   LionCoin5,
   Logo,
+  LogoWhite,
   Phone,
   Cup,
   Hand,

@@ -8,7 +8,7 @@ import AuctionLayout from "./layouts/AuctionLayout";
 import CreateLayout from "./layouts/CreateLayout";
 import HistoryLayout from "./layouts/HistoryLayout";
 
-const HomePage = lazy(() => import("@page/HomePage"));
+const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
 const AuctionRoomPage = lazy(() => import("@page/Auction/AuctionRoomPage"));
 const AuctionCreatePage = lazy(() => import("@page/AuctionCreatePage"));

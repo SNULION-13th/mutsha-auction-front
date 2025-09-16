@@ -18,7 +18,7 @@ const variantClass = {
   disabled: "bg-brand-secondary text-text-tertiary",
 };
 
-export const Button = ({
+export function Button({
   children,
   className,
   disabled = false,
@@ -26,7 +26,7 @@ export const Button = ({
   size = "large",
   isRounded = false,
   onButtonClick,
-}) => {
+}) {
   const buttonClass = cn(
     "font-bold cursor-pointer",
     className,
@@ -40,4 +40,4 @@ export const Button = ({
       {children}
     </button>
   );
-};
+}
