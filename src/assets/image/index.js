@@ -19,6 +19,8 @@ import OpenButton from "./openButton.svg";
 import CloseButton from "./closeButton.svg";
 import EditButton from "./editButton.svg";
 import LandingBg from "./landingBg.png";
+import Close from "./close.svg";
+import Kakao from "./kakao.svg";
 
 export {
   Profile1,
@@ -42,4 +44,6 @@ export {
   CloseButton,
   OpenButton,
   LandingBg,
+  Close,
+  Kakao,
 };
