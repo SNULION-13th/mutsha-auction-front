@@ -3,10 +3,7 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import { ROUTES } from "./constants/router";
-import HomeLayout from "./layouts/HomeLayout";
-import AuctionLayout from "./layouts/AuctionLayout";
-import CreateLayout from "./layouts/CreateLayout";
-import HistoryLayout from "./layouts/HistoryLayout";
+import Layout from "./layouts/Layout";
 
 const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
@@ -46,21 +43,16 @@ const historyRoutes = [
   },
 ];
 
+const appRoutes = [
+  ...homeRoutes,
+  ...auctionRoutes,
+  ...createRoutes,
+  ...historyRoutes,
+];
+
 export const router = createBrowserRouter([
   {
-    element: <HomeLayout />,
-    children: homeRoutes,
-  },
-  {
-    element: <AuctionLayout />,
-    children: auctionRoutes,
-  },
-  {
-    element: <CreateLayout />,
-    children: createRoutes,
-  },
-  {
-    element: <HistoryLayout />,
-    children: historyRoutes,
+    element: <Layout />,
+    children: appRoutes,
   },
 ]);

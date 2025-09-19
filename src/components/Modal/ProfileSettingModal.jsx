@@ -1,6 +1,6 @@
 import { Button } from "../Button";
 import ModalLayout from "./ModalLayout";
-import { Edit, Kakao } from "../../assets/image";
+import { Edit } from "../../assets/image";
 import { useState } from "react";
 
 export default function ProfileSettingModal({
@@ -53,7 +53,7 @@ export default function ProfileSettingModal({
           <Button
             variant={canSubmit ? "primary" : "disabled"}
             disabled={!canSubmit}
-            onButtonClick={() => canSubmit && onSubmitSuccess()}
+            onButtonClick={() => canSubmit && onSubmitSuccess(nickname)}
             className="h-14"
           >
             멋사주 시작하기
