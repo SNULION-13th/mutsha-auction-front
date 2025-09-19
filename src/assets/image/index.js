@@ -21,6 +21,7 @@ import EditButton from "./editButton.svg";
 import LandingBg from "./landingBg.png";
 import Close from "./close.svg";
 import Kakao from "./kakao.svg";
+import Edit from "./edit.svg";
 
 export {
   Profile1,
@@ -46,4 +47,5 @@ export {
   LandingBg,
   Close,
   Kakao,
+  Edit,
 };

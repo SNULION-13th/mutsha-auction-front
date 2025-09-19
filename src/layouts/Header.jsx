@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "../assets/image";
 import { Button } from "../components/Button";
 
-export default function Header({ onLoginClick }) {
+export default function Header({ isLoggedIn, onLoginClick }) {
   return (
     <header className="w-full fixed flex justify-center bg-bg-white mx-auto z-50">
       <div className="w-full max-w-[1680px] flex justify-between px-17.5 py-5">
@@ -22,9 +22,17 @@ export default function Header({ onLoginClick }) {
           <Link to="/history" className="cursor-pointer">
             <div className="text-xl text-text-subtitle">내 경매</div>
           </Link>
-          <Button variant="gray" className="w-27" onButtonClick={onLoginClick}>
-            로그인
-          </Button>
+          {isLoggedIn ? (
+            <div className="text-xl text-text-subtitle">프로필</div>
+          ) : (
+            <Button
+              variant="gray"
+              className="w-27"
+              onButtonClick={onLoginClick}
+            >
+              로그인
+            </Button>
+          )}
         </div>
       </div>
     </header>

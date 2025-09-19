@@ -1,25 +1,64 @@
 import { Button } from "../Button";
 import ModalLayout from "./ModalLayout";
-import { Kakao } from "../../assets/image";
+import { Edit, Kakao } from "../../assets/image";
+import { useState } from "react";
 
-export default function ProfileSettingModal({ onClose }) {
+export default function ProfileSettingModal({
+  imageSrc,
+  onEditImage,
+  onSubmitSuccess,
+  onClose,
+}) {
+  const [nickname, setNickname] = useState("");
+
+  const onlyAllowed = /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u;
+  const tooLong = nickname.length > 10;
+  const invalidChars = !onlyAllowed.test(nickname);
+  const empty = nickname.length === 0;
+
+  const showWarning = !empty && (tooLong || invalidChars);
+  const canSubmit = !empty && !tooLong && !invalidChars;
+
   return (
     <ModalLayout onClose={onClose}>
-      <div className="px-20 py-22.5 flex flex-col gap-10 w-150">
-        <div className="flex flex-col gap-4">
-          <div className="text-4xl font-bold text-text-title">프로필 세팅</div>
-          <div className="text-lg text-text-content">
-            처음이면 자동 회원가입 후 이용할 수 있어요.
+      <div className="px-20 py-22.5 flex flex-col gap-20 w-180">
+        <div className="text-4xl font-bold text-text-title">프로필 설정</div>
+        <div className="flex flex-col gap-12.5">
+          <div className="mx-auto relative w-28 h-28">
+            <img
+              src={imageSrc}
+              className="w-28 h-28 rounded-full object-cover"
+            />
+            <button
+              onClick={onEditImage}
+              className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-white shadow flex items-center justify-center"
+              aria-label="edit profile image"
+            >
+              <img src={Edit} className="w-9 h-9" />
+            </button>
           </div>
+          <div className="flex flex-col gap-3">
+            <input
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임(최대 10자)"
+              className="w-full h-14 rounded-xl border border-black/10 px-5 outline-none focus:border-brand-primary"
+            />
+            {showWarning && (
+              <p className="text-sm text-red-500">
+                *10자 이내의 한글, 숫자, 영문자를 입력해주세요.
+              </p>
+            )}
+          </div>
+          <Button
+            variant={canSubmit ? "primary" : "disabled"}
+            disabled={!canSubmit}
+            onButtonClick={() => canSubmit && onSubmitSuccess()}
+            className="h-14"
+          >
+            멋사주 시작하기
+          </Button>
         </div>
-        <Button
-          variant="kakao"
-          onButtonClick={onClose}
-          className="flex items-center justify-center gap-2"
-        >
-          <img src={Kakao} className="w-8 h-8" />
-          카카오로 시작하기
-        </Button>
       </div>
     </ModalLayout>
   );
