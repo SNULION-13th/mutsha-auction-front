@@ -15,7 +15,7 @@ const variantClass = {
   outlined: "bg-bg-white border border-2 border-text-tertiary text-text-title",
   gray: "bg-button-primary text-text-subtitle",
   kakao: "bg-point-kakao text-text-title",
-  disabled: "bg-brand-secondary text-text-tertiary",
+  disabled: "bg-brand-secondary text-[#C5B6AD]",
 };
 
 export function Button({
