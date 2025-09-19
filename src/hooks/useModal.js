@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 export const MODALS = {
   LOGIN: "login",
@@ -8,12 +8,20 @@ export const MODALS = {
   POINT_CHARGE: "point-charge",
 };
 
-export function useModal() {
-  const [openModal, setOpenModal] = useState(null);
+const ModalContext = createContext(null);
 
+export function ModalProvider({ children }) {
+  const [openModal, setOpenModal] = useState(null);
   const open = useCallback((type) => setOpenModal(type), []);
   const close = useCallback(() => setOpenModal(null), []);
   const isOpen = useCallback((type) => openModal === type, [openModal]);
 
-  return { openModal, open, close, isOpen };
+  const value = { openModal, open, close, isOpen };
+  return React.createElement(ModalContext.Provider, { value }, children);
+}
+
+export function useModal() {
+  const ctx = useContext(ModalContext);
+
+  return ctx;
 }
