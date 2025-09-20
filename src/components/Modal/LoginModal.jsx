@@ -3,6 +3,19 @@ import ModalLayout from "./ModalLayout";
 import { Kakao } from "../../assets/image";
 
 export default function LoginModal({ onLogin, onClose }) {
+  const handleKakaoLogin = () => {
+    try {
+      // 환경 변수에서 카카오 설정 가져오기
+      const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+      const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+
+      window.location.href = kakaoAuthUrl;
+    } catch (error) {
+      console.error("카카오 로그인 오류:", error);
+    }
+  };
   return (
     <ModalLayout onClose={onClose}>
       <div className="px-20 py-22.5 flex flex-col gap-10 w-150">
@@ -14,7 +27,7 @@ export default function LoginModal({ onLogin, onClose }) {
         </div>
         <Button
           variant="kakao"
-          onButtonClick={onLogin}
+          onButtonClick={handleKakaoLogin}
           className="flex items-center justify-center gap-2"
         >
           <img src={Kakao} className="w-8 h-8" />

@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { ROUTES } from "./constants/router";
 import Layout from "./layouts/Layout";
+import Auth from "./components/Auth";
 
 const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
@@ -43,11 +44,19 @@ const historyRoutes = [
   },
 ];
 
+const authRoutes = [
+  {
+    path: "/auth",
+    element: <Auth />,
+  },
+];
+
 const appRoutes = [
   ...homeRoutes,
   ...auctionRoutes,
   ...createRoutes,
   ...historyRoutes,
+  ...authRoutes,
 ];
 
 export const router = createBrowserRouter([
