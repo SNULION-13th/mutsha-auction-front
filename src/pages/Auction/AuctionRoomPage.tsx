@@ -57,7 +57,7 @@ function AuctionRoomPage() {
     return (
       <div className="w-full px-50 pt-25">
         <div className="max-w-[1160px] mx-auto text-center">
-          <div className="text-2xl text-text-subtitle mb-4">{error}</div>
+          <div className="text-2xl text-scale-500 mb-4">{error}</div>
           <Button variant="primary" onButtonClick={() => navigate("/auction")}>
             경매 목록으로 돌아가기
           </Button>
@@ -100,10 +100,10 @@ function AuctionRoomPage() {
 
           <div className="flex flex-col gap-6">
             <div>
-              <h1 className="text-3xl font-bold text-text-title mb-2">
+              <h1 className="text-3xl font-bold text-scale-600 mb-2">
                 {auction.title}
               </h1>
-              <div className="text-lg text-text-subtitle">
+              <div className="text-lg text-scale-500">
                 판매자: {auction.seller_nickname}
               </div>
             </div>
@@ -112,28 +112,28 @@ function AuctionRoomPage() {
               <div className="text-2xl font-bold text-brand-primary mb-2">
                 현재가: {auction.current_price.toLocaleString()}원
               </div>
-              <div className="text-sm text-text-subtitle mb-4">
+              <div className="text-sm text-scale-500 mb-4">
                 시작가: {auction.starting_price.toLocaleString()}원
               </div>
-              <div className="text-sm text-text-subtitle">
+              <div className="text-sm text-scale-500">
                 입찰 수: {auction.bid_count}회
               </div>
             </div>
 
             <div className="bg-bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-xl font-bold text-text-title mb-3">
+              <h3 className="text-xl font-bold text-scale-600 mb-3">
                 경매 설명
               </h3>
-              <p className="text-text-content leading-relaxed">
+              <p className="text-scale-400 leading-relaxed">
                 {auction.description}
               </p>
             </div>
 
             <div className="bg-bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-xl font-bold text-text-title mb-3">
+              <h3 className="text-xl font-bold text-scale-600 mb-3">
                 경매 정보
               </h3>
-              <div className="space-y-2 text-text-content">
+              <div className="space-y-2 text-scale-400">
                 <div>
                   시작 시간: {new Date(auction.start_time).toLocaleString()}
                 </div>

@@ -35,7 +35,7 @@ export default function ProfileImageModal({
   return (
     <ModalLayout onClose={onClose}>
       <div className="px-8.5 pt-20 pb-5 flex flex-col gap-15 w-105 items-center">
-        <div className="text-2xl font-bold text-text-title">
+        <div className="text-2xl font-bold text-scale-600">
           프로필 이미지 고르기
         </div>
         <div className="grid grid-cols-3 px-10 gap-8">

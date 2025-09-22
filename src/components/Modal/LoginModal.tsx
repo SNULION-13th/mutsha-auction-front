@@ -24,8 +24,8 @@ export default function LoginModal({ onLogin, onClose }: Props) {
     <ModalLayout onClose={onClose}>
       <div className="px-20 py-22.5 flex flex-col gap-10 w-150">
         <div className="flex flex-col gap-4">
-          <div className="text-4xl font-bold text-text-title">로그인</div>
-          <div className="text-lg text-text-content">
+          <div className="text-4xl font-bold text-scale-600">로그인</div>
+          <div className="text-lg text-scale-400">
             처음이면 자동 회원가입 후 이용할 수 있어요.
           </div>
         </div>

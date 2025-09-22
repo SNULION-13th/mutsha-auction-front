@@ -24,8 +24,8 @@ function RecommendCard({ image, title, description }: CardProps) {
         />
       </div>
       <div className="flex flex-col gap-1.5 w-full px-6 py-5">
-        <div className="text-xl text-text-title font-bold">{title}</div>
-        <div className="text-base text-text-content w-full truncate">
+        <div className="text-xl text-scale-600 font-bold">{title}</div>
+        <div className="text-base text-scale-400 w-full truncate">
           {description}
         </div>
       </div>
@@ -56,10 +56,10 @@ export function RecommendSection() {
       <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-col gap-5">
-            <div className="text-5xl font-bold text-text-title">
+            <div className="text-5xl font-bold text-scale-600">
               오늘의 추천 경매
             </div>
-            <div className="text-2xl text-text-content">
+            <div className="text-2xl text-scale-400">
               멋사 구성원들의 애착템에 입찰해보세요!
             </div>
           </div>
@@ -73,7 +73,7 @@ export function RecommendSection() {
           </Button>
         </div>
 
-        <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-text-tertiary">
+        <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">
           {recommendedAuctions.length > 0 ? (
             recommendedAuctions.map((auction) => (
               <RecommendCard
@@ -85,7 +85,7 @@ export function RecommendSection() {
             ))
           ) : (
             <div className="col-span-2 text-center py-20">
-              <div className="text-xl text-text-subtitle">
+              <div className="text-xl text-scale-500">
                 현재 추천할 경매가 없습니다.
               </div>
             </div>
