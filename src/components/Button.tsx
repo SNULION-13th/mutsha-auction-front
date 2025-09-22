@@ -13,9 +13,10 @@ const roundClass = {
 
 const variantClass = {
   primary: "bg-brand-primary text-bg-white",
-  outlined: "bg-bg-white border border-2 border-text-tertiary text-text-title",
-  gray: "bg-button-primary text-text-subtitle",
-  kakao: "bg-point-kakao text-text-title",
+  outlined: "bg-bg-white border border-2 border-scale-300 text-scale-600",
+  gray: "bg-scale-100 text-scale-500",
+  darkgray: "bg-scale-200 text-scale-300",
+  kakao: "bg-point-kakao text-scale-600",
   disabled: "bg-brand-secondary text-[#C5B6AD]",
 } as const;
 

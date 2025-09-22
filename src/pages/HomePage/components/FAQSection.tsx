@@ -71,7 +71,7 @@ export function FAQSection() {
   return (
     <div className="w-full px-50 py-25">
       <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
-        <div className="text-5xl font-bold text-text-title">FAQs</div>
+        <div className="text-5xl font-bold text-scale-600">FAQs</div>
         <div className="w-full flex flex-col gap-7.5">
           {FQAs.map((fqa) => (
             <FAQAccordion

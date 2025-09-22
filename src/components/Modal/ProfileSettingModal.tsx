@@ -29,7 +29,7 @@ export default function ProfileSettingModal({
   return (
     <ModalLayout onClose={onClose}>
       <div className="px-20 py-22.5 flex flex-col gap-20 w-180">
-        <div className="text-4xl font-bold text-text-title">프로필 설정</div>
+        <div className="text-4xl font-bold text-scale-600">프로필 설정</div>
         <div className="flex flex-col gap-12.5">
           <div className="mx-auto relative w-28 h-28">
             <img

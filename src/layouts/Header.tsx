@@ -28,16 +28,16 @@ export default function Header({ isLoggedIn, onLoginClick }: Props) {
         </Link>
         <div className="flex gap-10 items-center">
           <Link to="/auction" className="cursor-pointer">
-            <div className="text-xl text-text-subtitle">경매 입찰</div>
+            <div className="text-xl text-scale-500">경매 입찰</div>
           </Link>
           <Link to="/create" className="cursor-pointer">
-            <div className="text-xl text-text-subtitle">경매 등록</div>
+            <div className="text-xl text-scale-500">경매 등록</div>
           </Link>
           <Link to="/history" className="cursor-pointer">
-            <div className="text-xl text-text-subtitle">내 경매</div>
+            <div className="text-xl text-scale-500">내 경매</div>
           </Link>
           {isLoggedIn ? (
-            <div className="text-xl text-text-subtitle">프로필</div>
+            <div className="text-xl text-scale-500">프로필</div>
           ) : (
             <Button
               variant="gray"

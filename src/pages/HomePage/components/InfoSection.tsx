@@ -17,8 +17,8 @@ function InfoCard({
         <img src={image} className="w-full h-full object-contain" />
       </div>
       <div className="flex flex-col gap-2 flex-1 min-w-0">
-        <div className="text-xl text-text-title font-bold">{title}</div>
-        <div className="text-base text-text-content flex-1 truncate">
+        <div className="text-xl text-scale-600 font-bold">{title}</div>
+        <div className="text-base text-scale-400 flex-1 truncate">
           {description}
         </div>
       </div>
@@ -57,10 +57,10 @@ export function InfoSection() {
       <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-col gap-5">
-            <div className="text-5xl font-bold text-text-title">
+            <div className="text-5xl font-bold text-scale-600">
               경매 등록하기
             </div>
-            <div className="text-2xl text-text-content">
+            <div className="text-2xl text-scale-400">
               당신의 애착템, 술잔으로 걸어보세요!
             </div>
           </div>
@@ -74,10 +74,10 @@ export function InfoSection() {
           </Button>
         </div>
         <div className="flex flex-col gap-10">
-          <div className="w-full text-center text-xl text-text-content">
+          <div className="w-full text-center text-xl text-scale-400">
             어떻게 등록할 수 있나요?
           </div>
-          <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-text-tertiary">
+          <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">
             {InfoCards.map((card) => (
               <InfoCard
                 key={card.title}
