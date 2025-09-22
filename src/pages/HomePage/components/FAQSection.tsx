@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { OpenButton } from "../../../assets/image";
 
-function FAQAccordion({ question, answer }) {
+function FAQAccordion({
+  question,
+  answer,
+}: {
+  question: string;
+  answer: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

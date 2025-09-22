@@ -12,6 +12,11 @@ const ROUTES = {
   HISTORY: {
     ROOT: "/history",
   },
+  AUTH: {
+    ROOT: "/auth",
+  },
 };
+
+export type RouteKeys = keyof typeof ROUTES;
 
 export { ROUTES };

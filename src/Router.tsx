@@ -4,13 +4,13 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { ROUTES } from "./constants/router";
 import Layout from "./layouts/Layout";
-import Auth from "./components/Auth";
 
 const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
 const AuctionRoomPage = lazy(() => import("@page/Auction/AuctionRoomPage"));
 const AuctionCreatePage = lazy(() => import("@page/AuctionCreatePage"));
 const HistoryPage = lazy(() => import("@page/HistoryPage"));
+const AuthPage = lazy(() => import("@page/Auth"));
 
 const homeRoutes = [
   {
@@ -46,8 +46,8 @@ const historyRoutes = [
 
 const authRoutes = [
   {
-    path: "/auth",
-    element: <Auth />,
+    path: ROUTES.AUTH.ROOT,
+    element: <AuthPage />,
   },
 ];
 

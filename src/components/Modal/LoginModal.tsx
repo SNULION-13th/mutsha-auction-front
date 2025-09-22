@@ -2,12 +2,16 @@ import { Button } from "../Button";
 import ModalLayout from "./ModalLayout";
 import { Kakao } from "../../assets/image";
 
-export default function LoginModal({ onLogin, onClose }) {
+type Props = {
+  onClose: () => void;
+  onLogin?: () => void;
+};
+
+export default function LoginModal({ onLogin, onClose }: Props) {
   const handleKakaoLogin = () => {
     try {
-      // 환경 변수에서 카카오 설정 가져오기
-      const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-      const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+      const clientId = String(import.meta.env.VITE_KAKAO_CLIENT_ID);
+      const redirectUri = String(import.meta.env.VITE_KAKAO_REDIRECT_URI);
 
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 
