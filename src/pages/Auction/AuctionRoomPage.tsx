@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getAuctionDetail } from "../../apis/api";
-import { Button } from "../../components/Button";
+import { AuctionDetail, getAuctionDetail } from "@/apis/api";
+import { Button } from "@/components/Button";
 
 function AuctionRoomPage() {
-  const { auctionId } = useParams();
+  const { auctionId } = useParams<{ auctionId: string }>();
   const navigate = useNavigate();
-  const [auction, setAuction] = useState(null);
+  const [auction, setAuction] = useState<AuctionDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAuctionDetail = async () => {
+    async function fetchAuctionDetail() {
       try {
         setLoading(true);
-        const auctionData = await getAuctionDetail(auctionId);
-        if (auctionData) {
-          setAuction(auctionData);
+        const data = await getAuctionDetail(auctionId ?? "");
+        if (data) {
+          setAuction(data);
         } else {
           setError("경매를 찾을 수 없습니다.");
         }
@@ -26,7 +26,7 @@ function AuctionRoomPage() {
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     if (auctionId) {
       fetchAuctionDetail();
@@ -80,7 +80,6 @@ function AuctionRoomPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-10">
-          {/* 경매 이미지 */}
           <div className="w-full">
             <div className="h-96 w-full flex justify-center overflow-hidden rounded-xl shadow-lg">
               <img
@@ -92,22 +91,20 @@ function AuctionRoomPage() {
                 className="h-full w-full object-cover"
                 alt={auction.title}
                 onError={(e) => {
-                  console.log("이미지 로딩 실패:", e.target.src);
-                  e.target.src =
-                    "https://via.placeholder.com/400x400?text=No+Image";
+                  const img = e.currentTarget;
+                  img.src = "https://via.placeholder.com/400x400?text=No+Image";
                 }}
               />
             </div>
           </div>
 
-          {/* 경매 정보 */}
           <div className="flex flex-col gap-6">
             <div>
               <h1 className="text-3xl font-bold text-text-title mb-2">
                 {auction.title}
               </h1>
               <div className="text-lg text-text-subtitle">
-                판매자: {auction.seller_nickname || auction.seller.username}
+                판매자: {auction.seller_nickname}
               </div>
             </div>
 

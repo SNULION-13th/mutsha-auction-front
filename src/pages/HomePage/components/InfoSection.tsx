@@ -2,7 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { Phone, Cup, Heart, Hand } from "../../../assets/image";
 import { Button } from "../../../components/Button";
 
-function InfoCard({ image, title, description }) {
+function InfoCard({
+  image,
+  title,
+  description,
+}: {
+  image: string;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="w-full flex items-center bg-bg-white rounded-xl p-5 gap-5 shadow-lg">
       <div className="w-25 h-25 shrink-0">

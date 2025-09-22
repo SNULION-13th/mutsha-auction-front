@@ -1,8 +1,22 @@
 import { Link } from "react-router-dom";
 import { Logo } from "../assets/image";
 import { Button } from "../components/Button";
+import { RefObject } from "react";
 
-export default function Header({ isLoggedIn, onLoginClick }) {
+type Props = {
+  isLoggedIn: boolean;
+  onLoginClick: () => void;
+  onProfileClick?: () => void;
+  profileBtnRef?: RefObject<HTMLDivElement | null>;
+  showProfileMenu?: boolean;
+  nickname?: string;
+  imageSrc?: string;
+  points?: number;
+  onOpenCharge?: () => void;
+  onLogout?: () => void;
+};
+
+export default function Header({ isLoggedIn, onLoginClick }: Props) {
   return (
     <header className="w-full fixed flex justify-center bg-bg-white mx-auto z-50">
       <div className="w-full max-w-[1680px] flex justify-between px-17.5 py-5">

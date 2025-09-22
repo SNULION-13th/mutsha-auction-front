@@ -3,12 +3,19 @@ import ModalLayout from "./ModalLayout";
 import { Edit } from "../../assets/image";
 import { useState } from "react";
 
+type Props = {
+  imageSrc: string;
+  onEditImage: () => void;
+  onSubmitSuccess: (nickname: string) => void;
+  onClose: () => void;
+};
+
 export default function ProfileSettingModal({
   imageSrc,
   onEditImage,
   onSubmitSuccess,
   onClose,
-}) {
+}: Props) {
   const [nickname, setNickname] = useState("");
 
   const onlyAllowed = /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u;
@@ -40,7 +47,9 @@ export default function ProfileSettingModal({
           <div className="flex flex-col gap-3">
             <input
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => {
+                setNickname(e.target.value);
+              }}
               placeholder="닉네임(최대 10자)"
               className="w-full h-14 rounded-xl border border-black/10 px-5 outline-none focus:border-brand-primary"
             />

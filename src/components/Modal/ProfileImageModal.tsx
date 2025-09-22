@@ -10,10 +10,27 @@ import {
 } from "../../assets/image";
 import { useState } from "react";
 
-const CANDIDATES = [Profile1, Profile2, Profile3, Profile4, Profile5, Profile6];
+const CANDIDATES = [
+  Profile1,
+  Profile2,
+  Profile3,
+  Profile4,
+  Profile5,
+  Profile6,
+] as const;
 
-export default function ProfileImageModal({ current, onSave, onClose }) {
-  const [selected, setSelected] = useState(current || CANDIDATES[0]);
+type Props = {
+  current?: string;
+  onSave: (img: string) => void;
+  onClose: () => void;
+};
+
+export default function ProfileImageModal({
+  current = CANDIDATES[0],
+  onSave,
+  onClose,
+}: Props) {
+  const [selected, setSelected] = useState<string>(current);
 
   return (
     <ModalLayout onClose={onClose}>
@@ -22,15 +39,17 @@ export default function ProfileImageModal({ current, onSave, onClose }) {
           프로필 이미지 고르기
         </div>
         <div className="grid grid-cols-3 px-10 gap-8">
-          {CANDIDATES.map((img) => {
-            const isSel = selected === img;
+          {CANDIDATES.map((candidate) => {
+            const isSel = selected === candidate;
             return (
               <button
-                key={img}
-                onClick={() => setSelected(img)}
+                key={candidate}
+                onClick={() => {
+                  setSelected(candidate);
+                }}
                 className={`group relative w-20 h-20 rounded-full overflow-hidden ${isSel ? "ring-4 ring-brand-primary" : "ring-0"}`}
               >
-                <img src={img} className="w-full h-full object-cover" />
+                <img src={candidate} className="w-full h-full object-cover" />
                 <span
                   className={`absolute inset-0 bg-black/15 opacity-0 group-hover:opacity-100 transition-opacity ${isSel ? "opacity-100" : ""}`}
                 />
@@ -40,7 +59,9 @@ export default function ProfileImageModal({ current, onSave, onClose }) {
         </div>
         <Button
           variant="primary"
-          onButtonClick={() => onSave(selected)}
+          onButtonClick={() => {
+            onSave(selected);
+          }}
           className="w-90 h-14"
         >
           저장하기
