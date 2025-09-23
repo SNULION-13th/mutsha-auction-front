@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { kakaoSignIn, getUserInfo, type UserProfile } from "@/apis/api";
+import { kakaoSignIn, getUserInfo } from "@/apis/api";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function Auth() {
         navigate("/");
       }
     })();
-  }, []); // 의존성 배열을 빈 배열로 변경하여 한 번만 실행되도록 함
+  }, []);
 
   return null;
 }
