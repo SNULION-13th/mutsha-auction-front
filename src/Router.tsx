@@ -11,9 +11,11 @@ const AuctionRoomPage = lazy(() => import("@page/Auction/AuctionRoomPage"));
 const AuctionCreatePage = lazy(() => import("@page/AuctionCreatePage"));
 const HistoryPage = lazy(() => import("@page/HistoryPage"));
 const AuthPage = lazy(() => import("@page/Auth"));
-const PaymentApprovalPage = lazy(() => import("@page/PaymentApprovalPage"));
-const PaymentCancelPage = lazy(() => import("@page/PaymentCancelPage"));
-const PaymentFailPage = lazy(() => import("@page/PaymentFailPage"));
+const PaymentApprovalPage = lazy(
+  () => import("@page/Payment/PaymentApprovalPage"),
+);
+const PaymentCancelPage = lazy(() => import("@page/Payment/PaymentCancelPage"));
+const PaymentFailPage = lazy(() => import("@page/Payment/PaymentFailPage"));
 
 const homeRoutes = [
   {
@@ -56,15 +58,15 @@ const authRoutes = [
 
 const paymentRoutes = [
   {
-    path: "/payment/approve",
+    path: ROUTES.PAYMENT.APPROVAL,
     element: <PaymentApprovalPage />,
   },
   {
-    path: "/payment/cancel",
+    path: ROUTES.PAYMENT.CANCEL,
     element: <PaymentCancelPage />,
   },
   {
-    path: "/payment/fail",
+    path: ROUTES.PAYMENT.FAIL,
     element: <PaymentFailPage />,
   },
 ];

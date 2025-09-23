@@ -15,11 +15,13 @@ export type UserProfile = {
   is_social_login: boolean;
 };
 
-export async function kakaoSignIn(code: string): Promise<UserProfile | null> {
+export async function kakaoSignIn(code: string): Promise<boolean> {
   try {
-    const res = await api.get<UserProfile>("/api/user/kakao/signin/");
-    if (res.status === 200) return res.data;
-    return null;
+    const res = await api.get("/api/user/kakao/callback/", {
+      params: { code },
+    });
+    if (res.status === 200) return true;
+    return false;
   } catch (e: unknown) {
     if (isAxiosError(e)) {
       console.error("kakaoSignIn error:", e.response?.status, e.response?.data);
@@ -27,7 +29,7 @@ export async function kakaoSignIn(code: string): Promise<UserProfile | null> {
       console.error("kakaoSignIn unknown error:", e);
     }
   }
-  return null;
+  return false;
 }
 
 export type AuctionListParams = {

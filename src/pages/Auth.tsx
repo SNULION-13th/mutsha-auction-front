@@ -14,33 +14,27 @@ export default function Auth() {
         return;
       }
       try {
-        const res = await kakaoSignIn(code);
-        if (res) {
+        const loginSuccess = await kakaoSignIn(code);
+        if (loginSuccess) {
           localStorage.setItem("isLoggedIn", "true");
 
-          // 카카오 로그인 성공 후 백엔드에서 최신 사용자 정보 가져오기
+          // 카카오 로그인 성공 후 사용자 프로필 정보 가져오기
           try {
-            const latestUserInfo = await getUserInfo();
-            if (latestUserInfo) {
-              localStorage.setItem(
-                "userProfile",
-                JSON.stringify(latestUserInfo),
-              );
-              console.log("로그인 후 최신 사용자 정보 저장:", latestUserInfo);
+            const userProfile = await getUserInfo();
+            if (userProfile) {
+              localStorage.setItem("userProfile", JSON.stringify(userProfile));
+              console.log("로그인 후 사용자 프로필 저장:", userProfile);
             } else {
-              // getUserInfo 실패 시 카카오 로그인 결과라도 저장
-              localStorage.setItem("userProfile", JSON.stringify(res));
-              console.log("getUserInfo 실패, 카카오 로그인 결과 저장:", res);
+              console.error("사용자 프로필 정보를 가져올 수 없습니다.");
             }
           } catch (userInfoError) {
-            console.error("사용자 정보 가져오기 실패:", userInfoError);
-            // getUserInfo 실패 시 카카오 로그인 결과라도 저장
-            localStorage.setItem("userProfile", JSON.stringify(res));
+            console.error("사용자 프로필 정보 가져오기 실패:", userInfoError);
           }
 
           // 메인 페이지로 이동
           window.location.href = "/";
         } else {
+          console.error("카카오 로그인 실패");
           navigate("/");
         }
       } catch (error) {
