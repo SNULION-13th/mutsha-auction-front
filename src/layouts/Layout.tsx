@@ -15,9 +15,11 @@ import {
 } from "../assets/image";
 import { useRef, useState, useEffect } from "react";
 import ProfileImageModal from "../components/Modal/ProfileImageModal";
+import ProfileModal from "@/components/Modal/ProfileModal";
+import PointChargeModal from "@/components/Modal/PointChargeModal";
 
 export default function Layout() {
-  const { openModal, open, close } = useModal();
+  const { openModal, open, close, isOpen } = useModal();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImage, setProfileImage] = useState<string>(Profile1);
@@ -56,7 +58,6 @@ export default function Layout() {
     }
   }, []);
 
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileBtnRef = useRef<HTMLDivElement | null>(null);
 
   const openCharge = () => open(MODALS.POINT_CHARGE);
@@ -71,18 +72,18 @@ export default function Layout() {
       <Header
         isLoggedIn={isLoggedIn}
         onLoginClick={() => open(MODALS.LOGIN)}
-        onProfileClick={() => setShowProfileMenu((v) => !v)}
+        onProfileClick={() => open(MODALS.PROFILE)}
         profileBtnRef={profileBtnRef}
-        showProfileMenu={showProfileMenu}
+        showProfileMenu={false}
         nickname={nickname}
         imageSrc={profileImage}
         points={points}
         onOpenCharge={openCharge}
         onLogout={() => {
           setIsLoggedIn(false);
-          setShowProfileMenu(false);
           localStorage.removeItem("isLoggedIn");
           localStorage.removeItem("userProfile");
+          close();
         }}
       />
       <main className="min-h-screen pt-22">
@@ -119,6 +120,25 @@ export default function Layout() {
           }}
           onClose={close}
         />
+      )}
+      {openModal === MODALS.PROFILE && (
+        <ProfileModal
+          onClose={close}
+          anchorRef={profileBtnRef}
+          nickname={nickname}
+          imageSrc={profileImage}
+          points={points}
+          onOpenCharge={openCharge}
+          onLogout={() => {
+            setIsLoggedIn(false);
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("userProfile");
+            close();
+          }}
+        />
+      )}
+      {openModal === MODALS.POINT_CHARGE && (
+        <PointChargeModal onClose={close} onCharge={handleCharge} />
       )}
     </div>
   );
