@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "../assets/image";
 import { Button } from "../components/Button";
 import { RefObject } from "react";
+import { MODALS, useModal } from "@/hooks/useModal";
 
 type Props = {
   isLoggedIn: boolean;
@@ -16,7 +17,24 @@ type Props = {
   onLogout?: () => void;
 };
 
-export default function Header({ isLoggedIn, onLoginClick }: Props) {
+export default function Header({
+  isLoggedIn,
+  onLoginClick,
+  onProfileClick,
+  profileBtnRef,
+  showProfileMenu,
+  nickname,
+  imageSrc,
+  points,
+  onOpenCharge,
+  onLogout,
+}: Props) {
+  const { open, isOpen } = useModal();
+  const handleOpenProfile = () => {
+    onProfileClick?.();
+    open(MODALS.PROFILE);
+  };
+
   return (
     <header className="w-full fixed flex justify-center bg-bg-white mx-auto z-50">
       <div className="w-full max-w-[1680px] flex justify-between px-17.5 py-5">
@@ -37,7 +55,17 @@ export default function Header({ isLoggedIn, onLoginClick }: Props) {
             <div className="text-xl text-scale-500">내 경매</div>
           </Link>
           {isLoggedIn ? (
-            <div className="text-xl text-scale-500">프로필</div>
+            <div
+              ref={profileBtnRef as RefObject<HTMLDivElement>}
+              className="flex items-center gap-3 text-xl text-scale-500 cursor-pointer select-none"
+              onClick={handleOpenProfile}
+              role="button"
+              aria-haspopup="dialog"
+              aria-expanded={isOpen(MODALS.PROFILE)}
+              title={nickname ? `${nickname} 프로필 열기` : "프로필 열기"}
+            >
+              프로필
+            </div>
           ) : (
             <Button
               variant="gray"
