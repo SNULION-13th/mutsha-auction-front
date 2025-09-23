@@ -137,3 +137,127 @@ export async function getAuctionDetail(
     return null;
   }
 }
+
+export type PointItem = {
+  point: number;
+  price: number;
+};
+
+export async function getPointList(): Promise<PointItem[] | null> {
+  try {
+    const response = await api.get<PointItem[]>("/api/point/");
+    if (response.status === 200) {
+      console.log(response.data);
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPointList error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPointList unknown error:", e);
+    }
+    return null;
+  }
+}
+
+export async function getUserInfo(): Promise<UserProfile | null> {
+  try {
+    const response = await api.get<UserProfile>("/api/user/me/");
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error("getUserInfo error:", e.response?.status, e.response?.data);
+    } else {
+      console.error("getUserInfo unknown error:", e);
+    }
+    return null;
+  }
+}
+
+export type PaymentReadyRequest = {
+  point: string;
+  price: string;
+};
+
+export type PaymentReadyResponse = {
+  tid: string;
+  next_redirect_pc_url: string;
+  next_redirect_mobile_url: string;
+  next_redirect_app_url: string;
+  android_app_scheme: string;
+  ios_app_scheme: string;
+  created_at: string;
+};
+
+export async function paymentReady(
+  data: PaymentReadyRequest,
+): Promise<PaymentReadyResponse | null> {
+  try {
+    const response = await api.post<PaymentReadyResponse>(
+      "/api/payment/ready/",
+      {
+        partner_order_id: `order_${Date.now()}`,
+        partner_user_id: "user",
+        item_name: `${data.point} 잔`,
+        quantity: 1,
+        total_amount: parseInt(data.price),
+        vat_amount: 0,
+        tax_free_amount: 0,
+        approval_url: `${window.location.origin}/payment/approve`,
+        cancel_url: `${window.location.origin}/payment/cancel`,
+        fail_url: `${window.location.origin}/payment/fail`,
+      },
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentReady error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentReady unknown error:", e);
+    }
+    return null;
+  }
+}
+
+export async function updateUserProfile(
+  nickname: string,
+  profilepicId: number,
+): Promise<UserProfile | null> {
+  try {
+    const response = await api.put<UserProfile>("/api/user/me/", {
+      nickname: nickname,
+      profilepic_id: profilepicId,
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "updateUserProfile error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("updateUserProfile unknown error:", e);
+    }
+    return null;
+  }
+}

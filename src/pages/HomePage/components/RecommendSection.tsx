@@ -8,11 +8,22 @@ type CardProps = {
   image: string;
   title: string;
   description: string;
+  auctionId: number;
+  onCardClick: (auctionId: number) => void;
 };
 
-function RecommendCard({ image, title, description }: CardProps) {
+function RecommendCard({
+  image,
+  title,
+  description,
+  auctionId,
+  onCardClick,
+}: CardProps) {
   return (
-    <div className="w-full flex flex-col items-start bg-bg-white rounded-xl shadow-lg">
+    <div
+      className="w-full flex flex-col items-start bg-bg-white rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-200"
+      onClick={() => onCardClick(auctionId)}
+    >
       <div className="h-72 w-full flex justify-center overflow-hidden">
         <img
           src={image}
@@ -43,13 +54,23 @@ export function RecommendSection() {
     (async () => {
       try {
         const auctions = await getRecommendedAuctions();
-        setRecommendedAuctions(auctions ?? []);
+        // Ensure we always set an array
+        if (Array.isArray(auctions)) {
+          setRecommendedAuctions(auctions);
+        } else {
+          console.warn("getRecommendedAuctions returned non-array:", auctions);
+          setRecommendedAuctions([]);
+        }
       } catch (error) {
         console.error("추천 경매 데이터 로딩 실패:", error);
         setRecommendedAuctions([]);
       }
     })();
   }, []);
+
+  const handleCardClick = (auctionId: number) => {
+    navigate(`/auction/${auctionId}`);
+  };
 
   return (
     <div className="w-full px-50 pt-25">
@@ -74,13 +95,16 @@ export function RecommendSection() {
         </div>
 
         <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">
-          {recommendedAuctions.length > 0 ? (
+          {Array.isArray(recommendedAuctions) &&
+          recommendedAuctions.length > 0 ? (
             recommendedAuctions.map((auction) => (
               <RecommendCard
                 key={auction.id}
                 image={auction.image_file_url || auction.image_url || YhFashion}
                 title={auction.title}
                 description={auction.description}
+                auctionId={auction.id}
+                onCardClick={handleCardClick}
               />
             ))
           ) : (

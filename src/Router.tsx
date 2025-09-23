@@ -11,6 +11,9 @@ const AuctionRoomPage = lazy(() => import("@page/Auction/AuctionRoomPage"));
 const AuctionCreatePage = lazy(() => import("@page/AuctionCreatePage"));
 const HistoryPage = lazy(() => import("@page/HistoryPage"));
 const AuthPage = lazy(() => import("@page/Auth"));
+const PaymentApprovalPage = lazy(() => import("@page/PaymentApprovalPage"));
+const PaymentCancelPage = lazy(() => import("@page/PaymentCancelPage"));
+const PaymentFailPage = lazy(() => import("@page/PaymentFailPage"));
 
 const homeRoutes = [
   {
@@ -51,12 +54,28 @@ const authRoutes = [
   },
 ];
 
+const paymentRoutes = [
+  {
+    path: "/payment/approve",
+    element: <PaymentApprovalPage />,
+  },
+  {
+    path: "/payment/cancel",
+    element: <PaymentCancelPage />,
+  },
+  {
+    path: "/payment/fail",
+    element: <PaymentFailPage />,
+  },
+];
+
 const appRoutes = [
   ...homeRoutes,
   ...auctionRoutes,
   ...createRoutes,
   ...historyRoutes,
   ...authRoutes,
+  ...paymentRoutes,
 ];
 
 export const router = createBrowserRouter([

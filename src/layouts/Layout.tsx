@@ -17,6 +17,7 @@ import { useRef, useState, useEffect } from "react";
 import ProfileImageModal from "../components/Modal/ProfileImageModal";
 import ProfileModal from "@/components/Modal/ProfileModal";
 import PointChargeModal from "@/components/Modal/PointChargeModal";
+import { updateUserProfile, getUserInfo } from "@/apis/api";
 
 export default function Layout() {
   const { openModal, open, close, isOpen } = useModal();
@@ -29,6 +30,7 @@ export default function Layout() {
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn");
     const userProfile = localStorage.getItem("userProfile");
+    const isFirstLogin = localStorage.getItem("isFirstLogin");
 
     if (loginStatus === "true" && userProfile) {
       try {
@@ -54,17 +56,73 @@ export default function Layout() {
             profileImages[(profile.profilepic_id - 1) as number] ?? Profile1,
           );
         }
+
+        // 닉네임이 없는 경우 프로필 설정 모달 자동 열기
+        console.log("profile.nickname:", profile.nickname);
+        if (!profile.nickname || profile.nickname.trim() === "") {
+          console.log("닉네임이 없어서 프로필 설정 모달 열기");
+          open(MODALS.PROFILE_SETTING);
+        }
+
+        // 페이지 로드 시마다 최신 사용자 정보 가져오기 (포인트 업데이트 등)
+        const fetchLatestUserInfo = async () => {
+          try {
+            const latestUserInfo = await getUserInfo();
+            if (latestUserInfo) {
+              localStorage.setItem(
+                "userProfile",
+                JSON.stringify(latestUserInfo),
+              );
+              setNickname(latestUserInfo.nickname || "프로필 설정");
+              setPoints(latestUserInfo.remaining_points ?? 0);
+
+              if (latestUserInfo.profilepic_id) {
+                const profileImages = [
+                  Profile1,
+                  Profile2,
+                  Profile3,
+                  Profile4,
+                  Profile5,
+                  Profile6,
+                ];
+                setProfileImage(
+                  profileImages[(latestUserInfo.profilepic_id - 1) as number] ??
+                    Profile1,
+                );
+              }
+            }
+          } catch (error) {
+            console.error("사용자 정보 가져오기 실패:", error);
+          }
+        };
+        fetchLatestUserInfo();
       } catch {}
     }
-  }, []);
+  }, [open]);
 
   const profileBtnRef = useRef<HTMLDivElement | null>(null);
 
   const openCharge = () => open(MODALS.POINT_CHARGE);
   const closeCharge = () => close();
-  const handleCharge = (amount: number) => {
+  const handleCharge = async (amount: number) => {
+    // 임시로 포인트 업데이트 (UI 반응성)
     setPoints((p) => p + amount);
     closeCharge();
+
+    // 백엔드에서 최신 포인트 정보 가져와서 업데이트
+    try {
+      const latestUserInfo = await getUserInfo();
+      if (latestUserInfo) {
+        localStorage.setItem("userProfile", JSON.stringify(latestUserInfo));
+        setPoints(latestUserInfo.remaining_points ?? 0);
+        console.log(
+          "포인트 충전 후 최신 포인트:",
+          latestUserInfo.remaining_points,
+        );
+      }
+    } catch (error) {
+      console.error("포인트 충전 후 사용자 정보 가져오기 실패:", error);
+    }
   };
 
   return (
@@ -83,6 +141,8 @@ export default function Layout() {
           setIsLoggedIn(false);
           localStorage.removeItem("isLoggedIn");
           localStorage.removeItem("userProfile");
+          localStorage.removeItem("isFirstLogin");
+          localStorage.removeItem("access_token");
           close();
         }}
       />
@@ -103,10 +163,49 @@ export default function Layout() {
         <ProfileSettingModal
           imageSrc={profileImage}
           onEditImage={() => open(MODALS.PROFILE_IMAGE)}
-          onSubmitSuccess={(newNickname) => {
-            setNickname(newNickname);
-            setIsLoggedIn(true);
-            close();
+          onSubmitSuccess={async (newNickname) => {
+            try {
+              // 현재 선택된 프로필 이미지 ID 찾기
+              const profileImages = [
+                Profile1,
+                Profile2,
+                Profile3,
+                Profile4,
+                Profile5,
+                Profile6,
+              ];
+              const profilepicId = profileImages.indexOf(profileImage) + 1;
+
+              // 백엔드에 프로필 업데이트 요청
+              const updatedProfile = await updateUserProfile(
+                newNickname,
+                profilepicId,
+              );
+
+              if (updatedProfile) {
+                // 성공 시 상태 업데이트
+                setNickname(newNickname);
+                setIsLoggedIn(true);
+
+                // localStorage 업데이트
+                const currentProfile = JSON.parse(
+                  localStorage.getItem("userProfile") || "{}",
+                );
+                const newProfile = {
+                  ...currentProfile,
+                  nickname: newNickname,
+                  profilepic_id: profilepicId,
+                };
+                localStorage.setItem("userProfile", JSON.stringify(newProfile));
+
+                // 모달 닫기
+                close();
+              } else {
+                console.error("프로필 업데이트 실패");
+              }
+            } catch (error) {
+              console.error("프로필 업데이트 중 오류:", error);
+            }
           }}
           onClose={close}
         />
@@ -133,6 +232,8 @@ export default function Layout() {
             setIsLoggedIn(false);
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("userProfile");
+            localStorage.removeItem("isFirstLogin");
+            localStorage.removeItem("access_token");
             close();
           }}
         />
