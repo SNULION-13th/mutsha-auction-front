@@ -17,7 +17,7 @@ const ROUTES = {
   },
   PAYMENT: {
     ROOT: "/payment",
-    APPROVAL: "/payment/approval",
+    APPROVAL: "/payment/approve",
     CANCEL: "/payment/cancel",
     FAIL: "/payment/fail",
   },
