@@ -47,8 +47,6 @@ api.interceptors.response.use(
           );
 
           if (response.status === 200) {
-            console.log("✅ 토큰 갱신 성공");
-            // 원래 요청을 다시 시도
             return api.request(err.config!);
           }
         } catch (refreshError) {

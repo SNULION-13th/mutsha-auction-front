@@ -32,14 +32,6 @@ export default function PaymentApprovalPage() {
           // 결제 성공 - tid 제거
           localStorage.removeItem("tid");
 
-          // 백엔드 응답에서 포인트 정보 확인
-          if (response.data.point_info) {
-            console.log(
-              "백엔드에서 전달된 포인트 정보:",
-              response.data.point_info,
-            );
-          }
-
           // 사용자 정보 다시 가져와서 포인트 업데이트 확인
           try {
             const latestUserInfo = await getUserInfo();
@@ -47,10 +39,6 @@ export default function PaymentApprovalPage() {
               localStorage.setItem(
                 "userProfile",
                 JSON.stringify(latestUserInfo),
-              );
-              console.log(
-                "API에서 가져온 최신 포인트:",
-                latestUserInfo.remaining_points,
               );
             }
           } catch (userInfoError) {

@@ -149,7 +149,6 @@ export async function getPointList(): Promise<PointItem[] | null> {
   try {
     const response = await api.get<PointItem[]>("/api/point/");
     if (response.status === 200) {
-      console.log(response.data);
       return response.data;
     }
     return null;

@@ -23,7 +23,6 @@ export default function Auth() {
             const userProfile = await getUserInfo();
             if (userProfile) {
               localStorage.setItem("userProfile", JSON.stringify(userProfile));
-              console.log("로그인 후 사용자 프로필 저장:", userProfile);
             } else {
               console.error("사용자 프로필 정보를 가져올 수 없습니다.");
             }
@@ -42,7 +41,7 @@ export default function Auth() {
         navigate("/");
       }
     })();
-  }, [navigate]);
+  }, []); // 의존성 배열을 빈 배열로 변경하여 한 번만 실행되도록 함
 
   return null;
 }

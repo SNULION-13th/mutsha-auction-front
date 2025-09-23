@@ -57,10 +57,7 @@ export default function Layout() {
           );
         }
 
-        // 닉네임이 없는 경우 프로필 설정 모달 자동 열기
-        console.log("profile.nickname:", profile.nickname);
         if (!profile.nickname || profile.nickname.trim() === "") {
-          console.log("닉네임이 없어서 프로필 설정 모달 열기");
           open(MODALS.PROFILE_SETTING);
         }
 
@@ -115,10 +112,6 @@ export default function Layout() {
       if (latestUserInfo) {
         localStorage.setItem("userProfile", JSON.stringify(latestUserInfo));
         setPoints(latestUserInfo.remaining_points ?? 0);
-        console.log(
-          "포인트 충전 후 최신 포인트:",
-          latestUserInfo.remaining_points,
-        );
       }
     } catch (error) {
       console.error("포인트 충전 후 사용자 정보 가져오기 실패:", error);
