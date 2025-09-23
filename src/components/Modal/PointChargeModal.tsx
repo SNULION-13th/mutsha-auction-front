@@ -2,8 +2,7 @@ import { Cup } from "@/assets/image";
 import ModalLayout from "./ModalLayout";
 import { Button } from "../Button";
 import { numberCommaFormatter } from "@/utils/number";
-import { useEffect, useState } from "react";
-import { getPointList, type PointItem, paymentReady } from "@/apis/api";
+import { paymentReady } from "@/apis/api";
 
 type Props = {
   onClose: () => void;
@@ -16,7 +15,7 @@ type ComponentProps = {
   onSelect: (cup: number) => void;
 };
 
-function PointCharge({ cup, money, onSelect }: ComponentProps) {
+function PointCharge({ cup, money /*, onSelect*/ }: ComponentProps) {
   const handlePayment = async () => {
     // 로그인 상태 확인
     const token =
@@ -68,41 +67,16 @@ function PointCharge({ cup, money, onSelect }: ComponentProps) {
   );
 }
 
-export default function PointChargeModal({ onClose, onCharge }: Props) {
-  const [pointList, setPointList] = useState<PointItem[]>([]);
-
-  useEffect(() => {
-    const fetchPointList = async () => {
-      const response = await getPointList();
-      if (response) {
-        setPointList(response);
-      }
-    };
-    fetchPointList();
-  }, []);
-
+export default function PointChargeModal({ onClose /*, onCharge*/ }: Props) {
   return (
     <ModalLayout onClose={onClose}>
       <div className="flex flex-col items-center px-8 py-15 w-133 gap-12.5">
         <div className="text-2xl font-bold text-scale-600">포인트 충전하기</div>
         <div className="flex flex-col gap-9 w-full">
-          {pointList && pointList.length > 0 ? (
-            pointList.map((point, index) => (
-              <PointCharge
-                key={index}
-                cup={point.point}
-                money={point.price}
-                onSelect={() => {}}
-              />
-            ))
-          ) : (
-            <>
-              <PointCharge cup={10} money={10000} onSelect={() => {}} />
-              <PointCharge cup={30} money={30000} onSelect={() => {}} />
-              <PointCharge cup={50} money={50000} onSelect={() => {}} />
-              <PointCharge cup={100} money={90000} onSelect={() => {}} />
-            </>
-          )}
+          <PointCharge cup={10} money={10000} onSelect={() => {}} />
+          <PointCharge cup={30} money={30000} onSelect={() => {}} />
+          <PointCharge cup={50} money={50000} onSelect={() => {}} />
+          <PointCharge cup={100} money={90000} onSelect={() => {}} />
         </div>
       </div>
     </ModalLayout>
