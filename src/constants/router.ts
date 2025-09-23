@@ -15,6 +15,12 @@ const ROUTES = {
   AUTH: {
     ROOT: "/auth",
   },
+  PAYMENT: {
+    ROOT: "/payment",
+    APPROVAL: "/payment/approve",
+    CANCEL: "/payment/cancel",
+    FAIL: "/payment/fail",
+  },
 };
 
 export type RouteKeys = keyof typeof ROUTES;
