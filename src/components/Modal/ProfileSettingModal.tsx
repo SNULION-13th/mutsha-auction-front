@@ -65,7 +65,7 @@ export default function ProfileSettingModal({
             onButtonClick={() => canSubmit && onSubmitSuccess(nickname)}
             className="h-14"
           >
-            멋사주 시작하기
+            멋시장 시작하기
           </Button>
         </div>
       </div>
