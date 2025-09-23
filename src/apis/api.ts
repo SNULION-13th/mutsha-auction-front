@@ -17,7 +17,7 @@ export type UserProfile = {
 
 export async function kakaoSignIn(code: string): Promise<boolean> {
   try {
-    const res = await api.get("/api/user/kakao/callback/", {
+    const res = await api.get("/user/kakao/callback/", {
       params: { code },
     });
     if (res.status === 200) return true;
@@ -82,7 +82,7 @@ export async function getAllAuctions(
   params: AuctionListParams = {},
 ): Promise<AuctionListItem[]> {
   try {
-    const res = await api.get<AuctionListItem[]>("/api/auction/", { params });
+    const res = await api.get<AuctionListItem[]>("/auction/", { params });
     if (res.status === 200) return res.data;
     return [];
   } catch (e: unknown) {
@@ -101,7 +101,7 @@ export async function getAllAuctions(
 
 export async function getRecommendedAuctions(): Promise<AuctionListItem[]> {
   try {
-    const res = await api.get<AuctionListItem[]>("/api/auction/recommended/");
+    const res = await api.get<AuctionListItem[]>("/auction/recommended/");
     if (res.status === 200) return res.data;
     return [];
   } catch (e: unknown) {
@@ -123,7 +123,7 @@ export async function getAuctionDetail(
 ): Promise<AuctionDetail | null> {
   try {
     const id = encodeURIComponent(String(auctionId));
-    const res = await api.get<AuctionDetail>(`/api/auction/${id}/`);
+    const res = await api.get<AuctionDetail>(`/auction/${id}/`);
     if (res.status === 200) return res.data;
     return null;
   } catch (e: unknown) {
@@ -147,7 +147,7 @@ export type PointItem = {
 
 export async function getPointList(): Promise<PointItem[] | null> {
   try {
-    const response = await api.get<PointItem[]>("/api/point/");
+    const response = await api.get<PointItem[]>("/point/");
     if (response.status === 200) {
       return response.data;
     }
@@ -168,7 +168,7 @@ export async function getPointList(): Promise<PointItem[] | null> {
 
 export async function getUserInfo(): Promise<UserProfile | null> {
   try {
-    const response = await api.get<UserProfile>("/api/user/me/");
+    const response = await api.get<UserProfile>("/user/me/");
     if (response.status === 200) {
       return response.data;
     }
@@ -202,21 +202,18 @@ export async function paymentReady(
   data: PaymentReadyRequest,
 ): Promise<PaymentReadyResponse | null> {
   try {
-    const response = await api.post<PaymentReadyResponse>(
-      "/api/payment/ready/",
-      {
-        partner_order_id: `order_${Date.now()}`,
-        partner_user_id: "user",
-        item_name: `${data.point} 잔`,
-        quantity: 1,
-        total_amount: parseInt(data.price),
-        vat_amount: 0,
-        tax_free_amount: 0,
-        approval_url: `${window.location.origin}/payment/approve`,
-        cancel_url: `${window.location.origin}/payment/cancel`,
-        fail_url: `${window.location.origin}/payment/fail`,
-      },
-    );
+    const response = await api.post<PaymentReadyResponse>("/payment/ready/", {
+      partner_order_id: `order_${Date.now()}`,
+      partner_user_id: "user",
+      item_name: data.point,
+      quantity: 1,
+      total_amount: parseInt(data.price),
+      vat_amount: 0,
+      tax_free_amount: 0,
+      approval_url: `${window.location.origin}/payment/approve`,
+      cancel_url: `${window.location.origin}/payment/cancel`,
+      fail_url: `${window.location.origin}/payment/fail`,
+    });
 
     if (response.status === 200) {
       return response.data;
@@ -241,7 +238,7 @@ export async function updateUserProfile(
   profilepicId: number,
 ): Promise<UserProfile | null> {
   try {
-    const response = await api.put<UserProfile>("/api/user/me/", {
+    const response = await api.put<UserProfile>("/user/me/", {
       nickname: nickname,
       profilepic_id: profilepicId,
     });
@@ -260,5 +257,36 @@ export async function updateUserProfile(
       console.error("updateUserProfile unknown error:", e);
     }
     return null;
+  }
+}
+
+export type PaymentApprovalRequest = {
+  pg_token: string;
+  tid: string;
+};
+
+export async function paymentApproval(
+  data: PaymentApprovalRequest,
+): Promise<boolean> {
+  try {
+    const response = await api.post("/payment/approve/", {
+      pg_token: data.pg_token,
+      tid: data.tid,
+    });
+    if (response.status === 200) {
+      return true;
+    }
+    return false;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentApproval error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentApproval unknown error:", e);
+    }
+    return false;
   }
 }

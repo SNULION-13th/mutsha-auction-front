@@ -7,7 +7,7 @@ import axios, {
 const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export const api: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: `${BASE_URL}/api`,
   headers: { "Content-Type": "application/json" },
   withCredentials: true, // 쿠키 포함
 });

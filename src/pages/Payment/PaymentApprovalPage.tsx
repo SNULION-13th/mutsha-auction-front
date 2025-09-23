@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { api } from "@/apis/axios";
 import { Button } from "@/components/Button";
-import { getUserInfo } from "@/apis/api";
+import { getUserInfo, paymentApproval } from "@/apis/api";
 
 export default function PaymentApprovalPage() {
   const navigate = useNavigate();
@@ -23,16 +22,14 @@ export default function PaymentApprovalPage() {
         }
 
         // 결제 승인 API 호출
-        const response = await api.post("/api/payment/approve/", {
+        const approvalSuccess = await paymentApproval({
           pg_token: pgToken,
           tid: tid,
         });
 
-        if (response.status === 200) {
-          // 결제 성공 - tid 제거
+        if (approvalSuccess) {
           localStorage.removeItem("tid");
 
-          // 사용자 정보 다시 가져와서 포인트 업데이트 확인
           try {
             const latestUserInfo = await getUserInfo();
             if (latestUserInfo) {
