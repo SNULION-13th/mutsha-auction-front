@@ -123,32 +123,6 @@ export async function getAuctionDetail(
   }
 }
 
-export type PointItem = {
-  point: number;
-  price: number;
-};
-
-export async function getPointList(): Promise<PointItem[] | null> {
-  try {
-    const response = await api.get<PointItem[]>("/point/");
-    if (response.status === 200) {
-      return response.data;
-    }
-    return null;
-  } catch (e: unknown) {
-    if (isAxiosError(e)) {
-      console.error(
-        "getPointList error:",
-        e.response?.status,
-        e.response?.data,
-      );
-    } else {
-      console.error("getPointList unknown error:", e);
-    }
-    return null;
-  }
-}
-
 export async function getUserInfo(): Promise<UserProfile | null> {
   try {
     const response = await api.get<UserProfile>("/user/me/");
