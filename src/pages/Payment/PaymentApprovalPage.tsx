@@ -8,8 +8,14 @@ export default function PaymentApprovalPage() {
   const [searchParams] = useSearchParams();
   const [isProcessing, setIsProcessing] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasProcessed, setHasProcessed] = useState(false);
 
   useEffect(() => {
+    // 중복 처리 방지
+    if (hasProcessed) {
+      return;
+    }
+
     const processPayment = async () => {
       try {
         const pgToken = searchParams.get("pg_token");
@@ -20,6 +26,9 @@ export default function PaymentApprovalPage() {
           setIsProcessing(false);
           return;
         }
+
+        // 중복 처리 방지 플래그 설정
+        setHasProcessed(true);
 
         const approvalSuccess = await paymentApproval({
           pg_token: pgToken,
@@ -58,7 +67,7 @@ export default function PaymentApprovalPage() {
     };
 
     processPayment();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, hasProcessed]);
 
   if (isProcessing) {
     return (
