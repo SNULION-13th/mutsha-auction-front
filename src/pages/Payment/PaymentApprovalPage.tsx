@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/Button";
 import { getUserInfo, paymentApproval } from "@/apis/api";
@@ -8,11 +8,11 @@ export default function PaymentApprovalPage() {
   const [searchParams] = useSearchParams();
   const [isProcessing, setIsProcessing] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hasProcessed, setHasProcessed] = useState(false);
+  const hasProcessedRef = useRef(false);
 
   useEffect(() => {
-    // 중복 처리 방지
-    if (hasProcessed) {
+    // 중복 처리 방지 (useRef 사용)
+    if (hasProcessedRef.current) {
       return;
     }
 
@@ -28,7 +28,7 @@ export default function PaymentApprovalPage() {
         }
 
         // 중복 처리 방지 플래그 설정
-        setHasProcessed(true);
+        hasProcessedRef.current = true;
 
         const approvalSuccess = await paymentApproval({
           pg_token: pgToken,
@@ -67,7 +67,7 @@ export default function PaymentApprovalPage() {
     };
 
     processPayment();
-  }, [searchParams, navigate, hasProcessed]);
+  }, [searchParams, navigate]); // hasProcessed 의존성 제거
 
   if (isProcessing) {
     return (
