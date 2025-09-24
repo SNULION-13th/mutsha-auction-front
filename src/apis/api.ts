@@ -277,32 +277,13 @@ export type PaymentHistoryItem = {
 };
 
 export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
-  console.log("[DEBUG] getPaymentHistory - Starting API call");
   try {
     const response = await api.get<PaymentHistoryItem[]>("/payment/history/");
-    console.log(
-      "[DEBUG] getPaymentHistory - API response status:",
-      response.status,
-    );
-    console.log(
-      "[DEBUG] getPaymentHistory - API response data:",
-      response.data,
-    );
-    console.log(
-      "[DEBUG] getPaymentHistory - API response data length:",
-      response.data?.length,
-    );
-
     if (response.status === 200) {
-      console.log("[DEBUG] getPaymentHistory - Returning data:", response.data);
       return response.data;
     }
-    console.log(
-      "[DEBUG] getPaymentHistory - Non-200 status, returning empty array",
-    );
     return [];
   } catch (e: unknown) {
-    console.log("[DEBUG] getPaymentHistory - Error occurred:", e);
     if (isAxiosError(e)) {
       console.error(
         "[DEBUG] getPaymentHistory error:",

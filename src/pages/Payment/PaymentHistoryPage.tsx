@@ -10,19 +10,8 @@ const PaymentHistoryPage: React.FC = () => {
 
   useEffect(() => {
     const fetchPaymentHistory = async () => {
-      console.log(
-        "[DEBUG] PaymentHistoryPage - Starting to fetch payment history",
-      );
       try {
         const history = await getPaymentHistory();
-        console.log(
-          "[DEBUG] PaymentHistoryPage - Received payment history:",
-          history,
-        );
-        console.log(
-          "[DEBUG] PaymentHistoryPage - History length:",
-          history.length,
-        );
         setPaymentHistory(history);
       } catch (error) {
         console.error(
