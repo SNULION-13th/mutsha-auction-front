@@ -7,7 +7,7 @@ type Props = {
   onLogin?: () => void;
 };
 
-export default function LoginModal({ onLogin, onClose }: Props) {
+export default function LoginModal({ onClose }: Props) {
   const handleKakaoLogin = () => {
     try {
       const clientId = String(import.meta.env.VITE_KAKAO_CLIENT_ID);

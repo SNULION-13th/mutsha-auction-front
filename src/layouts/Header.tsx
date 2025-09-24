@@ -36,7 +36,7 @@ export default function Header({
   };
 
   return (
-    <header className="w-full fixed flex justify-center bg-bg-white mx-auto z-50">
+    <header className="w-full h-22 fixed flex justify-center bg-bg-white mx-auto z-50">
       <div className="w-full max-w-[1680px] flex justify-between px-17.5 py-5">
         <Link to="/" className="cursor-pointer flex gap-4.5 items-center">
           <img src={Logo} className="w-9 h-9" />
