@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getPaymentHistory, PaymentHistoryItem } from "@/apis/api";
 import { formatNumber } from "@/utils/number";
+import { Cup } from "@/assets/image";
+
+const toNumber = (v: number | string | null | undefined) => {
+  if (typeof v === "number") return v;
+  if (v == null) return 0;
+  const n = Number(String(v).replace(/,/g, ""));
+  return Number.isFinite(n) ? n : 0;
+};
 
 const PaymentHistoryPage: React.FC = () => {
   const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryItem[]>(
@@ -55,32 +63,62 @@ const PaymentHistoryPage: React.FC = () => {
     }
   };
 
+  const getStatusBadge = (status?: string) => {
+    switch (status) {
+      case "DONE":
+      case "SUCCESS":
+      case "SUCCESS_PAYMENT":
+        return {
+          text: "결제 완료",
+          cls: "bg-brand-secondary text-brand-primary",
+        };
+      case "CANCEL":
+      case "CANCELED":
+        return {
+          text: "결제 취소",
+          cls: "bg-scale-100 text-scale-500",
+        };
+      default:
+        return {
+          text: status || "진행 중",
+          cls: "bg-scale-100 text-scale-500",
+        };
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-default flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">결제 내역을 불러오는 중...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4"></div>
+          <p className="text-scale-400">결제 내역을 불러오는 중...</p>
         </div>
       </div>
     );
   }
 
+  const totalAmount = paymentHistory.reduce(
+    (sum, p) => sum + toNumber(p.amount),
+    0,
+  );
+  const totalCups = paymentHistory.reduce(
+    (sum, p) => sum + toNumber(p.point),
+    0,
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <div className="min-h-screen bg-bg-default py-20">
+      <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">결제 내역</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-scale-600 mb-2">결제 내역</h1>
+          <p className="text-scale-400">
             카카오페이를 통한 모든 결제 내역을 확인할 수 있습니다.
           </p>
         </div>
 
-        {/* Payment History Table */}
         {paymentHistory.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-            <div className="text-gray-400 mb-4">
+          <div className="bg-bg-white rounded-xl shadow-sm border border-scale-200 p-10 text-center">
+            <div className="text-scale-300 mb-4">
               <svg
                 className="mx-auto h-12 w-12"
                 fill="none"
@@ -95,136 +133,109 @@ const PaymentHistoryPage: React.FC = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-bold text-scale-600 mb-2">
               결제 내역이 없습니다
             </h3>
-            <p className="text-gray-500">아직 결제한 내역이 없습니다.</p>
+            <p className="text-scale-400">아직 결제한 내역이 없습니다.</p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-bg-white rounded-xl shadow-sm border border-scale-200 overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-scale-200">
+                <thead className="bg-scale-100/50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider">
                       상품명
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider">
                       결제 금액
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider">
                       결제 수단
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider">
                       결제 승인 시간
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider">
                       상태
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {paymentHistory.map((payment, index) => (
-                    <tr
-                      key={payment.tid}
-                      className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                              <svg
-                                className="h-6 w-6 text-blue-600"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                                />
-                              </svg>
+                <tbody className="bg-bg-white divide-y divide-scale-200">
+                  {paymentHistory.map((payment, index) => {
+                    const badge = getStatusBadge(payment.status);
+                    return (
+                      <tr
+                        key={payment.tid}
+                        className={
+                          index % 2 === 0 ? "bg-white" : "bg-scale-100/30"
+                        }
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="h-12 w-12 rounded-full bg-brand-secondary flex items-center justify-center">
+                              <img src={Cup} alt="cup" className="h-10 w-10" />
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-bold text-scale-600">
+                                {payment.item_name}
+                              </div>
+                              <div className="text-sm text-scale-400">
+                                {formatNumber(toNumber(payment.point))} 잔
+                              </div>
                             </div>
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {payment.item_name}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {formatNumber(payment.point)} 포인트
-                            </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-bold text-scale-600">
+                            {formatNumber(toNumber(payment.amount))}원
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {formatNumber(payment.amount)}원
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {getPaymentMethodText(payment.payment_method_type)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {formatDate(payment.approved_at)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            payment.status === "DONE"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {payment.status === "DONE" ? "완료" : payment.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-scale-100 text-scale-500">
+                            {getPaymentMethodText(payment.payment_method_type)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-scale-600">
+                          {formatDate(payment.approved_at)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${badge.cls}`}
+                          >
+                            {badge.text}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </div>
         )}
 
-        {/* Summary */}
         {paymentHistory.length > 0 && (
-          <div className="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
-              결제 요약
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-6 bg-bg-white rounded-xl shadow-sm border border-scale-200 p-6">
+            <h3 className="text-lg font-bold text-scale-600 mb-4">결제 요약</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-2xl font-bold text-brand-primary">
                   {paymentHistory.length}
                 </div>
-                <div className="text-sm text-gray-500">총 결제 건수</div>
+                <div className="text-sm text-scale-400">총 결제 건수</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {formatNumber(
-                    paymentHistory.reduce(
-                      (sum, payment) => sum + payment.amount,
-                      0,
-                    ),
-                  )}
-                  원
+                <div className="text-2xl font-bold text-brand-primary">
+                  {formatNumber(toNumber(totalAmount))}원
                 </div>
-                <div className="text-sm text-gray-500">총 결제 금액</div>
+                <div className="text-sm text-scale-400">총 결제 금액</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">
-                  {formatNumber(
-                    paymentHistory.reduce(
-                      (sum, payment) => sum + payment.point,
-                      0,
-                    ),
-                  )}
+                <div className="text-2xl font-bold text-brand-primary">
+                  {formatNumber(toNumber(totalCups))}
                 </div>
-                <div className="text-sm text-gray-500">총 충전 포인트</div>
+                <div className="text-sm text-scale-400">총 충전 잔</div>
               </div>
             </div>
           </div>

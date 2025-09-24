@@ -46,9 +46,13 @@ export default function ProfileModal({
             <div className="text-lg font-bold text-scale-500">포인트</div>
           </div>
           <div className="text-lg font-bold text-scale-600">
-            <span className="text-brand-primary">
+            <Link
+              to="/payment/history"
+              onClick={onClose}
+              className="text-brand-primary"
+            >
               {points.toLocaleString()}
-            </span>
+            </Link>
             잔
           </div>
         </div>
@@ -60,16 +64,9 @@ export default function ProfileModal({
         >
           충전하기
         </Button>
-        <Link
-          to="/payment/history"
-          onClick={onClose}
-          className="flex items-center justify-center text-base text-scale-500 hover:text-brand-primary transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-gray-50"
-        >
-          결제 내역
-        </Link>
         <button
           onClick={onLogout}
-          className="flex items-center text-base text-scale-400 underline underline-offset-1"
+          className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer"
         >
           로그아웃
         </button>

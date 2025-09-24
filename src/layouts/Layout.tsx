@@ -61,7 +61,6 @@ export default function Layout() {
           open(MODALS.PROFILE_SETTING);
         }
 
-        // 페이지 로드 시마다 최신 사용자 정보 가져오기 (포인트 업데이트 등)
         const fetchLatestUserInfo = async () => {
           try {
             const latestUserInfo = await getUserInfo();
@@ -102,11 +101,9 @@ export default function Layout() {
   const openCharge = () => open(MODALS.POINT_CHARGE);
   const closeCharge = () => close();
   const handleCharge = async (amount: number) => {
-    // 임시로 포인트 업데이트 (UI 반응성)
     setPoints((p) => p + amount);
     closeCharge();
 
-    // 백엔드에서 최신 포인트 정보 가져와서 업데이트
     try {
       const latestUserInfo = await getUserInfo();
       if (latestUserInfo) {
@@ -158,7 +155,6 @@ export default function Layout() {
           onEditImage={() => open(MODALS.PROFILE_IMAGE)}
           onSubmitSuccess={async (newNickname) => {
             try {
-              // 현재 선택된 프로필 이미지 ID 찾기
               const profileImages = [
                 Profile1,
                 Profile2,
@@ -169,18 +165,15 @@ export default function Layout() {
               ];
               const profilepicId = profileImages.indexOf(profileImage) + 1;
 
-              // 백엔드에 프로필 업데이트 요청
               const updatedProfile = await updateUserProfile(
                 newNickname,
                 profilepicId,
               );
 
               if (updatedProfile) {
-                // 성공 시 상태 업데이트
                 setNickname(newNickname);
                 setIsLoggedIn(true);
 
-                // localStorage 업데이트
                 const currentProfile = JSON.parse(
                   localStorage.getItem("userProfile") || "{}",
                 );
@@ -191,7 +184,6 @@ export default function Layout() {
                 };
                 localStorage.setItem("userProfile", JSON.stringify(newProfile));
 
-                // 모달 닫기
                 close();
               } else {
                 console.error("프로필 업데이트 실패");

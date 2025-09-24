@@ -21,7 +21,6 @@ export default function PaymentApprovalPage() {
           return;
         }
 
-        // 결제 승인 API 호출
         const approvalSuccess = await paymentApproval({
           pg_token: pgToken,
           tid: tid,
@@ -44,7 +43,6 @@ export default function PaymentApprovalPage() {
 
           setIsProcessing(false);
 
-          // 3초 후 메인 페이지로 이동
           setTimeout(() => {
             navigate("/");
           }, 3000);

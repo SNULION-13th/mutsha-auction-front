@@ -15,9 +15,8 @@ type ComponentProps = {
   onSelect: (cup: number) => void;
 };
 
-function PointCharge({ cup, money /*, onSelect*/ }: ComponentProps) {
+function PointCharge({ cup, money }: ComponentProps) {
   const handlePayment = async () => {
-    // 로그인 상태 확인
     const token =
       localStorage.getItem("access_token") ||
       document.cookie
