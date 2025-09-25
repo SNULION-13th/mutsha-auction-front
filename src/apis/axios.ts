@@ -51,19 +51,27 @@ api.interceptors.response.use(
           }
         } catch (refreshError) {
           console.error("토큰 갱신 실패:", refreshError);
-          // 로그아웃 처리
+          // 개발 환경에서는 localStorage 삭제하지 않음
+          if (import.meta.env.PROD) {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("userProfile");
+            localStorage.setItem("isFirstLogin", "false");
+            window.location.href = "/";
+          } else {
+            console.warn("개발 환경: localStorage 삭제하지 않음");
+          }
+        }
+      } else {
+        console.error("refresh token 없음");
+        // 개발 환경에서는 localStorage 삭제하지 않음
+        if (import.meta.env.PROD) {
           localStorage.removeItem("isLoggedIn");
           localStorage.removeItem("userProfile");
           localStorage.setItem("isFirstLogin", "false");
           window.location.href = "/";
+        } else {
+          console.warn("개발 환경: localStorage 삭제하지 않음");
         }
-      } else {
-        console.error("refresh token 없음");
-        // 로그아웃 처리
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("userProfile");
-        localStorage.setItem("isFirstLogin", "false");
-        window.location.href = "/";
       }
     }
     return Promise.reject(err instanceof Error ? err : new Error(String(err)));
