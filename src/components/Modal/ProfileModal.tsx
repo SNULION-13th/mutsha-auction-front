@@ -64,13 +64,6 @@ export default function ProfileModal({
         >
           충전하기
         </Button>
-        <Link
-          to="/payment/history"
-          onClick={onClose}
-          className="flex items-center justify-center text-base text-scale-500 hover:text-brand-primary transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-gray-50"
-        >
-          결제 내역
-        </Link>
         <button
           onClick={onLogout}
           className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer"
