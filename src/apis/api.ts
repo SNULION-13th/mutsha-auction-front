@@ -266,3 +266,47 @@ export async function paymentApproval(
     return false;
   }
 }
+
+// 결제 내역 조회 api
+export async function getPaymentHistory(): Promise<any[]> {
+  try {
+    const response = await api.get("/payment/order/");
+    if (response.status === 200) {
+      return response.data;
+    }
+    return [];
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentHistory unknown error:", e);
+    }
+    return [];
+  }
+}
+
+// 결제 상세 정보 조회 api
+export async function getPaymentDetails(tid: string): Promise<any | null> {
+  try {
+    const response = await api.post("/payment/order/", { tid });
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentDetails error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentDetails unknown error:", e);
+    }
+    return null;
+  }
+}
