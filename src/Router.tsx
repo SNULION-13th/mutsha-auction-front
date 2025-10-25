@@ -16,6 +16,7 @@ const PaymentApprovalPage = lazy(
 );
 const PaymentCancelPage = lazy(() => import("@page/Payment/PaymentCancelPage"));
 const PaymentFailPage = lazy(() => import("@page/Payment/PaymentFailPage"));
+const OrderPage = lazy(() => import("@page/Order/Order"));
 
 const homeRoutes = [
   {
@@ -71,6 +72,8 @@ const paymentRoutes = [
   },
 ];
 
+const orderRoutes = [{ path: ROUTES.ORDER.ROOT, element: <OrderPage /> }];
+
 const appRoutes = [
   ...homeRoutes,
   ...auctionRoutes,
@@ -78,6 +81,7 @@ const appRoutes = [
   ...historyRoutes,
   ...authRoutes,
   ...paymentRoutes,
+  ...orderRoutes,
 ];
 
 export const router = createBrowserRouter([
