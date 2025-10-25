@@ -82,6 +82,31 @@ export type PaymentApprovalRequest = {
   tid: string;
 };
 
+export type Order = {
+  item_name: string;
+  price: string;
+  payment_method_type: string;
+  approved_at: string | null;
+};
+
+export async function getAllOrders(): Promise<Order[]> {
+  try {
+    const res = await api.get<Order[]>("/payment/orders/");
+    return res.status === 200 ? res.data : [];
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getAllOrders error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getAllOrders unknown error:", e);
+    }
+    return [];
+  }
+}
+
 export async function kakaoSignIn(code: string): Promise<boolean> {
   try {
     const res = await api.get("/user/kakao/callback/", {

@@ -15,6 +15,9 @@ const ROUTES = {
   AUTH: {
     ROOT: "/auth",
   },
+  ORDER: {
+    ROOT: "/orders",
+  },
   PAYMENT: {
     ROOT: "/payment",
     APPROVAL: "/payment/approve",
