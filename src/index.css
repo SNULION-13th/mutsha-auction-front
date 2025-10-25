@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 1 1000;
+  font-display: swap;
+  font-style: normal;
+}
+
+@theme {
+  --font-pretendard: "Pretendard", ui-sans-serif, system-ui, -apple-system;
+
+  --color-brand-primary: #df6621;
+  --color-brand-secondary: #eddace;
+  --color-bg-default: #fbf9f9;
+  --color-bg-white: #ffffff;
+  --color-point-kakao: #fee502;
+  --color-point-warning: #ff7167;
+  --color-scale-100: #f3f3f3;
+  --color-scale-200: #eaeaea;
+  --color-scale-300: #adadad;
+  --color-scale-400: #757575;
+  --color-scale-500: #525252;
+  --color-scale-600: #1e1e1e;
+
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 24px;
+  --text-xl: 20px;
+  --text-xl--line-height: 24px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 28px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 24px;
+  --text-4xl: 40px;
+  --text-4xl--line-height: 48px;
+  --text-5xl: 45px;
+  --text-5xl--line-height: 48px;
+  --text-6xl: 80px;
+  --text-6xl--line-height: 100px;
+
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+}
+
+html,
+body {
+  font-family: var(--font-pretendard);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
