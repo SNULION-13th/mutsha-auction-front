@@ -235,3 +235,35 @@ export async function paymentReady(
     return null;
   }
 }
+
+// 카카오페이 결제 승인 api
+export type PaymentApprovalRequest = {
+  pg_token: string;
+  tid: string;
+};
+
+export async function paymentApproval(
+  data: PaymentApprovalRequest,
+): Promise<boolean> {
+  try {
+    const response = await api.post("/payment/approve/", {
+      pg_token: data.pg_token,
+      tid: data.tid,
+    });
+    if (response.status === 200) {
+      return true;
+    }
+    return false;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentApproval error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentApproval unknown error:", e);
+    }
+    return false;
+  }
+}
