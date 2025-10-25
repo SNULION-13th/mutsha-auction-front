@@ -20,6 +20,7 @@ const ROUTES = {
     APPROVAL: "/payment/approve",
     CANCEL: "/payment/cancel",
     FAIL: "/payment/fail",
+    RECEIPT: "/payment/receipt",
   },
 };
 
