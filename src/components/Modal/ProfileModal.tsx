@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import { Button } from "../Button";
 import ModalLayout from "./ModalLayout";
 import { Cup } from "@/assets/image";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   onClose: () => void;
@@ -22,6 +23,8 @@ export default function ProfileModal({
   onOpenCharge,
   onLogout,
 }: Props) {
+  const navigate = useNavigate();
+
   return (
     <ModalLayout
       onClose={onClose}
@@ -31,7 +34,10 @@ export default function ProfileModal({
       minWidthAnchor={false}
     >
       <div className="p-6 flex flex-col gap-5 w-55 border border-brand-secondary rounded-xl">
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/orders/")}
+        >
           <img
             src={imageSrc ?? "https://via.placeholder.com/80"}
             alt="profile"
