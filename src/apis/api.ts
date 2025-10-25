@@ -266,3 +266,34 @@ export async function paymentApproval(
     return false;
   }
 }
+export type PaymentOrderDetail = {
+  tid?: string;
+  item_name?: string;
+  amount?: any;
+  amount_total?: number;
+  payment_method_type?: string;
+  approved_at?: string;
+};
+
+export async function getPaymentOrderDetail(
+  tid: string,
+): Promise<PaymentOrderDetail> {
+  try {
+    const res = await api.get<PaymentOrderDetail>("/payment/order/", {
+      params: { tid },
+    });
+    if (res.status === 200) return res.data;
+    throw new Error("Order detail fetch failed");
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentOrderDetail error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentOrderDetail unknown error:", e);
+    }
+    throw e;
+  }
+}
