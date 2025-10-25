@@ -9,10 +9,16 @@ type Props = {
 
 export default function LoginModal({ onLogin, onClose }: Props) {
   const handleKakaoLogin = () => {
-    // 초기 버전: 아직 구현되지 않은 상태
-    // TODO: 카카오 로그인 연동 예정
-    alert("카카오 로그인은 준비 중입니다.");
-    onLogin?.(); // 있으면 외부 콜백만 호출
+    try {
+      const clientId = String(import.meta.env.VITE_KAKAO_CLIENT_ID);
+      const redirectUri = String(import.meta.env.VITE_KAKAO_REDIRECT_URI);
+
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+
+      window.location.href = kakaoAuthUrl;
+    } catch (error) {
+      console.error("카카오 로그인 오류:", error);
+    }
   };
 
   return (
