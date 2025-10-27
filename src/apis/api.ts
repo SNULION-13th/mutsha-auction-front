@@ -182,6 +182,36 @@ export async function getAllAuctions(
   }
 }
 
+// 카카오페이 주문 조회 api
+export type PaymentOrderInfo = {
+  tid: string;
+  item_name: string;
+  amount: number | { total: number };
+  payment_method_type: string;
+  approved_at: string; // ISO string
+};
+
+export async function getPaymentOrder(
+  tid: string,
+): Promise<PaymentOrderInfo | null> {
+  // 백엔드 사양: POST 바디로 tid 전달 (쿼리 파라미터 사용하지 않음)
+  try {
+    const res = await api.post<PaymentOrderInfo>("/payment/order/", { tid });
+    if (res.status === 200) return res.data;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentOrder POST error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentOrder unknown error:", e);
+    }
+  }
+  return null;
+}
+
 export async function getRecommendedAuctions(): Promise<AuctionListItem[]> {
   try {
     const res = await api.get<AuctionListItem[]>("/auction/recommended/");
