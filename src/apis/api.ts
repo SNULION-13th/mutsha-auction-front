@@ -166,3 +166,139 @@ export async function updateUserProfile(
     return null;
   }
 }
+
+export async function kakaoSignIn(code: string): Promise<boolean> {
+  try {
+    const res = await api.get("/user/kakao/callback/", {
+      params: { code },
+    });
+    if (res.status === 200) return true;
+    return false;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error("kakaoSignIn error:", e.response?.status, e.response?.data);
+    } else {
+      console.error("kakaoSignIn unknown error:", e);
+    }
+  }
+  return false;
+}
+
+// 카카오페이 준비 api
+export type PaymentReadyRequest = {
+  point: string;
+  price: string;
+};
+
+export type PaymentReadyResponse = {
+  tid: string;
+  next_redirect_pc_url: string;
+  next_redirect_mobile_url: string;
+  next_redirect_app_url: string;
+  android_app_scheme: string;
+  ios_app_scheme: string;
+  created_at: string;
+};
+
+export async function paymentReady(
+  data: PaymentReadyRequest,
+): Promise<PaymentReadyResponse | null> {
+  try {
+    const response = await api.post<PaymentReadyResponse>("/payment/ready/", {
+      partner_order_id: `order_${Date.now()}`,
+      partner_user_id: "user",
+      item_name: data.point,
+      quantity: 1,
+      total_amount: parseInt(data.price),
+      vat_amount: 0,
+      tax_free_amount: 0,
+      payment_method_type: "CARD",
+      approval_url: `${window.location.origin}/payment/approve`,
+      cancel_url: `${window.location.origin}/payment/cancel`,
+      fail_url: `${window.location.origin}/payment/fail`,
+    });
+
+    if (response.status === 200) {
+      const tid = response.data.tid;
+      localStorage.setItem("tid", tid);
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentReady error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentReady unknown error:", e);
+    }
+    return null;
+  }
+}
+
+// 카카오페이 결제 승인 api
+export type PaymentApprovalRequest = {
+  pg_token: string;
+  tid: string;
+};
+
+export async function paymentApproval(
+  data: PaymentApprovalRequest,
+): Promise<boolean> {
+  try {
+    const response = await api.post("/payment/approve/", {
+      pg_token: data.pg_token,
+      tid: data.tid,
+    });
+    if (response.status === 200) {
+      return true;
+    }
+    return false;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentApproval error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentApproval unknown error:", e);
+    }
+    return false;
+  }
+}
+
+// 카카오페이 결제 내역 조회 api
+export type PaymentHistoryItem = {
+  tid: string;
+  item_name: string;
+  amount: number;
+  payment_method_type: string;
+  approved_at: string;
+};
+
+export async function syncPaymentOrders(): Promise<PaymentHistoryItem[]> {
+  try {
+    const res = await api.get<{ synced_orders: PaymentHistoryItem[] }>(
+      "/payment/sync/",
+    );
+    if (res.status === 200) return res.data.synced_orders;
+    return [];
+  } catch (e: unknown) {
+    console.error("syncPaymentOrders error:", e);
+    return [];
+  }
+}
+
+export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
+  try {
+    const res = await api.get<PaymentHistoryItem[]>("/payment/list/");
+    if (res.status === 200) return res.data;
+    return [];
+  } catch (e: unknown) {
+    console.error("getPaymentHistory error:", e);
+    return [];
+  }
+}
