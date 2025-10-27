@@ -14,10 +14,12 @@ import {
   Profile6,
 } from "../assets/image";
 import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileImageModal from "../components/Modal/ProfileImageModal";
 import ProfileModal from "@/components/Modal/ProfileModal";
 import PointChargeModal from "@/components/Modal/PointChargeModal";
 import { updateUserProfile, getUserInfo } from "@/apis/api";
+import { ROUTES } from "../constants/router";
 
 export default function Layout() {
   const { openModal, open, close, isOpen } = useModal();
@@ -26,6 +28,8 @@ export default function Layout() {
   const [profileImage, setProfileImage] = useState<string>(Profile1);
   const [nickname, setNickname] = useState("닉네임");
   const [points, setPoints] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn");
@@ -101,6 +105,10 @@ export default function Layout() {
 
   const openCharge = () => open(MODALS.POINT_CHARGE);
   const closeCharge = () => close();
+  const handleOpenPaymentHistory = () => {
+    navigate(ROUTES.MYPAGE.PAYMENT_HISTORY);
+    close(); // 페이지 이동 후 모달을 닫습니다.
+  };
   const handleCharge = async (amount: number) => {
     // 임시로 포인트 업데이트 (UI 반응성)
     setPoints((p) => p + amount);
@@ -221,6 +229,7 @@ export default function Layout() {
           imageSrc={profileImage}
           points={points}
           onOpenCharge={openCharge}
+          onOpenPaymentHistory={handleOpenPaymentHistory}
           onLogout={() => {
             setIsLoggedIn(false);
             localStorage.removeItem("isLoggedIn");

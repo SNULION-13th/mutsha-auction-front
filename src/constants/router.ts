@@ -21,6 +21,9 @@ const ROUTES = {
     CANCEL: "/payment/cancel",
     FAIL: "/payment/fail",
   },
+  MYPAGE: {
+    PAYMENT_HISTORY: "/mypage/payment/history",
+  },
 };
 
 export type RouteKeys = keyof typeof ROUTES;

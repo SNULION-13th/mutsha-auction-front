@@ -265,3 +265,39 @@ export async function updateUserProfile(
     return null;
   }
 }
+
+export type PaymentHistory = {
+  id: number;
+  item_name: string;
+  amount: number;
+  payment_method_type: string;
+  approved_at: string;
+  pay_status: "approved" | string;
+};
+
+// ✨ 결제 내역 조회 API 함수 추가
+export async function getPaymentHistory(): Promise<PaymentHistory[]> {
+  try {
+    // /api/v1/payment/history/ 엔드포인트를 호출한다고 가정합니다.
+    const response = await api.get<PaymentHistory[]>("/payment/history/");
+
+    if (response.status === 200) {
+      return response.data;
+    }
+    return [];
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      // 401, 403 등의 인증 에러는 여기서 던져집니다.
+      console.error(
+        "getPaymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+      // 에러를 다시 던져서 컴포넌트(PaymentHistoryPage)에서 처리하도록 합니다.
+      throw e;
+    } else {
+      console.error("getPaymentHistory unknown error:", e);
+    }
+    return [];
+  }
+}
