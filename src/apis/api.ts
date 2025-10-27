@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import axios from "axios";
 import { api } from "./axios";
 
 export type UserCore = {
@@ -265,4 +266,17 @@ export async function paymentApproval(
     }
     return false;
   }
+}
+
+export async function getPaymentHistory(tid: string) {
+  // 카카오페이 결제내역 조회 API 호출
+  // tid, 인증 토큰 등 필요
+  const response = await axios.get(`/api/payment/history?tid=${tid}`);
+  return response.data;
+}
+
+// 여러 결제내역 조회
+export async function getAllPaymentHistory() {
+  const response = await api.get("/payment/history/");
+  return response.data; // 배열로 반환됨
 }
