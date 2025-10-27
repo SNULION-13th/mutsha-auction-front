@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/Button";
 import { getUserInfo, paymentApproval } from "@/apis/api";
+import { ROUTES } from "@/constants/router";
 
 export default function PaymentApprovalPage() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function PaymentApprovalPage() {
   const [isProcessing, setIsProcessing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasProcessed, setHasProcessed] = useState(false);
+  const [lastTid, setLastTid] = useState<string | null>(null);
 
   useEffect(() => {
     if (hasProcessed) {
@@ -19,6 +21,7 @@ export default function PaymentApprovalPage() {
       try {
         const pgToken = searchParams.get("pg_token");
         const tid = localStorage.getItem("tid");
+        if (tid && !lastTid) setLastTid(tid);
 
         if (!pgToken || !tid) {
           setError("결제 정보가 올바르지 않습니다.");
@@ -50,10 +53,6 @@ export default function PaymentApprovalPage() {
           }
 
           setIsProcessing(false);
-
-          setTimeout(() => {
-            navigate("/");
-          }, 3000);
         } else {
           setError("결제 승인에 실패했습니다.");
           setIsProcessing(false);
@@ -66,7 +65,7 @@ export default function PaymentApprovalPage() {
     };
 
     processPayment();
-  }, [searchParams, navigate, hasProcessed]);
+  }, [searchParams, navigate, hasProcessed, lastTid]);
 
   if (isProcessing) {
     return (
@@ -123,16 +122,31 @@ export default function PaymentApprovalPage() {
             포인트가 성공적으로 충전되었습니다.
           </p>
           <p className="text-sm text-scale-400">
-            잠시 후 메인 페이지로 이동합니다...
+            아래 버튼으로 이동할 수 있습니다.
           </p>
         </div>
-        <Button
-          variant="primary"
-          size="large"
-          onButtonClick={() => navigate("/")}
-        >
-          바로 이동하기
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="outlined"
+            size="large"
+            onButtonClick={() => {
+              if (lastTid) {
+                navigate(
+                  `${ROUTES.PAYMENT.ORDER}?tid=${encodeURIComponent(lastTid)}`,
+                );
+              }
+            }}
+          >
+            주문 조회 보기
+          </Button>
+          <Button
+            variant="primary"
+            size="large"
+            onButtonClick={() => navigate("/")}
+          >
+            바로 이동하기
+          </Button>
+        </div>
       </div>
     </div>
   );
