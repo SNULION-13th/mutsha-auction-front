@@ -264,3 +264,38 @@ export async function paymentApproval(
     return false;
   }
 }
+
+export type PaymentHistoryResponse = {
+  data: PaymentHistoryItem[];
+  total_count: number;
+  status: string;
+};
+
+export type PaymentHistoryItem = {
+  item_name: string;
+  amount: number | string | object;
+  payment_method_type: "CARD" | "MONEY";
+  approved_at: string;
+};
+
+// 함수 반환 타입 수정
+export async function getPaymentHistory(): Promise<PaymentHistoryResponse> {
+  try {
+    const response = await api.get("/payment/history/");
+    return response.data;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    }
+    // 에러 시 기본값 반환
+    return {
+      data: [],
+      total_count: 0,
+      status: "error",
+    };
+  }
+}
