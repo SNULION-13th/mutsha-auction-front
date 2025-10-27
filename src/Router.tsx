@@ -16,6 +16,7 @@ const PaymentApprovalPage = lazy(
 );
 const PaymentCancelPage = lazy(() => import("@page/Payment/PaymentCancelPage"));
 const PaymentFailPage = lazy(() => import("@page/Payment/PaymentFailPage"));
+const PaymentHistoryPage = lazy(() => import("@page/PaymentHistoryPage"));
 
 const homeRoutes = [
   {
@@ -71,6 +72,14 @@ const paymentRoutes = [
   },
 ];
 
+const paymentHistoryRoutes = [
+  {
+    // MyPage 또는 새로운 카테고리 상수를 사용합니다.
+    path: ROUTES.MYPAGE.PAYMENT_HISTORY,
+    element: <PaymentHistoryPage />,
+  },
+];
+
 const appRoutes = [
   ...homeRoutes,
   ...auctionRoutes,
@@ -78,6 +87,7 @@ const appRoutes = [
   ...historyRoutes,
   ...authRoutes,
   ...paymentRoutes,
+  ...paymentHistoryRoutes,
 ];
 
 export const router = createBrowserRouter([
