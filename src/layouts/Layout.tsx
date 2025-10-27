@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { MODALS, useModal } from "../hooks/useModal";
 import LoginModal from "../components/Modal/LoginModal";
 import ProfileSettingModal from "../components/Modal/ProfileSettingModal";
@@ -20,6 +20,7 @@ import PointChargeModal from "@/components/Modal/PointChargeModal";
 import { updateUserProfile, getUserInfo } from "@/apis/api";
 
 export default function Layout() {
+  const navigate = useNavigate();
   const { openModal, open, close, isOpen } = useModal();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -101,6 +102,9 @@ export default function Layout() {
 
   const openCharge = () => open(MODALS.POINT_CHARGE);
   const closeCharge = () => close();
+  const openHistory = () => {
+    navigate("/payment/history");
+  };
   const handleCharge = async (amount: number) => {
     // 임시로 포인트 업데이트 (UI 반응성)
     setPoints((p) => p + amount);
@@ -221,6 +225,7 @@ export default function Layout() {
           imageSrc={profileImage}
           points={points}
           onOpenCharge={openCharge}
+          onOpenHistory={openHistory}
           onLogout={() => {
             setIsLoggedIn(false);
             localStorage.removeItem("isLoggedIn");

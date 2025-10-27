@@ -81,6 +81,21 @@ export type PaymentApprovalRequest = {
   tid: string;
 };
 
+export type PaymentHistoryResponse = {
+  tid: string;
+  payment_method_type: string;
+  item_name: string;
+  amount: {
+    total: number;
+    tax_free: number;
+    vat: number;
+    point: number;
+    discount: number;
+    green_deposit: number;
+  };
+  approved_at: string;
+};
+
 export async function getAllAuctions(
   params: AuctionListParams = {},
 ): Promise<AuctionListItem[]> {
@@ -262,5 +277,29 @@ export async function paymentApproval(
       console.error("paymentApproval unknown error:", e);
     }
     return false;
+  }
+}
+
+export async function paymentHistory(): Promise<
+  PaymentHistoryResponse[] | null
+> {
+  try {
+    const response =
+      await api.post<PaymentHistoryResponse[]>("/payment/history/");
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "paymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("paymentHistory unknown error:", e);
+    }
+    return null;
   }
 }

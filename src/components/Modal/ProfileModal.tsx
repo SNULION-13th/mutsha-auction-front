@@ -11,6 +11,7 @@ type Props = {
   points?: number;
   onOpenCharge?: () => void;
   onLogout?: () => void;
+  onOpenHistory?: () => void;
 };
 
 export default function ProfileModal({
@@ -21,6 +22,7 @@ export default function ProfileModal({
   points = 0,
   onOpenCharge,
   onLogout,
+  onOpenHistory,
 }: Props) {
   return (
     <ModalLayout
@@ -58,6 +60,14 @@ export default function ProfileModal({
           onButtonClick={onOpenCharge}
         >
           충전하기
+        </Button>
+        <Button
+          variant="primary"
+          size="small"
+          isRounded={true}
+          onButtonClick={onOpenHistory}
+        >
+          내역 보기
         </Button>
         <button
           onClick={onLogout}
