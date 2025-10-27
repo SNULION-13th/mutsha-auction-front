@@ -2,6 +2,7 @@ import { Cup } from "@/assets/image";
 import ModalLayout from "./ModalLayout";
 import { Button } from "../Button";
 import { numberCommaFormatter } from "@/utils/number";
+import { paymentReady } from "@/apis/api";
 
 type Props = {
   onClose: () => void;
@@ -15,10 +16,37 @@ type ComponentProps = {
 };
 
 function PointCharge({ cup, money /*, onSelect*/ }: ComponentProps) {
-  const handlePayment = () => {
-    alert(
-      `결제는 준비 중입니다.\n선택: ${cup}잔 / ₩${numberCommaFormatter(money)}`,
-    );
+  const handlePayment = async () => {
+    // 로그인 상태 확인
+    const token =
+      localStorage.getItem("access_token") ||
+      document.cookie
+        .split(";")
+        .find((cookie) => cookie.trim().startsWith("access_token="))
+        ?.split("=")[1];
+
+    if (!token) {
+      alert("로그인이 필요합니다. 먼저 로그인해주세요.");
+      return;
+    }
+
+    try {
+      const response = await paymentReady({
+        point: cup.toString(),
+        price: money.toString(),
+      });
+      if (response) {
+        localStorage.setItem("tid", response.tid);
+        window.location.href = response.next_redirect_pc_url;
+      }
+    } catch (error: any) {
+      console.error("결제 준비 실패:", error);
+      if (error.response?.status === 401) {
+        alert("로그인이 필요합니다. 먼저 로그인해주세요.");
+      } else {
+        alert("결제 준비에 실패했습니다. 다시 시도해주세요.");
+      }
+    }
   };
 
   return (
