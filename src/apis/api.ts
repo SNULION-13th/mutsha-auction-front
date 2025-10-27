@@ -212,12 +212,15 @@ export async function paymentReady(
       total_amount: parseInt(data.price),
       vat_amount: 0,
       tax_free_amount: 0,
+      payment_method_type: "CARD",
       approval_url: `${window.location.origin}/payment/approve`,
       cancel_url: `${window.location.origin}/payment/cancel`,
       fail_url: `${window.location.origin}/payment/fail`,
     });
 
     if (response.status === 200) {
+      const tid = response.data.tid;
+      localStorage.setItem("tid", tid);
       return response.data;
     }
     return null;
@@ -264,5 +267,38 @@ export async function paymentApproval(
       console.error("paymentApproval unknown error:", e);
     }
     return false;
+  }
+}
+
+// 카카오페이 결제 내역 조회 api
+export type PaymentHistoryItem = {
+  tid: string;
+  item_name: string;
+  amount: number;
+  payment_method_type: string;
+  approved_at: string;
+};
+
+export async function syncPaymentOrders(): Promise<PaymentHistoryItem[]> {
+  try {
+    const res = await api.get<{ synced_orders: PaymentHistoryItem[] }>(
+      "/payment/sync/",
+    );
+    if (res.status === 200) return res.data.synced_orders;
+    return [];
+  } catch (e: unknown) {
+    console.error("syncPaymentOrders error:", e);
+    return [];
+  }
+}
+
+export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
+  try {
+    const res = await api.get<PaymentHistoryItem[]>("/payment/list/");
+    if (res.status === 200) return res.data;
+    return [];
+  } catch (e: unknown) {
+    console.error("getPaymentHistory error:", e);
+    return [];
   }
 }
