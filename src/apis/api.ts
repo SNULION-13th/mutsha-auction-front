@@ -32,23 +32,6 @@ export async function kakaoSignIn(code: string): Promise<boolean> {
   return false;
 }
 
-export async function kakaoSignIn(code: string): Promise<boolean> {
-  try {
-    const res = await api.get("/user/kakao/callback/", {
-      params: { code },
-    });
-    if (res.status === 200) return true;
-    return false;
-  } catch (e: unknown) {
-    if (isAxiosError(e)) {
-      console.error("kakaoSignIn error:", e.response?.status, e.response?.data);
-    } else {
-      console.error("kakaoSignIn unknown error:", e);
-    }
-  }
-  return false;
-}
-
 export type AuctionListParams = {
   status?: "active" | "ended" | "cancelled";
   search?: string;
@@ -217,6 +200,7 @@ export type PaymentReadyResponse = {
   created_at: string;
 };
 
+// 추가
 export async function paymentReady(
   data: PaymentReadyRequest,
 ): Promise<PaymentReadyResponse | null> {
