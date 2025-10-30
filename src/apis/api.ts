@@ -266,3 +266,30 @@ export async function paymentApproval(
     return false;
   }
 }
+
+export type PaymentHistory = {
+  tid: string;
+  partner_order_id: string;
+  partner_user_id: string;
+  point: number;
+  price: number;
+};
+
+export async function getPaymentHistory(): Promise<PaymentHistory[]> {
+  try {
+    const res = await api.get<PaymentHistory[]>("/payment/history/");
+    if (res.status === 200) return res.data;
+    return [];
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentHistory unknown error:", e);
+    }
+    return [];
+  }
+}
