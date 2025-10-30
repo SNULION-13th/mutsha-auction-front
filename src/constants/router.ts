@@ -21,6 +21,9 @@ const ROUTES = {
     CANCEL: "/payment/cancel",
     FAIL: "/payment/fail",
   },
+  ORDER: {
+    ROOT: "/order",
+  },
 };
 
 export type RouteKeys = keyof typeof ROUTES;

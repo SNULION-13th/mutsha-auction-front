@@ -54,6 +54,9 @@ export default function Header({
           <Link to="/history" className="cursor-pointer">
             <div className="text-xl text-scale-500">내 경매</div>
           </Link>
+          <Link to="/order" className="cursor-pointer">
+            <div className="text-xl text-scale-500">내 주문</div>
+          </Link>
           {isLoggedIn ? (
             <div
               ref={profileBtnRef as RefObject<HTMLDivElement>}
