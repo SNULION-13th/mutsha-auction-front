@@ -9,12 +9,17 @@ type Props = {
 
 export default function LoginModal({ onLogin, onClose }: Props) {
   const handleKakaoLogin = () => {
-    // 초기 버전: 아직 구현되지 않은 상태
-    // TODO: 카카오 로그인 연동 예정
-    alert("카카오 로그인은 준비 중입니다.");
-    onLogin?.(); // 있으면 외부 콜백만 호출
-  };
+    try {
+      const clientId = String(import.meta.env.VITE_KAKAO_CLIENT_ID);
+      const redirectUri = String(import.meta.env.VITE_KAKAO_REDIRECT_URI);
 
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+
+      window.location.href = kakaoAuthUrl;
+    } catch (error) {
+      console.error("카카오 로그인 오류:", error);
+    }
+  };
   return (
     <ModalLayout onClose={onClose}>
       <div className="px-20 py-22.5 flex flex-col gap-10 w-150">
@@ -29,7 +34,7 @@ export default function LoginModal({ onLogin, onClose }: Props) {
           onButtonClick={handleKakaoLogin}
           className="flex items-center justify-center gap-2"
         >
-          <img src={Kakao} className="w-8 h-8" alt="Kakao" />
+          <img src={Kakao} className="w-8 h-8" />
           카카오로 시작하기
         </Button>
       </div>
