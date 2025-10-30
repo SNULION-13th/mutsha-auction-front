@@ -51,6 +51,14 @@ export default function ProfileModal({
             잔
           </div>
         </div>
+        <div className="flex w-full items-center">
+          <a
+            className="text-lg font-bold text-scale-600"
+            href="/payment-history"
+          >
+            결제 내역 보기
+          </a>
+        </div>
         <Button
           variant="primary"
           size="small"
