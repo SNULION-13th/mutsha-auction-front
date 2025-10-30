@@ -266,3 +266,48 @@ export async function paymentApproval(
     return false;
   }
 }
+
+// 결제 내역 조회
+export type PaymentHistoryItem = {
+  tid: string;
+  cid: string;
+  status: string;
+  partner_order_id: string;
+  partner_user_id: string;
+  payment_method_type: string;
+  amount: {
+    total: number;
+    tax_free: number;
+    vat: number;
+    point: number;
+    discount: number;
+    green_deposit: number;
+  };
+  item_name: string;
+  item_code: string;
+  quantity: number;
+  created_at: string;
+  approved_at: string;
+  payload: string;
+};
+
+export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
+  try {
+    const response = await api.get<PaymentHistoryItem[]>("/payment/history/");
+    if (response.status === 200) {
+      return response.data;
+    }
+    return [];
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getPaymentHistory error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getPaymentHistory unknown error:", e);
+    }
+    return [];
+  }
+}
