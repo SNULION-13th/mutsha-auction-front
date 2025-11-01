@@ -1,21 +1,14 @@
 import { Cup } from "@/assets/image";
-import ModalLayout from "./ModalLayout";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Button } from "../Button";
 import { numberCommaFormatter } from "@/utils/number";
 import { paymentReady } from "@/apis/api";
+import { useLocation } from "react-router-dom";
 
-type Props = {
-  onClose: () => void;
-  onCharge: (amount: number) => void;
-};
+function PointCharge({ cup, money }: { cup: number; money: number }) {
+  const location = useLocation();
 
-type ComponentProps = {
-  cup: number;
-  money: number;
-  onSelect: (cup: number) => void;
-};
-
-function PointCharge({ cup, money }: ComponentProps) {
+  // FIXME: 로컬스토리지 deprecated
   const handlePayment = async () => {
     const token =
       localStorage.getItem("access_token") ||
@@ -35,6 +28,12 @@ function PointCharge({ cup, money }: ComponentProps) {
         price: money.toString(),
       });
       if (response) {
+        sessionStorage.setItem(
+          "returnTo",
+          location.pathname + location.search + location.hash,
+        );
+        sessionStorage.setItem("returnToScroll", String(window.scrollY));
+
         localStorage.setItem("tid", response.tid);
         window.location.href = response.next_redirect_pc_url;
       }
@@ -58,7 +57,7 @@ function PointCharge({ cup, money }: ComponentProps) {
         variant="primary"
         isRounded={true}
         className="text-lg font-regular px-10 py-3"
-        onButtonClick={handlePayment}
+        onClick={handlePayment}
       >
         ₩ {numberCommaFormatter(money)}
       </Button>
@@ -66,18 +65,27 @@ function PointCharge({ cup, money }: ComponentProps) {
   );
 }
 
-export default function PointChargeModal({ onClose /*, onCharge*/ }: Props) {
+export default function PointChargeModal() {
   return (
-    <ModalLayout onClose={onClose}>
-      <div className="flex flex-col items-center px-8 py-15 w-133 gap-12.5">
-        <div className="text-2xl font-bold text-scale-600">포인트 충전하기</div>
-        <div className="flex flex-col gap-9 w-full">
-          <PointCharge cup={10} money={10000} onSelect={() => {}} />
-          <PointCharge cup={30} money={30000} onSelect={() => {}} />
-          <PointCharge cup={50} money={50000} onSelect={() => {}} />
-          <PointCharge cup={100} money={90000} onSelect={() => {}} />
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="primary" size="small" isRounded={true}>
+          충전하기
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-133">
+        <div className="flex flex-col items-center px-8 py-15 gap-12.5">
+          <div className="text-2xl font-bold text-scale-600">
+            포인트 충전하기
+          </div>
+          <div className="flex flex-col gap-9 w-full">
+            <PointCharge cup={10} money={10000} />
+            <PointCharge cup={30} money={30000} />
+            <PointCharge cup={50} money={50000} />
+            <PointCharge cup={100} money={90000} />
+          </div>
         </div>
-      </div>
-    </ModalLayout>
+      </DialogContent>
+    </Dialog>
   );
 }

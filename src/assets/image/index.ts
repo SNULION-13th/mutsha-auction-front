@@ -22,6 +22,7 @@ import LandingBg from "./landingBg.png";
 import Close from "./close.svg";
 import Kakao from "./kakao.svg";
 import Edit from "./edit.svg";
+import File from "./file.svg";
 
 export {
   Profile1,
@@ -48,4 +49,5 @@ export {
   Close,
   Kakao,
   Edit,
+  File,
 };

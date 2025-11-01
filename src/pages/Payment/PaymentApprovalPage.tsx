@@ -11,7 +11,6 @@ export default function PaymentApprovalPage() {
   const hasProcessedRef = useRef(false);
 
   useEffect(() => {
-    // 중복 처리 방지 (useRef 사용)
     if (hasProcessedRef.current) {
       return;
     }
@@ -27,7 +26,6 @@ export default function PaymentApprovalPage() {
           return;
         }
 
-        // 중복 처리 방지 플래그 설정
         hasProcessedRef.current = true;
 
         const approvalSuccess = await paymentApproval({
@@ -52,8 +50,11 @@ export default function PaymentApprovalPage() {
 
           setIsProcessing(false);
 
+          const returnTo = sessionStorage.getItem("returnTo") || "/";
+          sessionStorage.removeItem("returnTo");
+
           setTimeout(() => {
-            navigate("/");
+            navigate(returnTo, { replace: true });
           }, 3000);
         } else {
           setError("결제 승인에 실패했습니다.");
@@ -98,11 +99,7 @@ export default function PaymentApprovalPage() {
             </h1>
             <p className="text-scale-500">{error}</p>
           </div>
-          <Button
-            variant="primary"
-            size="large"
-            onButtonClick={() => navigate("/")}
-          >
+          <Button variant="primary" size="large" onClick={() => navigate("/")}>
             메인으로 돌아가기
           </Button>
         </div>
@@ -124,15 +121,11 @@ export default function PaymentApprovalPage() {
             포인트가 성공적으로 충전되었습니다.
           </p>
           <p className="text-sm text-scale-400">
-            잠시 후 메인 페이지로 이동합니다...
+            잠시 후 이전 페이지로 이동합니다...
           </p>
         </div>
-        <Button
-          variant="primary"
-          size="large"
-          onButtonClick={() => navigate("/")}
-        >
-          바로 이동하기
+        <Button variant="primary" size="large" onClick={() => navigate(-1)}>
+          바로 이전 페이지로
         </Button>
       </div>
     </div>

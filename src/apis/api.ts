@@ -296,3 +296,78 @@ export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
     return [];
   }
 }
+
+export type BidResponse = {
+  id: number;
+  auction: number;
+  bidder: number;
+  bidder_nickname: string;
+  amount: number;
+  bid_time: string;
+};
+
+export async function placeBid(
+  auctionId: number | string,
+  amount: number,
+): Promise<BidResponse | null> {
+  try {
+    const res = await api.post<BidResponse>(`/auction/${auctionId}/bid/`, {
+      amount,
+    });
+    if (res.status === 201) {
+      return res.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error("placeBid error:", e.response?.status, e.response?.data);
+    } else {
+      console.error("placeBid unknown error:", e);
+    }
+    return null;
+  }
+}
+
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  image_url?: string | null;
+  image_file?: File;
+  end_time: string;
+};
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<AuctionDetail | null> {
+  try {
+    if (data.image_file) {
+      const fd = new FormData();
+      fd.append("title", data.title);
+      fd.append("description", data.description);
+      fd.append("starting_price", String(data.starting_price));
+      fd.append("end_time", data.end_time);
+      fd.append("image_file", data.image_file, data.image_file.name);
+
+      const res = await api.post<AuctionDetail>("/auction/create/", fd);
+      if (res.status === 201) return res.data;
+      return null;
+    }
+
+    const { image_file, ...json } = data;
+    const res = await api.post<AuctionDetail>("/auction/create/", json);
+    if (res.status === 201) return res.data;
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}

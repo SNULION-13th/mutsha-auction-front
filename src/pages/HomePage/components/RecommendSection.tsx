@@ -88,7 +88,7 @@ export function RecommendSection() {
             variant="primary"
             isRounded
             className="w-62.5"
-            onButtonClick={() => navigate("/auction")}
+            onClick={() => navigate("/auction")}
           >
             전체 경매 보러가기
           </Button>

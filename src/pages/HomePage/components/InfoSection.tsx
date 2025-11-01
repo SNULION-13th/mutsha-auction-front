@@ -68,7 +68,7 @@ export function InfoSection() {
             variant="primary"
             isRounded={true}
             className="w-62.5"
-            onButtonClick={() => navigate("/create")}
+            onClick={() => navigate("/create")}
           >
             경매 등록하러 가기
           </Button>

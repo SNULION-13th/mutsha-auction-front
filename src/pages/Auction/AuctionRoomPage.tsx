@@ -58,7 +58,7 @@ function AuctionRoomPage() {
       <div className="w-full px-50 pt-25">
         <div className="max-w-[1160px] mx-auto text-center">
           <div className="text-2xl text-scale-500 mb-4">{error}</div>
-          <Button variant="primary" onButtonClick={() => navigate("/auction")}>
+          <Button variant="primary" onClick={() => navigate("/auction")}>
             경매 목록으로 돌아가기
           </Button>
         </div>
@@ -72,7 +72,7 @@ function AuctionRoomPage() {
         <div className="mb-6">
           <Button
             variant="gray"
-            onButtonClick={() => navigate("/auction")}
+            onClick={() => navigate("/auction")}
             className="mb-4"
           >
             ← 경매 목록으로 돌아가기
@@ -165,7 +165,7 @@ function AuctionRoomPage() {
               <Button
                 variant="primary"
                 className="w-full py-4 text-xl"
-                onButtonClick={() => {
+                onClick={() => {
                   // TODO: 입찰 모달 또는 입찰 기능 구현
                   alert("입찰 기능은 추후 구현 예정입니다.");
                 }}

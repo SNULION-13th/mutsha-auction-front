@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { ComponentPropsWithRef, PropsWithChildren } from "react";
 import { cn } from "../utils/cn";
 
 const sizeClass = {
@@ -13,7 +13,7 @@ const roundClass = {
 
 const variantClass = {
   primary: "bg-brand-primary text-bg-white",
-  outlined: "bg-bg-white border border-2 border-scale-300 text-scale-600",
+  outlined: "bg-bg-white border border-2 border-scale-100 text-scale-600",
   gray: "bg-scale-100 text-scale-500",
   darkgray: "bg-scale-200 text-scale-300",
   kakao: "bg-point-kakao text-scale-600",
@@ -23,14 +23,11 @@ const variantClass = {
 type Size = keyof typeof sizeClass;
 type Variant = keyof typeof variantClass;
 
-type Props = PropsWithChildren<{
-  className?: string;
-  disabled?: boolean;
+interface ButtonProps extends ComponentPropsWithRef<"button"> {
   variant?: Variant;
   size?: Size;
   isRounded?: boolean;
-  onButtonClick?: () => void;
-}>;
+}
 
 export function Button({
   children,
@@ -39,8 +36,8 @@ export function Button({
   variant = "primary",
   size = "large",
   isRounded = false,
-  onButtonClick,
-}: Props) {
+  ...props
+}: ButtonProps) {
   const buttonClass = cn(
     "font-bold cursor-pointer",
     className,
@@ -50,7 +47,7 @@ export function Button({
   );
 
   return (
-    <button className={buttonClass} onClick={onButtonClick}>
+    <button className={buttonClass} {...props}>
       {children}
     </button>
   );

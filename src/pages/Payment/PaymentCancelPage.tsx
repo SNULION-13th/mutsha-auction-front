@@ -19,17 +19,13 @@ export default function PaymentCancelPage() {
           </p>
         </div>
         <div className="flex gap-4">
-          <Button
-            variant="gray"
-            size="large"
-            onButtonClick={() => navigate("/")}
-          >
+          <Button variant="gray" size="large" onClick={() => navigate("/")}>
             메인으로 돌아가기
           </Button>
           <Button
             variant="primary"
             size="large"
-            onButtonClick={() => window.history.back()}
+            onClick={() => window.history.back()}
           >
             다시 시도하기
           </Button>

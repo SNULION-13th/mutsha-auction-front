@@ -1,3 +1,18 @@
+/**
+ * @deprecated This modal system is deprecated in favor of Radix UI primitives.
+ *
+ * **For new modals:**
+ * - Use `Dialog` from `@/components/ui/dialog` for centered modals
+ * - Use `DropdownMenu` from `@/components/ui/dropdown-menu` for anchored menus
+ *
+ * **Migration guide:**
+ * - Replace `useModal()` with local `useState()` for open/close state
+ * - Replace `ModalLayout` with `Dialog`/`DialogContent` or `DropdownMenu`
+ * - Modals manage their own state and callbacks
+ *
+ * This file is kept for backward compatibility only.
+ */
+
 import React, {
   createContext,
   PropsWithChildren,
@@ -6,6 +21,7 @@ import React, {
   useState,
 } from "react";
 
+/** @deprecated Use Radix Dialog or DropdownMenu instead */
 export const MODALS = {
   LOGIN: "login",
   PROFILE_SETTING: "profile-setting",
@@ -25,6 +41,7 @@ type ModalContextValue = {
 
 const ModalContext = createContext<ModalContextValue | null>(null);
 
+/** @deprecated Use Radix Dialog or DropdownMenu instead */
 export function ModalProvider({ children }: PropsWithChildren) {
   const [openModal, setOpenModal] = useState<ModalType | null>(null);
   const open = useCallback((type: ModalType) => setOpenModal(type), []);
@@ -38,6 +55,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
   return React.createElement(ModalContext.Provider, { value }, children);
 }
 
+/** @deprecated Use Radix Dialog or DropdownMenu instead */
 export function useModal(): ModalContextValue {
   const ctx = useContext(ModalContext);
   if (!ctx) {

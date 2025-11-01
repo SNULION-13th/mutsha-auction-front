@@ -8,12 +8,11 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export const api: AxiosInstance = axios.create({
   baseURL: `${BASE_URL}/api`,
-  headers: { "Content-Type": "application/json" },
   withCredentials: true, // 쿠키 포함
 });
 
 // 쿠키에서 토큰을 가져오는 함수
-function getCookie(name: string): string | null {
+export function getCookie(name: string): string | null {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
@@ -26,54 +25,44 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
+// Response interceptor to handle 401 errors and token refresh
 api.interceptors.response.use(
   (res) => res,
   async (err: AxiosError) => {
-    if (err.response?.status === 401) {
-      console.warn("토큰 만료 - refresh 시도");
+    const originalRequest = err.config;
 
-      // refresh token으로 새로운 access token 요청
-      const refreshToken = getCookie("refresh_token");
-      if (refreshToken) {
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/user/refresh/`,
-            {
-              refresh: refreshToken,
-            },
-            {
-              withCredentials: true,
-            },
+    // Don't retry if this is the refresh endpoint itself (prevents infinite loop)
+    const isRefreshEndpoint = originalRequest?.url?.includes("/user/refresh/");
+
+    // If any API call fails with 401, try to refresh the token
+    if (err.response?.status === 401 && originalRequest && !isRefreshEndpoint) {
+      try {
+        // Call /user/refresh/ to get a new access token
+        await api.post("/user/refresh/", {});
+
+        // After getting refreshed access token, retry the original request
+        return api.request(originalRequest);
+      } catch (refreshError) {
+        // If refresh API also returns 401, redirect to signin
+        if (
+          refreshError instanceof AxiosError &&
+          refreshError.response?.status === 401
+        ) {
+          return Promise.reject(
+            new RefreshTokenExpiredError("Refresh token expired"),
           );
-
-          if (response.status === 200) {
-            return api.request(err.config!);
-          }
-        } catch (refreshError) {
-          console.error("토큰 갱신 실패:", refreshError);
-          // 개발 환경에서는 localStorage 삭제하지 않음
-          if (import.meta.env.PROD) {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("userProfile");
-            localStorage.setItem("isFirstLogin", "false");
-            window.location.href = "/";
-          } else {
-            console.warn("개발 환경: localStorage 삭제하지 않음");
-          }
         }
-      } else {
-        console.error("refresh token 없음");
-        // 개발 환경에서는 localStorage 삭제하지 않음
-        if (import.meta.env.PROD) {
-          localStorage.removeItem("isLoggedIn");
-          localStorage.removeItem("userProfile");
-          localStorage.setItem("isFirstLogin", "false");
-          window.location.href = "/";
-        } else {
-          console.warn("개발 환경: localStorage 삭제하지 않음");
-        }
+        return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(err instanceof Error ? err : new Error(String(err)));
   },
 );
+
+class RefreshTokenExpiredError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "RefreshTokenExpiredError";
+  }
+}
