@@ -50,16 +50,6 @@ function AuctionCreatePage({ onSubmit }: Props) {
     if (!file.type.startsWith("image/")) return;
     setImage(file);
   };
-  const onDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const file = e.dataTransfer.files?.[0];
-    if (file) handleFile(file);
-  };
-  const onDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
 
   const valid = {
     title: title.trim().length > 0,
@@ -153,23 +143,15 @@ function AuctionCreatePage({ onSubmit }: Props) {
                   setTImage(true);
                   onPick();
                 }}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
                 className={`w-full h-[320px] rounded-md border ${
                   preview ? "border-transparent" : "border-scale-200"
                 } overflow-hidden cursor-pointer flex items-center justify-center`}
-                title={
-                  preview
-                    ? "클릭하여 다른 사진으로 변경"
-                    : "클릭 또는 드래그 앤 드롭"
-                }
+                title={preview ? "클릭하여 다른 사진으로 변경" : "클릭"}
               >
                 {!preview ? (
                   <div className="flex flex-col items-center gap-4 text-scale-300">
                     <img src={File} className="w-16 opacity-60" />
-                    <div className="text-base">
-                      클릭하여 업로드 또는 드래그 앤 드롭
-                    </div>
+                    <div className="text-base">클릭하여 업로드</div>
                   </div>
                 ) : (
                   <img
