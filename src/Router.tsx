@@ -8,7 +8,9 @@ import Layout from "./layouts/Layout";
 const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
 const AuctionRoomPage = lazy(() => import("@page/Auction/AuctionRoomPage"));
-const AuctionCreatePage = lazy(() => import("@page/AuctionCreatePage"));
+const AuctionCreatePage = lazy(
+  () => import("@/pages/AuctionCreate/AuctionCreatePage"),
+);
 const AuthPage = lazy(() => import("@page/Auth"));
 const PaymentApprovalPage = lazy(
   () => import("@page/Payment/PaymentApprovalPage"),
