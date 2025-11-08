@@ -37,7 +37,7 @@ export const useUpdateUserProfile = () => {
     },
     onSuccess: (data) => {
       if (data) {
-        queryClient.setQueryData(userQueryKey, data);
+        queryClient.invalidateQueries({ queryKey: userQueryKey });
       }
     },
     onError: (error) => {

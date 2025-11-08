@@ -6,8 +6,8 @@ import {
   Profile3,
   Profile4,
 } from "@/assets/image";
-import { signOut, updateUserProfile, UserProfile } from "../apis/api";
-import { createContext, useContext, useMemo, useState } from "react";
+import { UserProfile } from "../apis/api";
+import { createContext, useContext, useMemo } from "react";
 import {
   userQueryKey,
   useLogout,
@@ -15,7 +15,6 @@ import {
   useUserProfile,
 } from "@/hooks/useAuthQuery";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 //유저 정보
 type UserInfo = {
