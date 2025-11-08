@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button";
 import { Cup } from "@/assets/image";
 import {
@@ -9,8 +9,11 @@ import {
 
 import PointChargeModalButton from "./PointChargeModal";
 import ProfileSettingModalButton from "./ProfileSettingModal";
+import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileDropdown() {
+  const { logout, user } = useUser();
+  const navigate = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,9 +24,8 @@ export default function ProfileDropdown() {
         sideOffset={12}
         className="p-6 flex flex-col gap-5 w-55 border border-brand-secondary rounded-xl bg-white"
       >
-        <ProfileSettingModalButton
-          imageSrc={"https://via.placeholder.com/80"}
-        />
+        {/* 이미지 소스 주입 삭제 */}
+        <ProfileSettingModalButton />
         <div className="flex w-full justify-between items-center">
           <div className="flex items-center gap-1">
             <img src={Cup} className="w-8.5" />
@@ -31,13 +33,19 @@ export default function ProfileDropdown() {
           </div>
           <div className="text-lg font-bold text-scale-600">
             <Link to="/payment/history" className="text-brand-primary">
-              10000
+              {user?.points}
             </Link>
             잔
           </div>
         </div>
         <PointChargeModalButton />
-        <button className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer">
+        <button
+          className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer"
+          onClick={async () => {
+            await logout();
+            navigate("/");
+          }}
+        >
           로그아웃
         </button>
       </DropdownMenuContent>
