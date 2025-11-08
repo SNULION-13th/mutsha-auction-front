@@ -15,6 +15,21 @@ export type UserProfile = {
   is_social_login: boolean;
 };
 
+export async function signOut(): Promise<boolean> {
+  try {
+    const res = await api.post("/user/signout/");
+    if (res.status === 200) return true;
+    return false;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error("signOut error:", e.response?.status, e.response?.data);
+    } else {
+      console.error("signOut unknown error:", e);
+    }
+    return false;
+  }
+}
+
 export async function kakaoSignIn(code: string): Promise<boolean> {
   try {
     const res = await api.get("/user/kakao/callback/", {
@@ -328,46 +343,4 @@ export async function placeBid(
   }
 }
 
-export type CreateAuctionRequest = {
-  title: string;
-  description: string;
-  starting_price: number;
-  image_url?: string | null;
-  image_file?: File;
-  end_time: string;
-};
-
-export async function createAuction(
-  data: CreateAuctionRequest,
-): Promise<AuctionDetail | null> {
-  try {
-    if (data.image_file) {
-      const fd = new FormData();
-      fd.append("title", data.title);
-      fd.append("description", data.description);
-      fd.append("starting_price", String(data.starting_price));
-      fd.append("end_time", data.end_time);
-      fd.append("image_file", data.image_file, data.image_file.name);
-
-      const res = await api.post<AuctionDetail>("/auction/create/", fd);
-      if (res.status === 201) return res.data;
-      return null;
-    }
-
-    const { image_file, ...json } = data;
-    const res = await api.post<AuctionDetail>("/auction/create/", json);
-    if (res.status === 201) return res.data;
-    return null;
-  } catch (e: unknown) {
-    if (isAxiosError(e)) {
-      console.error(
-        "createAuction error:",
-        e.response?.status,
-        e.response?.data,
-      );
-    } else {
-      console.error("createAuction unknown error:", e);
-    }
-    return null;
-  }
-}
+// TODO: Auction Create API 만들기
