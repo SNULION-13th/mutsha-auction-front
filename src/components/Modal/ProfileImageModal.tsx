@@ -17,22 +17,17 @@ import {
   DialogClose,
 } from "../ui/dialog";
 
-const CANDIDATES = [
-  Profile1,
-  Profile2,
-  Profile3,
-  Profile4,
-  Profile5,
-  Profile6,
-] as const;
+import { PROFILE_IMAGES } from "@/contexts/UserContext";
 
 type Props = {
-  selectedProfileImage?: string;
+  imageCandidates: typeof PROFILE_IMAGES;
+  selectedProfileImage: string;
   onSave: (img: string) => void;
 };
 
 export default function ProfileImageModal({
-  selectedProfileImage = CANDIDATES[0],
+  imageCandidates,
+  selectedProfileImage,
   onSave,
 }: Props) {
   const [selected, setSelected] = useState<string>(selectedProfileImage);
@@ -54,7 +49,7 @@ export default function ProfileImageModal({
             프로필 이미지 고르기
           </div>
           <div className="grid grid-cols-3 px-10 gap-8">
-            {CANDIDATES.map((candidate) => {
+            {imageCandidates.map((candidate) => {
               const isSel = selected === candidate;
               return (
                 <button
