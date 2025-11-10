@@ -1,13 +1,5 @@
 import { Button } from "../Button";
-import {
-  Profile1,
-  Profile2,
-  Profile3,
-  Profile4,
-  Profile5,
-  Profile6,
-  Edit,
-} from "../../assets/image";
+import { Edit } from "../../assets/image";
 import { useState } from "react";
 import {
   Dialog,
@@ -22,7 +14,7 @@ import { PROFILE_IMAGES } from "@/contexts/UserContext";
 type Props = {
   imageCandidates: typeof PROFILE_IMAGES;
   selectedProfileImage: string;
-  onSave: (img: string) => void;
+  onSave: (id: number) => void;
 };
 
 export default function ProfileImageModal({
@@ -31,6 +23,11 @@ export default function ProfileImageModal({
   onSave,
 }: Props) {
   const [selected, setSelected] = useState<string>(selectedProfileImage);
+
+  const handleSave = () => {
+    const selectedId = imageCandidates.indexOf(selected) + 1;
+    onSave(selectedId);
+  };
 
   return (
     <Dialog>
@@ -70,9 +67,7 @@ export default function ProfileImageModal({
           <DialogClose asChild>
             <Button
               variant="primary"
-              onClick={() => {
-                onSave(selected);
-              }}
+              onClick={handleSave}
               className="w-90 h-14"
             >
               저장하기
