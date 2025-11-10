@@ -343,4 +343,52 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+// Auction Create
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  startPrice: number;
+  // ISO8601 종료 시각 (백엔드 계약서 기준)
+  endTime: string;
+  // 업로드 이미지 파일
+  image: File;
+};
+
+export type CreateAuctionResponse = AuctionDetail;
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<CreateAuctionResponse | null> {
+  try {
+    const form = new FormData();
+    form.append("title", data.title);
+    form.append("description", data.description);
+    form.append("starting_price", String(data.startPrice));
+    form.append("end_time", data.endTime);
+    form.append("image_file", data.image);
+
+    const res = await api.post<CreateAuctionResponse>(
+      "/auction/create/",
+      form,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+
+    if (res.status === 201 || res.status === 200) {
+      return res.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}
