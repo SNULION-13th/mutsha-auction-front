@@ -1,3 +1,9 @@
+import { createContext, useContext, useMemo } from "react";
+
+import { useQueryClient } from "@tanstack/react-query";
+
+import { UserProfile } from "../apis/api";
+
 import {
   Profile1,
   Profile6,
@@ -6,15 +12,12 @@ import {
   Profile3,
   Profile4,
 } from "@/assets/image";
-import { UserProfile } from "../apis/api";
-import { createContext, useContext, useMemo } from "react";
 import {
   userQueryKey,
   useLogout,
   useUpdateUserProfile,
   useUserProfile,
 } from "@/hooks/useAuthQuery";
-import { useQueryClient } from "@tanstack/react-query";
 
 //유저 정보
 type UserInfo = {
@@ -36,10 +39,10 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+export function UserProvider({ children }: { children: React.ReactNode }) {
   const { data: userProfile } = useUserProfile();
   const queryClient = useQueryClient();
-  const { mutateAsync: updateUserProfile } = useUpdateUserProfile();
+  const { mutate: updateUserProfile } = useUpdateUserProfile();
   const { mutateAsync: logoutMutation } = useLogout();
 
   const user = useMemo(() => {
@@ -58,8 +61,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     await logoutMutation();
     console.log(queryClient.getQueryData(userQueryKey));
   };
-  const updateProfile = async (nickname: string, profilepicId: number) => {
-    await updateUserProfile({ nickname, profilepicId });
+  const updateProfile = (nickname: string, profilepicId: number) => {
+    updateUserProfile({ nickname, profilepicId });
   };
 
   return (
@@ -67,7 +70,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </UserContext.Provider>
   );
-};
+}
 
 export const useUser = () => {
   const context = useContext(UserContext);

@@ -1,7 +1,8 @@
+import { DialogPortal } from "@radix-ui/react-dialog";
+
+import { Kakao } from "../../assets/image";
 import { Button } from "../Button";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Kakao } from "../../assets/image";
-import { DialogPortal } from "@radix-ui/react-dialog";
 
 export default function LoginModal() {
   const handleKakaoLogin = () => {

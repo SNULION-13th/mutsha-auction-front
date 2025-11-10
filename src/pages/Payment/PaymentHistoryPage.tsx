@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+
 import { getPaymentHistory, PaymentHistoryItem } from "@/apis/api";
-import { formatNumber } from "@/utils/number";
 import { Cup } from "@/assets/image";
+import { formatNumber } from "@/utils/number";
 
 const toNumber = (v: number | string | null | undefined) => {
   if (typeof v === "number") return v;

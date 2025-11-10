@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
+
 import { Button } from "../Button";
-import { Cup } from "@/assets/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +9,8 @@ import {
 
 import PointChargeModalButton from "./PointChargeModal";
 import ProfileSettingModalButton from "./ProfileSettingModal";
+
+import { Cup } from "@/assets/image";
 import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileDropdown() {

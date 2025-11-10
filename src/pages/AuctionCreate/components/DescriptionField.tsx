@@ -1,7 +1,8 @@
 import { useFormContext } from "react-hook-form";
+
 import { AuctionCreateFormData } from "../schema";
 
-export const DescriptionField = () => {
+export function DescriptionField() {
   const {
     register,
     formState: { errors },
@@ -22,4 +23,4 @@ export const DescriptionField = () => {
       )}
     </div>
   );
-};
+}

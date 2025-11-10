@@ -1,13 +1,15 @@
-import { Cup, File } from "@/assets/image";
-import { Button } from "@/components/Button";
-import { auctionCreateSchema } from "./schema";
-import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TitleField } from "./components/TitleField";
+import { FormProvider, useForm } from "react-hook-form";
+
 import { DescriptionField } from "./components/DescriptionField";
+import { DurationField } from "./components/DurationField";
 import { ImageField } from "./components/ImageField";
 import { StartPriceField } from "./components/StartPriceField";
-import { DurationField } from "./components/DurationField";
+import { TitleField } from "./components/TitleField";
+import { auctionCreateSchema } from "./schema";
+
+import { Cup, File } from "@/assets/image";
+import { Button } from "@/components/Button";
 
 type Props = {
   onSubmit?: (payload: {

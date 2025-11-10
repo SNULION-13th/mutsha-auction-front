@@ -1,8 +1,11 @@
 import { RouterProvider } from "react-router-dom";
+
 import "./App.css";
-import { router } from "./Router";
-import { Suspense } from "react";
 import { UserProvider } from "./contexts/UserContext";
+import { router } from "./Router";
+
+import { Suspense } from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({

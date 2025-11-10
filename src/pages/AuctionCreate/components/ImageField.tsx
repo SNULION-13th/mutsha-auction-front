@@ -1,9 +1,12 @@
-import { File as FileIcon } from "@/assets/image";
 import { useEffect, useRef, useState } from "react";
+
 import { Controller, useFormContext } from "react-hook-form";
+
 import { AuctionCreateFormData } from "../schema";
 
-export const ImageField = () => {
+import { File as FileIcon } from "@/assets/image";
+
+export function ImageField() {
   const { control } = useFormContext<AuctionCreateFormData>();
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -71,4 +74,4 @@ export const ImageField = () => {
       }}
     />
   );
-};
+}
