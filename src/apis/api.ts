@@ -343,4 +343,75 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type AuctionCreateRequest = {
+  title: string;
+  description: string;
+  starting_Price: number; // ✅ 현재 프론트 onSubmit 구조에 맞춤
+  durationDays: number;
+  durationHours: number;
+  durationMinutes: number;
+  image?: File;
+};
+
+export type AuctionCreateResponse = {
+  id: number;
+  title: string;
+  description: string;
+  starting_price: number;
+  image_file_url: string;
+  end_time: string;
+};
+
+function getEndTime(duration: { d: number; h: number; m: number }) {
+  const end = new Date();
+  end.setDate(end.getDate() + duration.d);
+  end.setHours(end.getHours() + duration.h);
+  end.setMinutes(end.getMinutes() + duration.m);
+  return end.toISOString();
+}
+
+export async function createAuction(
+  data: AuctionCreateRequest,
+): Promise<AuctionCreateResponse | null> {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", data.starting_Price.toString());
+    if (data.image) {
+      // append with filename so the FormData blob overload is used
+      formData.append("image_file", data.image, data.image.name);
+    }
+    const endTime = getEndTime({
+      d: data.durationDays,
+      h: data.durationHours,
+      m: data.durationMinutes,
+    });
+    formData.append("end_time", endTime);
+
+    // ✅ 백엔드 요구사항에 맞는 필드명으로 전송
+    for (const [key, value] of formData.entries()) {
+      console.log("🔹", key, value);
+    }
+
+    const res = await api.post("/auction/create/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.status === 201 || res.status === 200) {
+      return res.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}
