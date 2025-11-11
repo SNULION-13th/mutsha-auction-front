@@ -33,16 +33,64 @@ export const DurationField = () => {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-lg font-bold text-scale-600">경매 기간</label>
+
       <div className="flex items-center gap-5 text-scale-500">
-        {/* TODO: 날짜 Controller */}
+        {/* 일(days) */}
+        <Controller
+          name="duration.days"
+          control={control}
+          render={({ field }) => (
+            <DurationControlRenderer
+              label="일"
+              value={String(field.value ?? "")}
+              onChange={(e) =>
+                field.onChange(Number(digitsOnly(e.target.value)))
+              }
+            />
+          )}
+        />
 
-        {/* TODO: 시간 Controller */}
+        {/* 시(hours) */}
+        <Controller
+          name="duration.hours"
+          control={control}
+          render={({ field }) => (
+            <DurationControlRenderer
+              label="시간"
+              value={String(field.value ?? "")}
+              onChange={(e) =>
+                field.onChange(Number(digitsOnly(e.target.value)))
+              }
+            />
+          )}
+        />
 
-        {/* TODO: 분 Controller */}
+        {/* 분(minutes) */}
+        <Controller
+          name="duration.minutes"
+          control={control}
+          render={({ field }) => (
+            <DurationControlRenderer
+              label="분"
+              value={String(field.value ?? "")}
+              onChange={(e) =>
+                field.onChange(Number(digitsOnly(e.target.value)))
+              }
+            />
+          )}
+        />
       </div>
-      {/* TODO: 에러 메시지 */}
 
-      <p className="text-point-warning text-base mt-1">{"에러 메시지"}</p>
+      {/* 에러 메시지 */}
+      {(errors.duration?.days ||
+        errors.duration?.hours ||
+        errors.duration?.minutes) && (
+        <p className="text-point-warning text-base mt-1">
+          {errors.duration?.days?.message ||
+            errors.duration?.hours?.message ||
+            errors.duration?.minutes?.message}
+        </p>
+      )}
     </div>
   );
 };
