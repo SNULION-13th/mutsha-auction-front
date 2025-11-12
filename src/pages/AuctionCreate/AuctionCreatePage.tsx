@@ -1,26 +1,16 @@
-import { Cup, File } from "@/assets/image";
-import { Button } from "@/components/Button";
-import { auctionCreateSchema } from "./schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/Button";
+import { auctionCreateSchema, AuctionCreateFormData } from "./schema";
 import { TitleField } from "./components/TitleField";
 import { DescriptionField } from "./components/DescriptionField";
 import { ImageField } from "./components/ImageField";
 import { StartPriceField } from "./components/StartPriceField";
 import { DurationField } from "./components/DurationField";
+import { useCreateAuctionMutation } from "@/hooks/useAuctionQuery";
 
-type Props = {
-  onSubmit?: (payload: {
-    title: string;
-    description: string;
-    image: File;
-    startPriceCup: number;
-    duration: { d: number; h: number; m: number };
-  }) => void | Promise<void>;
-};
-
-function AuctionCreatePage({ onSubmit }: Props) {
-  const methods = useForm({
+function AuctionCreatePage() {
+  const methods = useForm<AuctionCreateFormData>({
     resolver: zodResolver(auctionCreateSchema),
     mode: "onChange",
     defaultValues: {
@@ -35,6 +25,12 @@ function AuctionCreatePage({ onSubmit }: Props) {
     },
   });
 
+  const { mutate: createAuction, isPending } = useCreateAuctionMutation();
+
+  const onSubmit = (data: AuctionCreateFormData) => {
+    createAuction(data);
+  };
+
   return (
     <div className="w-full px-50 py-30">
       <div className="max-w-[973px] mx-auto flex flex-col gap-25">
@@ -46,9 +42,7 @@ function AuctionCreatePage({ onSubmit }: Props) {
         </div>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit((data) =>
-              console.log("폼 데이터 제출", data),
-            )}
+            onSubmit={methods.handleSubmit(onSubmit)}
             className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
           >
             <div className="grid grid-cols-1 gap-12">
@@ -66,11 +60,11 @@ function AuctionCreatePage({ onSubmit }: Props) {
             <div className="w-full flex justify-center">
               <Button
                 type="submit"
-                variant={methods.formState.isValid ? "primary" : "disabled"}
-                disabled={!methods.formState.isValid}
+                variant={methods.formState.isValid && !isPending ? "primary" : "disabled"}
+                disabled={!methods.formState.isValid || isPending}
                 className="w-80 h-14"
               >
-                상품 등록하기
+                {isPending ? "경매 등록 중..." : "상품 등록하기"}
               </Button>
             </div>
           </form>
