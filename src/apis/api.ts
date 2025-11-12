@@ -343,4 +343,71 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  image: File;
+  duration_days: number;
+  duration_hours: number;
+  duration_minutes: number;
+};
+
+export type CreateAuctionResponse = {
+  id: number;
+  title: string;
+  description: string;
+  starting_price: number;
+  current_price: number;
+  image_url: string | null;
+  image_file: string | null;
+  status: "active" | "ended" | "cancelled";
+  start_time: string;
+  end_time: string;
+  seller: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<CreateAuctionResponse | null> {
+  try {
+    // end_time 계산: 현재 시간 + duration
+    const now = new Date();
+    const endTime = new Date(
+      now.getTime() +
+        data.duration_days * 24 * 60 * 60 * 1000 +
+        data.duration_hours * 60 * 60 * 1000 +
+        data.duration_minutes * 60 * 1000,
+    );
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", String(data.starting_price));
+    formData.append("image_file", data.image);
+    formData.append("end_time", endTime.toISOString());
+
+    const response = await api.post<CreateAuctionResponse>(
+      "/auction/create/",
+      formData,
+    );
+
+    if (response.status === 201) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}
