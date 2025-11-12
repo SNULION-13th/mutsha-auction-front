@@ -2,20 +2,22 @@ import { Button } from "../Button";
 import { useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogPortal,
   DialogTrigger,
 } from "../ui/dialog";
 import ProfileImageModal from "./ProfileImageModal";
+import { useUser } from "@/contexts/UserContext";
+import { PROFILE_IMAGES } from "@/contexts/UserContext";
 
-export default function ProfileSettingModal({
-  imageSrc,
-}: {
-  imageSrc: string;
-}) {
-  const [nickname, setNickname] = useState("");
-
-  const [selectedProfileImage, setSelectedProfileImage] = useState(imageSrc);
+export default function ProfileSettingModal() {
+  const { user, updateProfile } = useUser();
+  //유저 값으로 모달의 초기값 설정
+  const [nickname, setNickname] = useState(user?.nickname ?? "");
+  const [selectedProfileImage, setSelectedProfileImage] = useState(
+    user?.profileImage,
+  );
 
   const onlyAllowed = /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u;
   const tooLong = nickname.length > 10;
@@ -25,17 +27,36 @@ export default function ProfileSettingModal({
   const showWarning = !empty && (tooLong || invalidChars);
   const canSubmit = !empty && !tooLong && !invalidChars;
 
+  const handleSubmit = async () => {
+    if (canSubmit) {
+      updateProfile(
+        nickname,
+        PROFILE_IMAGES.indexOf(selectedProfileImage ?? "") + 1,
+      );
+    }
+  };
+
+  // 모달 열릴 때 닉네임과 프로필 이미지 동기화
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setNickname(user?.nickname ?? "");
+      setSelectedProfileImage(user?.profileImage ?? "");
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleOpenChange}>
       <DialogPortal />
       <DialogTrigger asChild>
         <div className="flex items-center gap-2">
           <img
-            src={"https://via.placeholder.com/80"}
+            src={user?.profileImage}
             alt="profile"
             className="h-8 w-8 rounded-full object-cover"
           />
-          <div className="text-lg font-bold text-scale-600">닉네임</div>
+          <div className="text-lg font-bold text-scale-600">
+            {user?.nickname}
+          </div>
         </div>
       </DialogTrigger>
       <DialogContent className="w-180">
@@ -44,12 +65,13 @@ export default function ProfileSettingModal({
           <div className="flex flex-col gap-12.5">
             <div className="mx-auto relative w-28 h-28">
               <img
-                src={imageSrc}
+                src={selectedProfileImage}
                 className="w-28 h-28 rounded-full object-cover"
               />
 
               <ProfileImageModal
-                selectedProfileImage={selectedProfileImage}
+                imageCandidates={PROFILE_IMAGES}
+                selectedProfileImage={selectedProfileImage ?? ""}
                 onSave={(selected) => setSelectedProfileImage(selected)}
               />
             </div>
@@ -68,14 +90,16 @@ export default function ProfileSettingModal({
                 </p>
               )}
             </div>
-            <Button
-              variant={canSubmit ? "primary" : "disabled"}
-              disabled={!canSubmit}
-              onClick={() => {}}
-              className="h-14"
-            >
-              {"멋시장 시작하기"}
-            </Button>
+            <DialogClose asChild>
+              <Button
+                variant={canSubmit ? "primary" : "disabled"}
+                disabled={!canSubmit}
+                onClick={handleSubmit}
+                className="h-14"
+              >
+                {"멋시장 시작하기"}
+              </Button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>

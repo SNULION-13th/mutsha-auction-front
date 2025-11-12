@@ -35,14 +35,63 @@ export const DurationField = () => {
       <label className="text-lg font-bold text-scale-600">경매 기간</label>
       <div className="flex items-center gap-5 text-scale-500">
         {/* TODO: 날짜 Controller */}
+        <Controller<AuctionCreateFormData, "duration.days">
+          name="duration.days"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <DurationControlRenderer
+              label="D"
+              onChange={(e) => {
+                const digits = digitsOnly(e.target.value);
+                const num = digits ? Number(digits) : 0;
+                onChange(Math.min(num, 365));
+              }}
+              value={String(value)}
+            />
+          )}
+        />
 
         {/* TODO: 시간 Controller */}
+        <Controller<AuctionCreateFormData, "duration.hours">
+          name="duration.hours"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <DurationControlRenderer
+              label="H"
+              onChange={(e) => {
+                const digits = digitsOnly(e.target.value);
+                const num = digits ? Number(digits) : 0;
+                onChange(Math.min(num, 23));
+              }}
+              value={String(value).padStart(2, "0")}
+            />
+          )}
+        />
 
         {/* TODO: 분 Controller */}
+        <Controller<AuctionCreateFormData, "duration.minutes">
+          name="duration.minutes"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <DurationControlRenderer
+              label="M"
+              onChange={(e) => {
+                const digits = digitsOnly(e.target.value);
+                const num = digits ? Number(digits) : 0;
+                onChange(Math.min(num, 59));
+              }}
+              value={String(value).padStart(2, "0")}
+            />
+          )}
+        />
       </div>
       {/* TODO: 에러 메시지 */}
 
-      <p className="text-point-warning text-base mt-1">{"에러 메시지"}</p>
+      {errors.duration && (
+        <p className="text-point-warning text-base mt-1">
+          {errors.duration.message}
+        </p>
+      )}
     </div>
   );
 };

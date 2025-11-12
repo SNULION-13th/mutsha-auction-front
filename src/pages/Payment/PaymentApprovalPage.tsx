@@ -1,76 +1,63 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/Button";
-import { getUserInfo, paymentApproval } from "@/apis/api";
+import { usePaymentApproval } from "@/hooks/usePaymentQuery";
 
 export default function PaymentApprovalPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [isProcessing, setIsProcessing] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
+  // Strict Mode:
+  // 멱등성이 철저히 지켜지기 위해선, effect의 중복 실행으로 인한 오류가 없어야 합니다.
+  // 따라서 React에서는 Strict mode에서 effect를 두 번 실행시키고
+  // 개발단에서 멱등성이 잘 지켜지고 있는지 체크합니다.
+
+  // Strict Mode에서 effect 중복 실행을 방지하기 위한 flag
   const hasProcessedRef = useRef(false);
 
+  // effect단에서 mutation 함수를 호출할 경우, mutation의 status를
+  // 렌더링에 제대로 반영하는 것에 한계가 있습니다.
+  // 따라서 이 경우에는 status를 따로 관리합니다.
+  const [paymentStatus, setPaymentStatus] = useState<
+    "pending" | "success" | "error"
+  >("pending");
+  const { mutateAsync: paymentApprovalMutation, error } = usePaymentApproval();
+
+  // 결제 성공 시 효과 적용
+  usePaymentSuccessEffect(paymentStatus === "success");
+
   useEffect(() => {
+    // 이미 처리 중이거나 완료된 경우 중복 실행 방지
     if (hasProcessedRef.current) {
       return;
     }
 
+    hasProcessedRef.current = true;
+
     const processPayment = async () => {
       try {
+        setPaymentStatus("pending");
         const pgToken = searchParams.get("pg_token");
         const tid = localStorage.getItem("tid");
 
         if (!pgToken || !tid) {
-          setError("결제 정보가 올바르지 않습니다.");
-          setIsProcessing(false);
-          return;
+          throw new Error("결제 정보가 올바르지 않습니다.");
         }
 
-        hasProcessedRef.current = true;
-
-        const approvalSuccess = await paymentApproval({
+        await paymentApprovalMutation({
           pg_token: pgToken,
           tid: tid,
         });
-
-        if (approvalSuccess) {
-          localStorage.removeItem("tid");
-
-          try {
-            const latestUserInfo = await getUserInfo();
-            if (latestUserInfo) {
-              localStorage.setItem(
-                "userProfile",
-                JSON.stringify(latestUserInfo),
-              );
-            }
-          } catch (userInfoError) {
-            console.error("사용자 정보 가져오기 실패:", userInfoError);
-          }
-
-          setIsProcessing(false);
-
-          const returnTo = sessionStorage.getItem("returnTo") || "/";
-          sessionStorage.removeItem("returnTo");
-
-          setTimeout(() => {
-            navigate(returnTo, { replace: true });
-          }, 3000);
-        } else {
-          setError("결제 승인에 실패했습니다.");
-          setIsProcessing(false);
-        }
-      } catch (error: any) {
-        console.error("결제 승인 실패:", error);
-        setError("결제 승인 중 오류가 발생했습니다.");
-        setIsProcessing(false);
+        setPaymentStatus("success");
+      } catch (error) {
+        setPaymentStatus("error");
       }
     };
 
     processPayment();
-  }, [searchParams, navigate]); // hasProcessed 의존성 제거
+  }, []);
 
-  if (isProcessing) {
+  if (paymentStatus === "pending") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg-default">
         <div className="flex flex-col items-center gap-8">
@@ -86,7 +73,7 @@ export default function PaymentApprovalPage() {
     );
   }
 
-  if (error) {
+  if (paymentStatus === "error") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg-default">
         <div className="flex flex-col items-center gap-8 text-center">
@@ -97,7 +84,7 @@ export default function PaymentApprovalPage() {
             <h1 className="text-2xl font-bold text-scale-600 mb-2">
               결제 실패
             </h1>
-            <p className="text-scale-500">{error}</p>
+            <p className="text-scale-500">{error?.message}</p>
           </div>
           <Button variant="primary" size="large" onClick={() => navigate("/")}>
             메인으로 돌아가기
@@ -131,3 +118,18 @@ export default function PaymentApprovalPage() {
     </div>
   );
 }
+
+const usePaymentSuccessEffect = (success: boolean) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!success) return;
+    localStorage.removeItem("tid");
+
+    const returnTo = sessionStorage.getItem("returnTo") || "/";
+    sessionStorage.removeItem("returnTo");
+
+    setTimeout(() => {
+      navigate(returnTo, { replace: true });
+    }, 3000);
+  }, [success]);
+};
