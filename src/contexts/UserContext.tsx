@@ -61,8 +61,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     await logoutMutation();
     console.log(queryClient.getQueryData(userQueryKey));
   };
-  const updateProfile = (nickname: string, profilepicId: number) => {
-    updateUserProfile({ nickname, profilepicId });
+  const updateProfile = async (nickname: string, profilepicId: number) => {
+    await updateUserProfile({ nickname, profilepicId });
   };
 
   return (
