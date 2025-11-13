@@ -4,26 +4,23 @@ import { Button } from "../Button";
 import { numberCommaFormatter } from "@/utils/number";
 import { paymentReady } from "@/apis/api";
 import { useLocation } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
+import { usePaymentReady } from "@/hooks/usePaymentQuery";
 
 function PointCharge({ cup, money }: { cup: number; money: number }) {
   const location = useLocation();
+  const { user } = useUser();
+  const { mutateAsync: paymentReadyMutation } = usePaymentReady();
 
   // FIXME: 로컬스토리지 deprecated
   const handlePayment = async () => {
-    const token =
-      localStorage.getItem("access_token") ||
-      document.cookie
-        .split(";")
-        .find((cookie) => cookie.trim().startsWith("access_token="))
-        ?.split("=")[1];
-
-    if (!token) {
+    if (!user) {
       alert("로그인이 필요합니다. 먼저 로그인해주세요.");
       return;
     }
 
     try {
-      const response = await paymentReady({
+      const response = await paymentReadyMutation({
         point: cup.toString(),
         price: money.toString(),
       });
