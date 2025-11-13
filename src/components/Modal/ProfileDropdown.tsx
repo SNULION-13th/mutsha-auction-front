@@ -8,7 +8,7 @@ import {
 } from "../ui/dropdown-menu";
 
 import PointChargeModalButton from "./PointChargeModal";
-import ProfileSettingModalButton from "./ProfileSettingModal";
+import ProfileSettingModalButton from "./ProfileSetting/ProfileSettingModal";
 import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileDropdown() {
