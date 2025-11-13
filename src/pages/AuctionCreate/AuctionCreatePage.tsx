@@ -8,6 +8,8 @@ import { DescriptionField } from "./components/DescriptionField";
 import { ImageField } from "./components/ImageField";
 import { StartPriceField } from "./components/StartPriceField";
 import { DurationField } from "./components/DurationField";
+import { useCreateAuction } from "@/hooks/useAuction";
+import { z } from "zod";
 
 type Props = {
   onSubmit?: (payload: {
@@ -35,6 +37,16 @@ function AuctionCreatePage({ onSubmit }: Props) {
     },
   });
 
+  const createAuctionMutation = useCreateAuction({
+    onSuccess: (data) => {
+      console.log("경매 등록 성공:", data);
+    },
+  });
+
+  const handleSubmit = (data: z.infer<typeof auctionCreateSchema>) => {
+    createAuctionMutation.mutate(data);
+  };
+
   return (
     <div className="w-full px-50 py-30">
       <div className="max-w-[973px] mx-auto flex flex-col gap-25">
@@ -46,9 +58,7 @@ function AuctionCreatePage({ onSubmit }: Props) {
         </div>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit((data) =>
-              console.log("폼 데이터 제출", data),
-            )}
+            onSubmit={methods.handleSubmit(handleSubmit)}
             className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
           >
             <div className="grid grid-cols-1 gap-12">
@@ -70,7 +80,9 @@ function AuctionCreatePage({ onSubmit }: Props) {
                 disabled={!methods.formState.isValid}
                 className="w-80 h-14"
               >
-                상품 등록하기
+                {createAuctionMutation.isPending
+                  ? "등록 중..."
+                  : "상품 등록하기"}
               </Button>
             </div>
           </form>

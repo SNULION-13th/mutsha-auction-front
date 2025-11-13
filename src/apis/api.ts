@@ -1,5 +1,7 @@
 import { isAxiosError } from "axios";
 import { api } from "./axios";
+import { auctionCreateSchema } from "@/pages/AuctionCreate/schema";
+import { z } from "zod";
 
 export type UserCore = {
   id: number;
@@ -150,6 +152,73 @@ export async function getAuctionDetail(
       );
     } else {
       console.error("getAuctionDetail unknown error:", e);
+    }
+    return null;
+  }
+}
+
+// TODO: Auction Create API 만들기
+export type AuctionCreateResponse = {
+  id: number;
+  title: string;
+  description: string;
+  starting_price: number;
+  current_price: number;
+  image_url: string | null;
+  image_file: string | null;
+  image_file_url: string | null;
+  status: "active" | "ended" | "cancelled";
+  start_time: string;
+  end_time: string;
+  seller: number;
+  seller_nickname: string;
+  seller_profile_image: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type AuctionCreateInput = z.infer<typeof auctionCreateSchema>;
+
+export async function createAuction(
+  data: AuctionCreateInput,
+): Promise<AuctionCreateResponse | null> {
+  try {
+    // duration을 총 분(minutes)으로 변환하고 end_time 계산
+    const totalMinutes =
+      data.duration.days * 24 * 60 +
+      data.duration.hours * 60 +
+      data.duration.minutes;
+
+    const endTime = new Date(Date.now() + totalMinutes * 60000).toISOString();
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", data.startPrice.toString());
+    formData.append("end_time", endTime);
+    formData.append("image_file", data.image);
+
+    const res = await api.post<AuctionCreateResponse>(
+      "/auction/create/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    if (res.status === 201 || res.status === 200) return res.data;
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
     }
     return null;
   }
@@ -342,5 +411,3 @@ export async function placeBid(
     return null;
   }
 }
-
-// TODO: Auction Create API 만들기
