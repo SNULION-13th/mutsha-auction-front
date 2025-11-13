@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+
 import { Logo } from "../assets/image";
 
 import LoginModal from "@/components/Modal/LoginModal";
-import { useUser } from "@/contexts/UserContext";
 import ProfileDropdown from "@/components/Modal/ProfileDropdown";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Header() {
   const { user } = useUser();

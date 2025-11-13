@@ -1,6 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 import { Cup, LogoWhite } from "@/assets/image";
 import { Button } from "@/components/Button";
-import { useNavigate } from "react-router-dom";
 
 export type CardProps = {
   id: number;

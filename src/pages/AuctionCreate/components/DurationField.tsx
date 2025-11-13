@@ -1,8 +1,10 @@
-import { digitsOnly } from "@/utils/auction";
 import { Controller, useFormContext } from "react-hook-form";
+
 import { AuctionCreateFormData } from "../schema";
 
-const DurationControlRenderer = ({
+import { digitsOnly } from "@/utils/auction";
+
+function DurationControlRenderer({
   label,
   onChange,
   value,
@@ -10,7 +12,7 @@ const DurationControlRenderer = ({
   label: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
-}) => {
+}) {
   return (
     <div className="flex items-center gap-2">
       <input
@@ -22,9 +24,9 @@ const DurationControlRenderer = ({
       <span className="text-3xl pb-1">{label}</span>
     </div>
   );
-};
+}
 
-export const DurationField = () => {
+export function DurationField() {
   const {
     control,
     formState: { errors },
@@ -96,4 +98,4 @@ export const DurationField = () => {
       )}
     </div>
   );
-};
+}

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
+
 import { AuctionDetail, getAuctionDetail } from "@/apis/api";
 import { Button } from "@/components/Button";
 

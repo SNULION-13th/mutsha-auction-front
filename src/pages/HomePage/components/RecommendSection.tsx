@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
+
+import { type AuctionListItem, getRecommendedAuctions } from "@/apis/api";
 import { YhFashion } from "@/assets/dummy";
 import { Button } from "@/components/Button";
-import { useState, useEffect } from "react";
-import { type AuctionListItem, getRecommendedAuctions } from "@/apis/api";
 
 type CardProps = {
   image: string;

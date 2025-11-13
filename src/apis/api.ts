@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+
 import { api } from "./axios";
 
 export type UserCore = {
@@ -343,4 +344,47 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type AuctionForm = {
+  title: string;
+  description: string;
+  starting_price: number;
+  end_time: string;
+  image_file?: File;
+};
+
+export async function createAuction(
+  data: AuctionForm,
+): Promise<AuctionDetail | null> {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("description", data.description);
+  formData.append("starting_price", String(data.starting_price));
+  formData.append("end_time", data.end_time);
+  if (data.image_file) {
+    formData.append("image_file", data.image_file);
+  }
+
+  try {
+    const res = await api.post<AuctionDetail>("/auction/create/", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (res.status === 201) {
+      return res.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}
+

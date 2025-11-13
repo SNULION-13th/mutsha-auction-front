@@ -1,10 +1,12 @@
-import { Cup } from "@/assets/image";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Button } from "../Button";
-import { numberCommaFormatter } from "@/utils/number";
 import { useLocation } from "react-router-dom";
+
+import { Button } from "../Button";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+
+import { Cup } from "@/assets/image";
 import { useUser } from "@/contexts/UserContext";
 import { usePaymentReady } from "@/hooks/usePaymentQuery";
+import { numberCommaFormatter } from "@/utils/number";
 
 function PointCharge({ cup, money }: { cup: number; money: number }) {
   const location = useLocation();

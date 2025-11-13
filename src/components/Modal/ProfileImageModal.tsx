@@ -1,6 +1,7 @@
-import { Button } from "../Button";
-import { Edit } from "../../assets/image";
 import { useState } from "react";
+
+import { Edit } from "../../assets/image";
+import { Button } from "../Button";
 import {
   Dialog,
   DialogContent,
