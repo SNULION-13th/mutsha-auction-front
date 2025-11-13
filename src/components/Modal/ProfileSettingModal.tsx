@@ -1,5 +1,4 @@
 import { Button } from "../Button";
-import { useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -9,38 +8,58 @@ import {
 } from "../ui/dialog";
 import ProfileImageModal from "./ProfileImageModal";
 import { PROFILE_IMAGES, useUser } from "@/contexts/UserContext";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+// Zod 스키마 정의
+const profileSchema = z.object({
+  nickname: z
+    .string()
+    .min(1, "닉네임을 입력해주세요")
+    .max(10, "*10자 이내의 한글, 숫자, 영문자를 입력해주세요.")
+    .regex(
+      /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u,
+      "*10자 이내의 한글, 숫자, 영문자를 입력해주세요.",
+    ),
+  profileImage: z.string(),
+});
+
+type ProfileFormData = z.infer<typeof profileSchema>;
 
 export default function ProfileSettingModal() {
   const { user, updateProfile } = useUser();
-  //유저 값으로 모달의 초기값 설정
-  const [nickname, setNickname] = useState(user?.nickname ?? "");
-  const [selectedProfileImage, setSelectedProfileImage] = useState(
-    user?.profileImage,
-  );
 
-  const onlyAllowed = /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u;
-  const tooLong = nickname.length > 10;
-  const invalidChars = !onlyAllowed.test(nickname);
-  const empty = nickname.length === 0;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+    watch,
+    reset,
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    mode: "onChange",
+    defaultValues: {
+      nickname: user?.nickname ?? "",
+      profileImage: user?.profileImage ?? "",
+    },
+  });
 
-  const showWarning = !empty && (tooLong || invalidChars);
-  const canSubmit = !empty && !tooLong && !invalidChars;
-
-  const handleSubmit = async () => {
-    if (canSubmit) {
-      updateProfile(
-        nickname,
-        PROFILE_IMAGES.indexOf(selectedProfileImage ?? "") + 1,
-      );
-    }
-  };
+  const selectedProfileImage = watch("profileImage");
 
   // 모달 열릴 때 닉네임과 프로필 이미지 동기화
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      setNickname(user?.nickname ?? "");
-      setSelectedProfileImage(user?.profileImage ?? "");
+      reset({
+        nickname: user?.nickname ?? "",
+        profileImage: user?.profileImage ?? "",
+      });
     }
+  };
+
+  const onSubmit = (data: ProfileFormData) => {
+    updateProfile(data.nickname, PROFILE_IMAGES.indexOf(data.profileImage) + 1);
   };
 
   return (
@@ -59,7 +78,10 @@ export default function ProfileSettingModal() {
         </div>
       </DialogTrigger>
       <DialogContent className="w-180">
-        <div className="px-20 py-22.5 flex flex-col gap-20">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="px-20 py-22.5 flex flex-col gap-20"
+        >
           <div className="text-4xl font-bold text-scale-600">프로필 설정</div>
           <div className="flex flex-col gap-12.5">
             <div className="mx-auto relative w-28 h-28">
@@ -71,36 +93,33 @@ export default function ProfileSettingModal() {
               <ProfileImageModal
                 imageCandidates={PROFILE_IMAGES}
                 selectedProfileImage={selectedProfileImage ?? ""}
-                onSave={(selected) => setSelectedProfileImage(selected)}
+                onSave={(selected) => setValue("profileImage", selected)}
               />
             </div>
             <div className="flex flex-col gap-3">
               <input
-                value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                }}
+                {...register("nickname")}
                 placeholder="닉네임(최대 10자)"
                 className="w-full h-14 rounded-xl border border-black/10 px-5 outline-none focus:border-brand-primary"
               />
-              {showWarning && (
+              {errors.nickname && (
                 <p className="text-sm text-red-500">
-                  *10자 이내의 한글, 숫자, 영문자를 입력해주세요.
+                  {errors.nickname.message}
                 </p>
               )}
             </div>
             <DialogClose asChild>
               <Button
-                variant={canSubmit ? "primary" : "disabled"}
-                disabled={!canSubmit}
-                onClick={handleSubmit}
+                type="submit"
+                variant={isValid ? "primary" : "disabled"}
+                disabled={!isValid}
                 className="h-14"
               >
                 {"멋시장 시작하기"}
               </Button>
             </DialogClose>
           </div>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
