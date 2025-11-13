@@ -344,3 +344,57 @@ export async function placeBid(
 }
 
 // TODO: Auction Create API 만들기
+
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  end_time: string;
+  image_file?: File;
+};
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<AuctionDetail | null> {
+  try {
+    let response;
+
+    if (data.image_file) {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("starting_price", String(data.starting_price));
+      formData.append("end_time", data.end_time);
+      formData.append("image_file", data.image_file);
+
+      response = await api.post<AuctionDetail>("/auction/create/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } else {
+      response = await api.post<AuctionDetail>("/auction/create/", {
+        title: data.title,
+        description: data.description,
+        starting_price: data.starting_price,
+        end_time: data.end_time,
+      });
+    }
+
+    if (response.status === 201) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}

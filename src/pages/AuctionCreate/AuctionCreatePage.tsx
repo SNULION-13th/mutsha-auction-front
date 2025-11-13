@@ -8,6 +8,7 @@ import { DescriptionField } from "./components/DescriptionField";
 import { StartPriceField } from "./components/StartPriceField";
 import { ImageField } from "./components/ImageField";
 import { DurationField } from "./components/DurationField";
+import { useCreateAuction } from "@/hooks/useCreateAuction";
 
 type Props = {
   onSubmit?: (payload: {
@@ -28,6 +29,8 @@ function clampNum(n: number, min: number, max: number) {
 }
 
 function AuctionCreatePage({ onSubmit }: Props) {
+  const { mutate, isPending } = useCreateAuction();
+
   const methods = useForm({
     resolver: zodResolver(auctionCreateSchema),
     mode: "onChange",
@@ -43,6 +46,30 @@ function AuctionCreatePage({ onSubmit }: Props) {
     },
   });
 
+  const calculateEndTime = (duration: {
+    days: number;
+    hours: number;
+    minutes: number;
+  }) => {
+    const now = new Date();
+    now.setDate(now.getDate() + duration.days);
+    now.setHours(now.getHours() + duration.hours);
+    now.setMinutes(now.getMinutes() + duration.minutes);
+    return now.toISOString();
+  };
+
+  const handleFormSubmit = methods.handleSubmit((data) => {
+    console.log("폼 데이터 제출", data);
+
+    mutate({
+      title: data.title,
+      description: data.description,
+      starting_price: data.startPrice,
+      end_time: calculateEndTime(data.duration),
+      image_file: data.image,
+    });
+  });
+
   return (
     <div className="w-full px-50 py-30">
       <div className="max-w-[973px] mx-auto flex flex-col gap-25">
@@ -54,9 +81,7 @@ function AuctionCreatePage({ onSubmit }: Props) {
         </div>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit((data) =>
-              console.log("폼 데이터 제출", data),
-            )}
+            onSubmit={handleFormSubmit} // 👈 수정!
             className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
           >
             <div className="grid grid-cols-1 gap-12">
@@ -73,11 +98,15 @@ function AuctionCreatePage({ onSubmit }: Props) {
             <div className="w-full flex justify-center">
               <Button
                 type="submit"
-                variant={methods.formState.isValid ? "primary" : "disabled"}
-                disabled={!methods.formState.isValid}
+                variant={
+                  methods.formState.isValid && !isPending
+                    ? "primary"
+                    : "disabled"
+                }
+                disabled={!methods.formState.isValid || isPending}
                 className="w-80 h-14"
               >
-                상품 등록하기
+                {isPending ? "경매 등록 중..." : "상품 등록하기"}
               </Button>
             </div>
           </form>
