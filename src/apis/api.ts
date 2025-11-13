@@ -343,4 +343,65 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type AuctionCreateRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  end_time: string; // ISO 8601 format
+  image_file: File;
+};
+
+export type AuctionCreateResponse = {
+  id: number;
+  title: string;
+  description: string;
+  starting_price: number;
+  current_price: number;
+  status: "active" | "ended" | "cancelled";
+  start_time: string;
+  end_time: string;
+  seller: number;
+  image_url: string | null;
+  image_file_url: string | null;
+  created_at: string;
+};
+
+export async function createAuction(
+  data: AuctionCreateRequest,
+): Promise<AuctionCreateResponse | null> {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", data.starting_price.toString());
+    formData.append("end_time", data.end_time);
+    formData.append("image_file", data.image_file);
+
+    const response = await api.post<AuctionCreateResponse>(
+      "/auction/create/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    if (response.status === 201) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+      throw new Error(e.response?.data?.message || "경매 등록에 실패했습니다.");
+    } else {
+      console.error("createAuction unknown error:", e);
+      throw new Error("경매 등록 중 오류가 발생했습니다.");
+    }
+  }
+}
