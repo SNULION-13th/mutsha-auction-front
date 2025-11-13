@@ -93,6 +93,16 @@ export type AuctionDetail = {
   bid_count: string;
 };
 
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  startingPrice: number;
+  endTime: string;
+  image: File;
+};
+
+export type CreateAuctionResponse = AuctionDetail;
+
 export async function getAllAuctions(
   params: AuctionListParams = {},
 ): Promise<AuctionListItem[]> {
@@ -111,6 +121,41 @@ export async function getAllAuctions(
       console.error("getAllAuctions unknown error:", e);
     }
     return [];
+  }
+}
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<CreateAuctionResponse | null> {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", String(data.startingPrice));
+    formData.append("end_time", data.endTime);
+    formData.append("image", data.image);
+
+    const res = await api.post<CreateAuctionResponse>("/auction/", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (res.status === 201 || res.status === 200) {
+      return res.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
   }
 }
 

@@ -1,6 +1,5 @@
-import { Cup, File } from "@/assets/image";
 import { Button } from "@/components/Button";
-import { auctionCreateSchema } from "./schema";
+import { auctionCreateSchema, AuctionCreateFormData } from "./schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TitleField } from "./components/TitleField";
@@ -8,6 +7,9 @@ import { DescriptionField } from "./components/DescriptionField";
 import { ImageField } from "./components/ImageField";
 import { StartPriceField } from "./components/StartPriceField";
 import { DurationField } from "./components/DurationField";
+import { useCreateAuction } from "@/hooks/useAuctionMutation";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants/router";
 
 type Props = {
   onSubmit?: (payload: {
@@ -20,7 +22,10 @@ type Props = {
 };
 
 function AuctionCreatePage({ onSubmit }: Props) {
-  const methods = useForm({
+  const navigate = useNavigate();
+  const createAuctionMutation = useCreateAuction();
+
+  const methods = useForm<AuctionCreateFormData>({
     resolver: zodResolver(auctionCreateSchema),
     mode: "onChange",
     defaultValues: {
@@ -46,9 +51,40 @@ function AuctionCreatePage({ onSubmit }: Props) {
         </div>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit((data) =>
-              console.log("폼 데이터 제출", data),
-            )}
+            onSubmit={methods.handleSubmit(async (values) => {
+              const result = await createAuctionMutation.mutateAsync({
+                title: values.title,
+                description: values.description,
+                startPrice: values.startPrice,
+                duration: values.duration,
+                image: values.image,
+              });
+
+              if (!result) {
+                return;
+              }
+
+              onSubmit?.({
+                title: values.title,
+                description: values.description,
+                image: values.image,
+                startPriceCup: values.startPrice,
+                duration: {
+                  d: values.duration.days,
+                  h: values.duration.hours,
+                  m: values.duration.minutes,
+                },
+              });
+
+              const auctionId = result.id;
+              if (!auctionId) {
+                return;
+              }
+
+              navigate(
+                ROUTES.AUCTION.ROOM.replace(":auctionId", String(auctionId)),
+              );
+            })}
             className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
           >
             <div className="grid grid-cols-1 gap-12">
@@ -67,12 +103,21 @@ function AuctionCreatePage({ onSubmit }: Props) {
               <Button
                 type="submit"
                 variant={methods.formState.isValid ? "primary" : "disabled"}
-                disabled={!methods.formState.isValid}
+                disabled={
+                  !methods.formState.isValid || createAuctionMutation.isPending
+                }
                 className="w-80 h-14"
               >
-                상품 등록하기
+                {createAuctionMutation.isPending
+                  ? "경매 등록 중..."
+                  : "상품 등록하기"}
               </Button>
             </div>
+            {createAuctionMutation.isError && (
+              <p className="text-point-warning text-center text-base">
+                경매 등록에 실패했습니다. 잠시 후 다시 시도해주세요.
+              </p>
+            )}
           </form>
         </FormProvider>
       </div>
