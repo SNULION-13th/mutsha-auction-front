@@ -77,7 +77,11 @@ function AuctionCreatePage() {
             <div className="w-full flex justify-center">
               <Button
                 type="submit"
-                variant={methods.formState.isValid && !isPending ? "primary" : "disabled"}
+                variant={
+                  methods.formState.isValid && !isPending
+                    ? "primary"
+                    : "disabled"
+                }
                 disabled={!methods.formState.isValid || isPending}
                 className="w-80 h-14"
               >

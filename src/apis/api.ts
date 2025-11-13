@@ -376,7 +376,11 @@ export async function createAuction(
     return null;
   } catch (e: unknown) {
     if (isAxiosError(e)) {
-      console.error("createAuction error:", e.response?.status, e.response?.data);
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
     } else {
       console.error("createAuction unknown error:", e);
     }
