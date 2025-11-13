@@ -344,3 +344,73 @@ export async function placeBid(
 }
 
 // TODO: Auction Create API 만들기
+
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  image: File;
+  duration_minutes: number;
+};
+
+export type CreateAuctionResponse = {
+  id: number;
+  title: string;
+  description: string;
+  starting_price: number;
+  current_price: number;
+  status: string;
+  start_time: string;
+  end_time: string;
+  seller: number;
+  image_file_url: string;
+};
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<CreateAuctionResponse | null> {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("starting_price", data.starting_price.toString());
+    formData.append("duration_minutes", data.duration_minutes.toString());
+    formData.append("image_file", data.image); // image -> image_file로 변경
+
+    console.log("=== 경매 등록 요청 ===");
+    console.log("FormData 내용:", {
+      title: data.title,
+      description: data.description,
+      starting_price: data.starting_price,
+      duration_minutes: data.duration_minutes,
+      image_file: data.image.name,
+    });
+
+    const response = await api.post<CreateAuctionResponse>(
+      "/auction/create/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    console.log("경매 등록 성공:", response.data);
+    if (response.status === 201) {
+      return response.data;
+    }
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error("=== 경매 등록 실패 ===");
+      console.error("Status:", e.response?.status);
+      console.error("Error Data:", JSON.stringify(e.response?.data, null, 2));
+      console.error("Error Message:", e.message);
+      console.error("Request Headers:", e.config?.headers);
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}

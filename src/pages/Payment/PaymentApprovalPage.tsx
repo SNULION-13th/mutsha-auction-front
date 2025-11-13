@@ -1,3 +1,5 @@
+// PaymentApprovalPage.tsx
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/Button";
@@ -6,7 +8,18 @@ import { usePaymentApproval } from "@/hooks/usePaymentQuery";
 export default function PaymentApprovalPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  
+  // Strict Mode:
+  // 멱등성이 철저히 지켜지기 위해선, effect의 중복 실행으로 인한 오류가 없어야 합니다.
+  // 따라서 React에서는 Strict mode에서 effect를 두 번 실행시키고
+  // 개발단에서 멱등성이 잘 지켜지고 있는지 체크합니다.
+  
+  // Strict Mode에서 effect 중복 실행을 방지하기 위한 flag
   const hasProcessedRef = useRef(false);
+  
+  // effect단에서 mutation 함수를 호출할 경우, mutation의 status를
+  // 렌더링에 제대로 반영하는 것에 한계가 있습니다.
+  // 따라서 이 경우에는 status를 따로 관리합니다.
   const [paymentStatus, setPaymentStatus] = useState<
     "pending" | "success" | "error"
   >("pending");
