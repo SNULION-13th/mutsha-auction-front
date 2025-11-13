@@ -1,4 +1,6 @@
 import { Button } from "../Button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import {
   Dialog,
@@ -10,36 +12,47 @@ import {
 import ProfileImageModal from "./ProfileImageModal";
 import { useUser } from "@/contexts/UserContext";
 import { PROFILE_IMAGES } from "@/contexts/UserContext";
+import {
+  profileSettingSchema,
+  type ProfileSettingFormData,
+} from "./profileSchema";
 
 export default function ProfileSettingModal() {
   const { user, updateProfile } = useUser();
-  const [nickname, setNickname] = useState(user?.nickname ?? "");
-  const [selectedProfileImage, setSelectedProfileImage] = useState(
-    user?.profileImage,
-  );
 
-  const onlyAllowed = /^[0-9A-Za-z\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]+$/u;
-  const tooLong = nickname.length > 10;
-  const invalidChars = !onlyAllowed.test(nickname);
-  const empty = nickname.length === 0;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+    watch,
+    reset,
+  } = useForm<ProfileSettingFormData>({
+    resolver: zodResolver(profileSettingSchema),
+    mode: "onChange",
+    defaultValues: {
+      nickname: user?.nickname ?? "",
+      profileImage: user?.profileImage ?? "",
+    },
+  });
 
-  const showWarning = !empty && (tooLong || invalidChars);
-  const canSubmit = !empty && !tooLong && !invalidChars;
+  const selectedProfileImage = watch("profileImage");
+  const nickname = watch("nickname");
 
-  const handleSubmit = async () => {
-    if (canSubmit) {
-      await updateProfile(
-        nickname,
-        PROFILE_IMAGES.indexOf(selectedProfileImage ?? "") + 1,
-      );
-    }
+  const onSubmit = async (data: ProfileSettingFormData) => {
+    await updateProfile(
+      data.nickname,
+      PROFILE_IMAGES.indexOf(data.profileImage ?? "") + 1,
+    );
   };
 
   // 모달 열릴 때 닉네임과 프로필 이미지 동기화
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      setNickname(user?.nickname ?? "");
-      setSelectedProfileImage(user?.profileImage ?? "");
+      reset({
+        nickname: user?.nickname ?? "",
+        profileImage: user?.profileImage ?? "",
+      });
     }
   };
 
@@ -71,30 +84,28 @@ export default function ProfileSettingModal() {
               <ProfileImageModal
                 imageCandidates={PROFILE_IMAGES}
                 selectedProfileImage={selectedProfileImage ?? ""}
-                onSave={(selected) => setSelectedProfileImage(selected)}
+                onSave={(selected) => setValue("profileImage", selected)}
               />
             </div>
             <div className="flex flex-col gap-3">
               <input
+                {...register("nickname")}
                 value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                }}
                 placeholder="닉네임(최대 10자)"
                 className="w-full h-14 rounded-xl border border-black/10 px-5 outline-none focus:border-brand-primary"
               />
-              {showWarning && (
+              {errors.nickname && (
                 <p className="text-sm text-red-500">
-                  *10자 이내의 한글, 숫자, 영문자를 입력해주세요.
+                  {errors.nickname.message}
                 </p>
               )}
             </div>
 
             <DialogClose asChild>
               <Button
-                variant={canSubmit ? "primary" : "disabled"}
-                disabled={!canSubmit}
-                onClick={handleSubmit}
+                variant={isValid ? "primary" : "disabled"}
+                disabled={!isValid}
+                onClick={handleSubmit(onSubmit)}
                 className="h-14"
               >
                 {"멋시장 시작하기"}

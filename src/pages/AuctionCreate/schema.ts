@@ -42,5 +42,3 @@ export const auctionCreateSchema = z.object({
       },
     ),
 });
-
-export type AuctionCreateFormData = z.infer<typeof auctionCreateSchema>;
