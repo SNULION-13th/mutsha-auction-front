@@ -343,4 +343,54 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type AuctionCreateRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  image_url?: string | null;
+  image_file?: File | null;
+  end_time: string;
+};
+
+export type AuctionCreateResponse = {
+  seller_nickname: string;
+  seller_profile_image: string;
+  time_remaining: string;
+  is_active: string;
+  bid_count: string;
+  image_file_url: string | null;
+};
+
+export async function createAuction(
+  params: AuctionCreateRequest,
+): Promise<boolean> {
+  try {
+    const formData = new FormData();
+    formData.append("title", params.title);
+    formData.append("description", params.description);
+    formData.append("starting_price", String(params.starting_price));
+    if (params.image_url) formData.append("image_url", params.image_url);
+    if (params.image_file) formData.append("image_file", params.image_file);
+    formData.append("end_time", params.end_time);
+
+    const res = await api.post(`/auction/create/`, formData, {
+      // Content-Type 헤더를 제거하여 브라우저가 자동으로 설정하도록 함
+      headers: {
+        // "Content-Type": "multipart/form-data" <- 이 줄 제거
+      },
+    });
+
+    return res.status === 201;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return false;
+  }
+}
