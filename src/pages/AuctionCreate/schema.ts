@@ -17,11 +17,12 @@ export const auctionCreateSchema = z.object({
     .max(999999, "시작가는 999,999잔을 초과할 수 없습니다."),
 
   image: z
-    .instanceof(File, { message: "사진을 등록해주세요." })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
+    .instanceof(FileList, { message: "사진을 등록해주세요." })
+    .refine((files) => files.length > 0, { message: "사진을 등록해주세요." })
+    .refine((files) => files[0]!.size <= 5 * 1024 * 1024, {
       message: "이미지 크기는 5MB 이하여야 합니다.",
     })
-    .refine((file) => file.type.startsWith("image/"), {
+    .refine((files) => files[0]!.type.startsWith("image/"), {
       message: "이미지 파일만 업로드 가능합니다.",
     }),
 
