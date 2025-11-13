@@ -1,39 +1,24 @@
-import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuctionDetail, getAuctionDetail } from "@/apis/api";
 import { Button } from "@/components/Button";
+import { useQuery } from "@tanstack/react-query";
+import { auctionDetailQueryKey } from "@/hooks/useAuctionMutation";
 
 function AuctionRoomPage() {
   const { auctionId } = useParams<{ auctionId: string }>();
   const navigate = useNavigate();
-  const [auction, setAuction] = useState<AuctionDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: auction,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<AuctionDetail | null>({
+    queryKey: auctionDetailQueryKey(auctionId ?? ""),
+    queryFn: () => getAuctionDetail(auctionId ?? ""),
+    enabled: !!auctionId,
+  });
 
-  useEffect(() => {
-    async function fetchAuctionDetail() {
-      try {
-        setLoading(true);
-        const data = await getAuctionDetail(auctionId ?? "");
-        if (data) {
-          setAuction(data);
-        } else {
-          setError("경매를 찾을 수 없습니다.");
-        }
-      } catch (err) {
-        console.error("경매 상세 정보 로딩 실패:", err);
-        setError("경매 정보를 불러오는데 실패했습니다.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (auctionId) {
-      fetchAuctionDetail();
-    }
-  }, [auctionId]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="w-full px-50 pt-25">
         <div className="max-w-[1160px] mx-auto">
@@ -53,11 +38,11 @@ function AuctionRoomPage() {
     );
   }
 
-  if (error || !auction) {
+  if (isError || !auction) {
     return (
       <div className="w-full px-50 pt-25">
         <div className="max-w-[1160px] mx-auto text-center">
-          <div className="text-2xl text-scale-500 mb-4">{error}</div>
+          <div className="text-2xl text-scale-500 mb-4">{isError}</div>
           <Button variant="primary" onClick={() => navigate("/auction")}>
             경매 목록으로 돌아가기
           </Button>

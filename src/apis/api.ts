@@ -1,5 +1,6 @@
 import { isAxiosError } from "axios";
 import { api } from "./axios";
+import axios from "axios";
 
 export type UserCore = {
   id: number;
@@ -343,4 +344,58 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+// 경매 등록 API (FormData)
+export type AuctionCreateRequest = {
+  title: string;
+  description: string;
+  image: File;
+  startPrice: number;
+  duration: {
+    days: number;
+    hours: number;
+    minutes: number;
+  };
+};
+
+export type AuctionCreateResponse = {
+  id: number;
+};
+
+// duration 객체를 받아 end_time(ISO8601) 문자열을 계산하는 헬퍼 함수
+function calculateEndTime(duration: {
+  days: number;
+  hours: number;
+  minutes: number;
+}): string {
+  const now = new Date();
+  now.setSeconds(0, 0); // 초, ms 0으로 맞춤
+  const end = new Date(now);
+  end.setDate(end.getDate() + duration.days);
+  end.setHours(end.getHours() + duration.hours);
+  end.setMinutes(end.getMinutes() + duration.minutes);
+  return end.toISOString();
+}
+
+export async function createAuction(
+  payload: AuctionCreateRequest,
+): Promise<AuctionCreateResponse> {
+  const formData = new FormData();
+  formData.append("title", payload.title);
+  formData.append("description", payload.description);
+  if (payload.image) {
+    formData.append("image_file", payload.image);
+  }
+  formData.append("starting_price", String(payload.startPrice));
+  // duration에서 end_time 계산 후 추가
+  const endTime = calculateEndTime(payload.duration);
+  formData.append("end_time", endTime);
+
+  const res = await api.post<AuctionCreateResponse>(
+    "/auction/create/",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
+  return res.data;
+}
