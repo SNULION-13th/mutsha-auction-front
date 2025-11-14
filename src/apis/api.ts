@@ -324,9 +324,9 @@ export type BidResponse = {
 export async function placeBid(
   auctionId: number | string,
   amount: number,
-): Promise<BidResponse | null> {
+): Promise<AuctionDetail | null> {
   try {
-    const res = await api.post<BidResponse>(`/auction/${auctionId}/bid/`, {
+    const res = await api.post<AuctionDetail>(`/auction/${auctionId}/bid/`, {
       amount,
     });
     if (res.status === 201) {
@@ -343,4 +343,105 @@ export async function placeBid(
   }
 }
 
-// TODO: Auction Create API 만들기
+export type CreateAuctionRequest = {
+  title: string;
+  description: string;
+  starting_price: number;
+  image_url?: string | null;
+  image_file?: File;
+  end_time: string;
+};
+
+export async function createAuction(
+  data: CreateAuctionRequest,
+): Promise<AuctionDetail | null> {
+  try {
+    if (data.image_file) {
+      const fd = new FormData();
+      fd.append("title", data.title);
+      fd.append("description", data.description);
+      fd.append("starting_price", String(data.starting_price));
+      fd.append("end_time", data.end_time);
+      fd.append("image_file", data.image_file, data.image_file.name);
+
+      const res = await api.post<AuctionDetail>("/auction/create/", fd);
+      if (res.status === 201) return res.data;
+      return null;
+    }
+
+    const { image_file, ...json } = data;
+    const res = await api.post<AuctionDetail>("/auction/create/", json);
+    if (res.status === 201) return res.data;
+    return null;
+  } catch (e: unknown) {
+    if (isAxiosError(e)) {
+      console.error(
+        "createAuction error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("createAuction unknown error:", e);
+    }
+    return null;
+  }
+}
+
+export type MyAuctionHistory = {
+  auction_id: number;
+  title: string;
+  current_price: number;
+  start_price: number;
+  end_time: string;
+  status: "active" | "ended" | "cancelled";
+  image_url: string | null;
+  image_file: string | null;
+  image_file_url: string | null;
+};
+
+export type MyBidHistory = {
+  auction_id: number;
+  title: string;
+  status: "active" | "ended";
+  current_price: number;
+  my_bid: number;
+  end_time: string;
+  is_winner: boolean;
+  image_url: string | null;
+  image_file: string | null;
+  image_file_url: string | null;
+};
+
+export async function getMyAuctions(): Promise<MyAuctionHistory[]> {
+  try {
+    const res = await api.get<MyAuctionHistory[]>("/auction/my-auctions/");
+    if (res.status === 200) return res.data ?? [];
+    return [];
+  } catch (e) {
+    if (isAxiosError(e)) {
+      console.error(
+        "getMyAuctions error:",
+        e.response?.status,
+        e.response?.data,
+      );
+    } else {
+      console.error("getMyAuctions unknown error:", e);
+    }
+    return [];
+  }
+}
+
+export async function getMyBids(): Promise<MyBidHistory[]> {
+  try {
+    const res = await api.get<MyBidHistory[]>("/auction/my-bids/");
+    if (res.status === 200) return res.data ?? [];
+    return [];
+  } catch (e) {
+    if (isAxiosError(e)) {
+      console.error("getMyBids error:", e.response?.status, e.response?.data);
+    } else {
+      console.error("getMyBids unknown error:", e);
+    }
+    return [];
+  }
+}
