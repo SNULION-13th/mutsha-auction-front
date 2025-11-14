@@ -324,9 +324,9 @@ export type BidResponse = {
 export async function placeBid(
   auctionId: number | string,
   amount: number,
-): Promise<AuctionDetail | null> {
+): Promise<BidResponse | null> {
   try {
-    const res = await api.post<AuctionDetail>(`/auction/${auctionId}/bid/`, {
+    const res = await api.post<BidResponse>(`/auction/${auctionId}/bid/`, {
       amount,
     });
     if (res.status === 201) {

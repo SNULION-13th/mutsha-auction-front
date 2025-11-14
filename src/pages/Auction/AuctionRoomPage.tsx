@@ -47,49 +47,6 @@ function AuctionRoomPage() {
   }, [auctionId]);
 
   useEffect(() => {
-    if (!auctionId) return;
-
-    const wsUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(
-      /^http/,
-      "ws",
-    );
-    const ws = new WebSocket(`${wsUrl}/ws/auction/${auctionId}/`);
-
-    ws.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const updatedAuctionData = JSON.parse(event.data);
-        if (updatedAuctionData && updatedAuctionData.id !== undefined) {
-          console.log(
-            "실시간 경매 상태 업데이트:",
-            updatedAuctionData.current_price,
-          );
-          setAuction(updatedAuctionData);
-        } else {
-          console.warn("수신된 데이터 형식이 다릅니다: ", updatedAuctionData);
-        }
-      } catch (e) {
-        console.error("메시지 처리 중 오류 발생:", e);
-      }
-    };
-
-    ws.onclose = (event) => {
-      console.log("WebSocket connection closed:", event);
-    };
-
-    ws.onerror = (e) => {
-      console.error("WebSocket error:", e);
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [auctionId]);
-
-  useEffect(() => {
     if (!auction) return;
 
     const interval = setInterval(() => {
@@ -110,8 +67,8 @@ function AuctionRoomPage() {
     return bid >= min;
   }, [auction, bid]);
 
-  const handleBidSuccess = (newAuction: AuctionDetail) => {
-    setAuction(newAuction);
+  const handleBidSuccess = (newPrice: number) => {
+    setAuction((prev) => (prev ? { ...prev, current_price: newPrice } : prev));
     setBidInput("");
   };
 
