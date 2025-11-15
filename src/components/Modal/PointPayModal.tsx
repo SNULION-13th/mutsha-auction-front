@@ -1,4 +1,4 @@
-import { getUserInfo, placeBid, UserProfile } from "@/apis/api";
+import { getUserInfo, placeBid, UserProfile, AuctionDetail } from "@/apis/api";
 import { useEffect, useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { formatNumber } from "@/utils/number";
@@ -19,7 +19,7 @@ export default function PointPayModal({
 }: {
   bid: number;
   auctionId?: number;
-  onBidSuccess: (newPrice: number) => void;
+  onBidSuccess: (newAuction: AuctionDetail) => void;
   children?: React.ReactNode;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
@@ -112,7 +112,7 @@ export default function PointPayModal({
                       setSubmitting(true);
                       const result = await placeBid(auctionId, bid);
                       if (result) {
-                        onBidSuccess(result.amount);
+                        onBidSuccess(result);
                         setShowDone(true);
                       }
                     } finally {
