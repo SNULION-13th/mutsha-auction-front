@@ -5,9 +5,8 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { useEffect } from "react";
 
 export default function Layout() {
-  
   //TODO: 글로벌 알림 useEffect 구현
-  
+
   return (
     <div className="w-full bg-bg-default">
       <Header />
