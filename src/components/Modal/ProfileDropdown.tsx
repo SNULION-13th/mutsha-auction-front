@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "../Button";
 import { Cup } from "@/assets/image";
 import {
@@ -13,6 +14,7 @@ import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileDropdown() {
   const { logout, user } = useUser();
+  const [showCharge, setShowCharge] = useState(true);
   const navigate = useNavigate();
   return (
     <DropdownMenu>
@@ -38,7 +40,14 @@ export default function ProfileDropdown() {
             잔
           </div>
         </div>
-        <PointChargeModalButton />
+        <PointChargeModalButton
+          open={showCharge}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              setShowCharge(false);
+            }
+          }}
+        />
         <button
           className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer"
           onClick={async () => {
