@@ -361,6 +361,7 @@ export async function createAuction(
       fd.append("title", data.title);
       fd.append("description", data.description);
       fd.append("starting_price", String(data.starting_price));
+      fd.append("current_price", String(data.starting_price)); // 시작가 현재가로 반영
       fd.append("end_time", data.end_time);
       fd.append("image_file", data.image_file, data.image_file.name);
 
