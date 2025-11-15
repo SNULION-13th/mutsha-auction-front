@@ -1,11 +1,9 @@
 import { Cup } from "@/assets/image";
 import { digitsOnly } from "@/utils/auction";
-import { Controller, useFormContext } from "react-hook-form";
-import { AuctionCreateFormData } from "../schema";
+import { Controller } from "react-hook-form";
+import { FormFieldProps } from "./type";
 
-export function StartPriceField() {
-  const { control } = useFormContext<AuctionCreateFormData>();
-
+export function StartPriceField({ control }: Pick<FormFieldProps, "control">) {
   return (
     <Controller
       name="startPrice"

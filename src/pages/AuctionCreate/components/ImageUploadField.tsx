@@ -1,10 +1,9 @@
 import { File as FileIcon } from "@/assets/image";
 import { useEffect, useRef, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { AuctionCreateFormData } from "../schema";
+import { Controller } from "react-hook-form";
+import { FormFieldProps } from "./type";
 
-export const ImageField = () => {
-  const { control } = useFormContext<AuctionCreateFormData>();
+export function ImageUploadField({ control }: Pick<FormFieldProps, "control">) {
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -29,10 +28,26 @@ export const ImageField = () => {
             <label className="text-lg font-bold text-scale-600">사진</label>
             <div
               onClick={() => inputRef.current?.click()}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const file = e.dataTransfer.files?.[0];
+                if (file && file.type.startsWith("image/")) {
+                  onChange(file);
+                }
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
               className={`w-full h-[320px] rounded-md border ${
                 preview ? "border-transparent" : "border-scale-200"
               } overflow-hidden cursor-pointer flex items-center justify-center`}
-              title={preview ? "클릭하여 다른 사진으로 변경" : "클릭 "}
+              title={
+                preview
+                  ? "클릭하여 다른 사진으로 변경"
+                  : "클릭 또는 드래그 앤 드롭"
+              }
             >
               {!preview ? (
                 <div className="flex flex-col items-center gap-4 text-scale-300">
@@ -71,4 +86,4 @@ export const ImageField = () => {
       }}
     />
   );
-};
+}

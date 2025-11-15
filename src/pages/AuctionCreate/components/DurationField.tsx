@@ -1,91 +1,69 @@
 import { digitsOnly } from "@/utils/auction";
-import { Controller, useFormContext } from "react-hook-form";
-import { AuctionCreateFormData } from "../schema";
+import { Controller } from "react-hook-form";
+import { FormFieldProps } from "./type";
 
-const DurationControlRenderer = ({
-  label,
-  onChange,
-  value,
-}: {
-  label: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
-}) => {
-  return (
-    <div className="flex items-center gap-2">
-      <input
-        inputMode="numeric"
-        value={value}
-        onChange={onChange}
-        className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
-      />
-      <span className="text-3xl pb-1">{label}</span>
-    </div>
-  );
-};
-
-export const DurationField = () => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<AuctionCreateFormData>();
-
+export function DurationField({
+  control,
+  formState: { errors },
+}: Pick<FormFieldProps, "control" | "formState">) {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-lg font-bold text-scale-600">경매 기간</label>
       <div className="flex items-center gap-5 text-scale-500">
-        {/* TODO: 날짜 Controller */}
-        <Controller<AuctionCreateFormData, "duration.days">
+        <Controller
           name="duration.days"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <DurationControlRenderer
-              label="d"
-              onChange={(e) => {
-                const digits = digitsOnly(e.target.value);
-                const num = digits ? Number(digits) : 0;
-                onChange(Math.min(num, 365));
-              }}
-              value={String(value)}
-            />
+            <div className="flex items-center gap-2">
+              <input
+                inputMode="numeric"
+                value={value}
+                onChange={(e) => {
+                  const digits = digitsOnly(e.target.value);
+                  onChange(digits ? Number(digits) : 0);
+                }}
+                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+              />
+              <span className="text-3xl pb-1">d</span>
+            </div>
           )}
         />
-        {/* TODO: 시간 Controller */}
-        <Controller<AuctionCreateFormData, "duration.hours">
+        <Controller
           name="duration.hours"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <DurationControlRenderer
-              label="h"
-              onChange={(e) => {
-                const digits = digitsOnly(e.target.value);
-                const num = digits ? Number(digits) : 0;
-                onChange(Math.min(num, 23));
-              }}
-              value={String(value).padStart(2, "0")}
-            />
+            <div className="flex items-center gap-2">
+              <input
+                inputMode="numeric"
+                value={String(value).padStart(2, "0")}
+                onChange={(e) => {
+                  const digits = digitsOnly(e.target.value);
+                  const num = digits ? Number(digits) : 0;
+                  onChange(Math.min(num, 23));
+                }}
+                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+              />
+              <span className="text-3xl pb-1">h</span>
+            </div>
           )}
         />
-        {/* TODO: 분 Controller */}
         <Controller
           name="duration.minutes"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <Controller<AuctionCreateFormData, "duration.minutes">
-              name="duration.minutes"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <DurationControlRenderer
-                  label="m"
-                  onChange={(e) => {
-                    const digits = digitsOnly(e.target.value);
-                    const num = digits ? Number(digits) : 0;
-                    onChange(Math.min(num, 59));
-                  }}
-                  value={String(value).padStart(2, "0")}
-                />
-              )}
-            />
+            <div className="flex items-center gap-2">
+              <input
+                inputMode="numeric"
+                value={String(value).padStart(2, "0")}
+                onChange={(e) => {
+                  const digits = digitsOnly(e.target.value);
+                  const num = digits ? Number(digits) : 0;
+                  onChange(Math.min(num, 59));
+                }}
+                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+              />
+              <span className="text-3xl pb-1">m</span>
+            </div>
           )}
         />
       </div>
@@ -96,4 +74,4 @@ export const DurationField = () => {
       )}
     </div>
   );
-};
+}
