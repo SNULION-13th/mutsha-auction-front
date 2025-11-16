@@ -47,26 +47,35 @@ function AuctionRoomPage() {
   }, [auctionId]);
 
   useEffect(() => {
-    if (!auctionId) return;
+    if (!auctionId) return; // auctionId가 없으면 실행 안 함
 
+    // 1. 환경 변수에서 API 주소를 가져와 ws:// 프로토콜로 변경
     const wsUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(
-      /^http/,
-      "ws",
+      /^http/, // "http"로 시작하는 부분을
+      "ws", // "ws"로 변경
     );
+
+    // 2. 백엔드 routing.py에 정의한 URL로 웹소켓 연결 시도
     const ws = new WebSocket(`${wsUrl}/ws/auction/${auctionId}/`);
 
+    // 3. 연결 성공 시
     ws.onopen = () => {
       console.log("WebSocket connection established");
     };
 
+    // 4. (핵심) 서버로부터 메시지 수신 시
     ws.onmessage = (event) => {
       try {
+        // views.py가 쏜 JSON 데이터를 객체로 파싱
         const updatedAuctionData = JSON.parse(event.data);
+
+        // 데이터 형식이 올바른지 확인
         if (updatedAuctionData && updatedAuctionData.id !== undefined) {
           console.log(
             "실시간 경매 상태 업데이트:",
             updatedAuctionData.current_price,
           );
+          // 5. 수신한 데이터로 auction state를 통째로 업데이트!
           setAuction(updatedAuctionData);
         } else {
           console.warn("수신된 데이터 형식이 다릅니다: ", updatedAuctionData);
@@ -76,18 +85,22 @@ function AuctionRoomPage() {
       }
     };
 
+    // 6. 연결 종료 시
     ws.onclose = (event) => {
       console.log("WebSocket connection closed:", event);
     };
 
+    // 7. 에러 발생 시
     ws.onerror = (e) => {
       console.error("WebSocket error:", e);
     };
 
+    // 8. (중요) 페이지를 벗어날 때(unmount) 연결을 종료시킴
     return () => {
       ws.close();
     };
-  }, [auctionId]);
+  }, [auctionId]); // auctionId가 변경될 때만 이 Effect가 실행됨
+  // ⬆️ --- [WebSocket 연결 Effect 추가] --- ⬆️
 
   useEffect(() => {
     if (!auction) return;
@@ -111,8 +124,7 @@ function AuctionRoomPage() {
   }, [auction, bid]);
 
   const handleBidSuccess = (newAuction: AuctionDetail) => {
-    setAuction(newAuction);
-    setBidInput("");
+    setAuction(newAuction); // 최신 정보로 덮어쓰기
   };
 
   const isEnded = useMemo(() => {
