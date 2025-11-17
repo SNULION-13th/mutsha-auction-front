@@ -62,14 +62,18 @@ function PointCharge({ cup, money }: { cup: number; money: number }) {
   );
 }
 
-export default function PointChargeModal() {
+export default function PointChargeModal({
+  open,
+  onOpenChange,
+  children,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  children?: React.ReactNode;
+}) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="primary" size="small" isRounded={true}>
-          충전하기
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-133">
         <div className="flex flex-col items-center px-8 py-15 gap-12.5">
           <div className="text-2xl font-bold text-scale-600">
