@@ -5,7 +5,31 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { useEffect } from "react";
 
 export default function Layout() {
-  //TODO: 글로벌 알림 useEffect 구현
+  useEffect(() => {
+    const wsUrl = `${import.meta.env.VITE_API_BASE_URL.replace(/^http/, "ws")}/ws/notifications/`;
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      console.log("Connected to notifications socket");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      alert(data.message);
+    };
+
+    ws.onclose = () => {
+      console.log("Disconnected from notifications socket");
+    };
+
+    ws.onerror = (error) => {
+      console.error("Notifications socket error:", error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   return (
     <div className="w-full bg-bg-default">
