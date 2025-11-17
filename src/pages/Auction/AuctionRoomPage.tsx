@@ -49,9 +49,9 @@ function AuctionRoomPage() {
   useEffect(() => {
     if (!auctionId) return;
 
-    const wsUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(
-      /^http/,
-      "ws",
+    const wsUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000").replace(
+      /^https?/,
+      (match: string) => match === "https" ? "wss" : "ws",
     );
     const ws = new WebSocket(`${wsUrl}/ws/auction/${auctionId}/`);
 
