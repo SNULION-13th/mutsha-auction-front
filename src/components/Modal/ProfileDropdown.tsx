@@ -7,13 +7,16 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-import PointChargeModalButton from "./PointChargeModal";
+import { useState } from "react";
+import PointChargeModal from "./PointChargeModal";
 import ProfileSettingModalButton from "./ProfileSettingModal";
 import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileDropdown() {
   const { logout, user } = useUser();
   const navigate = useNavigate();
+  const [isPointChargeModalOpen, setIsPointChargeModalOpen] = useState(false);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -38,7 +41,16 @@ export default function ProfileDropdown() {
             잔
           </div>
         </div>
-        <PointChargeModalButton />
+
+        <PointChargeModal
+          open={isPointChargeModalOpen}
+          onOpenChange={setIsPointChargeModalOpen}
+        >
+          <Button variant="primary" size="small" isRounded={true}>
+            충전하기
+          </Button>
+        </PointChargeModal>
+
         <button
           className="flex items-center text-base text-scale-400 underline underline-offset-1 cursor-pointer"
           onClick={async () => {

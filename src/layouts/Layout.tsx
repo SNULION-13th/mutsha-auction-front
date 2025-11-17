@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Layout() {
   useEffect(() => {
-    const wsUrl = `${import.meta.env.VITE_API_BASE_URL.replace(/^http/, 'ws')}/ws/notifications/`;
+    const wsUrl = `${import.meta.env.VITE_API_BASE_URL.replace(/^http/, "ws")}/ws/notifications/`;
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
