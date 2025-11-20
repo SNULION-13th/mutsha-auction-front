@@ -1,0 +1,315 @@
+import { r as n, j as e, C as p, f as r, v as N } from "./index-BafdFBMt.js";
+const l = (s) => {
+    if (typeof s == "number") return s;
+    if (s == null) return 0;
+    const c = Number(String(s).replace(/,/g, ""));
+    return Number.isFinite(c) ? c : 0;
+  },
+  f = () => {
+    const [s, c] = n.useState([]),
+      [i, x] = n.useState(!0);
+    n.useEffect(() => {
+      (async () => {
+        try {
+          const a = await N();
+          c(a);
+        } catch (a) {
+          console.error(
+            "[DEBUG] PaymentHistoryPage - Failed to fetch payment history:",
+            a,
+          );
+        } finally {
+          x(!1);
+        }
+      })();
+    }, []);
+    const o = (t) => {
+        if (!t) return "-";
+        try {
+          return new Date(t).toLocaleString("ko-KR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch {
+          return t;
+        }
+      },
+      m = (t) => {
+        switch (t) {
+          case "CARD":
+            return "카드";
+          case "MONEY":
+            return "현금";
+          case "ACCOUNT":
+            return "계좌이체";
+          default:
+            return t || "카카오페이";
+        }
+      },
+      h = (t) => {
+        switch (t) {
+          case "DONE":
+          case "SUCCESS":
+          case "SUCCESS_PAYMENT":
+            return {
+              text: "결제 완료",
+              cls: "bg-brand-secondary text-brand-primary",
+            };
+          case "CANCEL":
+          case "CANCELED":
+            return { text: "결제 취소", cls: "bg-scale-100 text-scale-500" };
+          default:
+            return { text: t || "진행 중", cls: "bg-scale-100 text-scale-500" };
+        }
+      };
+    if (i)
+      return e.jsx("div", {
+        className:
+          "min-h-screen bg-bg-default flex items-center justify-center",
+        children: e.jsxs("div", {
+          className: "text-center",
+          children: [
+            e.jsx("div", {
+              className:
+                "animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4",
+            }),
+            e.jsx("p", {
+              className: "text-scale-400",
+              children: "결제 내역을 불러오는 중...",
+            }),
+          ],
+        }),
+      });
+    const b = s.reduce((t, a) => t + l(a.amount), 0),
+      u = s.reduce((t, a) => t + l(a.point), 0);
+    return e.jsx("div", {
+      className: "min-h-screen bg-bg-default py-20",
+      children: e.jsxs("div", {
+        className: "max-w-6xl mx-auto px-4",
+        children: [
+          e.jsxs("div", {
+            className: "mb-8",
+            children: [
+              e.jsx("h1", {
+                className: "text-3xl font-bold text-scale-600 mb-2",
+                children: "결제 내역",
+              }),
+              e.jsx("p", {
+                className: "text-scale-400",
+                children:
+                  "카카오페이를 통한 모든 결제 내역을 확인할 수 있습니다.",
+              }),
+            ],
+          }),
+          s.length === 0
+            ? e.jsxs("div", {
+                className:
+                  "bg-bg-white rounded-xl shadow-sm border border-scale-200 p-10 text-center",
+                children: [
+                  e.jsx("div", {
+                    className: "text-scale-300 mb-4",
+                    children: e.jsx("svg", {
+                      className: "mx-auto h-12 w-12",
+                      fill: "none",
+                      viewBox: "0 0 24 24",
+                      stroke: "currentColor",
+                      children: e.jsx("path", {
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                        d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+                      }),
+                    }),
+                  }),
+                  e.jsx("h3", {
+                    className: "text-lg font-bold text-scale-600 mb-2",
+                    children: "결제 내역이 없습니다",
+                  }),
+                  e.jsx("p", {
+                    className: "text-scale-400",
+                    children: "아직 결제한 내역이 없습니다.",
+                  }),
+                ],
+              })
+            : e.jsx("div", {
+                className:
+                  "bg-bg-white rounded-xl shadow-sm border border-scale-200 overflow-hidden",
+                children: e.jsx("div", {
+                  className: "overflow-x-auto",
+                  children: e.jsxs("table", {
+                    className: "min-w-full divide-y divide-scale-200",
+                    children: [
+                      e.jsx("thead", {
+                        className: "bg-scale-100/50",
+                        children: e.jsxs("tr", {
+                          children: [
+                            e.jsx("th", {
+                              className:
+                                "px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider",
+                              children: "상품명",
+                            }),
+                            e.jsx("th", {
+                              className:
+                                "px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider",
+                              children: "결제 금액",
+                            }),
+                            e.jsx("th", {
+                              className:
+                                "px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider",
+                              children: "결제 수단",
+                            }),
+                            e.jsx("th", {
+                              className:
+                                "px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider",
+                              children: "결제 승인 시간",
+                            }),
+                            e.jsx("th", {
+                              className:
+                                "px-6 py-3 text-left text-xs font-bold text-scale-400 tracking-wider",
+                              children: "상태",
+                            }),
+                          ],
+                        }),
+                      }),
+                      e.jsx("tbody", {
+                        className: "bg-bg-white divide-y divide-scale-200",
+                        children: s.map((t, a) => {
+                          const d = h(t.status);
+                          return e.jsxs(
+                            "tr",
+                            {
+                              className:
+                                a % 2 === 0 ? "bg-white" : "bg-scale-100/30",
+                              children: [
+                                e.jsx("td", {
+                                  className: "px-6 py-4 whitespace-nowrap",
+                                  children: e.jsxs("div", {
+                                    className: "flex items-center",
+                                    children: [
+                                      e.jsx("div", {
+                                        className:
+                                          "h-12 w-12 rounded-full bg-brand-secondary flex items-center justify-center",
+                                        children: e.jsx("img", {
+                                          src: p,
+                                          alt: "cup",
+                                          className: "h-10 w-10",
+                                        }),
+                                      }),
+                                      e.jsxs("div", {
+                                        className: "ml-4",
+                                        children: [
+                                          e.jsx("div", {
+                                            className:
+                                              "text-sm font-bold text-scale-600",
+                                            children: t.item_name,
+                                          }),
+                                          e.jsxs("div", {
+                                            className: "text-sm text-scale-400",
+                                            children: [r(l(t.point)), " 잔"],
+                                          }),
+                                        ],
+                                      }),
+                                    ],
+                                  }),
+                                }),
+                                e.jsx("td", {
+                                  className: "px-6 py-4 whitespace-nowrap",
+                                  children: e.jsxs("div", {
+                                    className:
+                                      "text-sm font-bold text-scale-600",
+                                    children: [r(l(t.amount)), "원"],
+                                  }),
+                                }),
+                                e.jsx("td", {
+                                  className: "px-6 py-4 whitespace-nowrap",
+                                  children: e.jsx("span", {
+                                    className:
+                                      "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-scale-100 text-scale-500",
+                                    children: m(t.payment_method_type),
+                                  }),
+                                }),
+                                e.jsx("td", {
+                                  className:
+                                    "px-6 py-4 whitespace-nowrap text-sm text-scale-600",
+                                  children: o(t.approved_at),
+                                }),
+                                e.jsx("td", {
+                                  className: "px-6 py-4 whitespace-nowrap",
+                                  children: e.jsx("span", {
+                                    className: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${d.cls}`,
+                                    children: d.text,
+                                  }),
+                                }),
+                              ],
+                            },
+                            t.tid,
+                          );
+                        }),
+                      }),
+                    ],
+                  }),
+                }),
+              }),
+          s.length > 0 &&
+            e.jsxs("div", {
+              className:
+                "mt-6 bg-bg-white rounded-xl shadow-sm border border-scale-200 p-6",
+              children: [
+                e.jsx("h3", {
+                  className: "text-lg font-bold text-scale-600 mb-4",
+                  children: "결제 요약",
+                }),
+                e.jsxs("div", {
+                  className: "grid grid-cols-1 md:grid-cols-3 gap-6",
+                  children: [
+                    e.jsxs("div", {
+                      className: "text-center",
+                      children: [
+                        e.jsx("div", {
+                          className: "text-2xl font-bold text-brand-primary",
+                          children: s.length,
+                        }),
+                        e.jsx("div", {
+                          className: "text-sm text-scale-400",
+                          children: "총 결제 건수",
+                        }),
+                      ],
+                    }),
+                    e.jsxs("div", {
+                      className: "text-center",
+                      children: [
+                        e.jsxs("div", {
+                          className: "text-2xl font-bold text-brand-primary",
+                          children: [r(l(b)), "원"],
+                        }),
+                        e.jsx("div", {
+                          className: "text-sm text-scale-400",
+                          children: "총 결제 금액",
+                        }),
+                      ],
+                    }),
+                    e.jsxs("div", {
+                      className: "text-center",
+                      children: [
+                        e.jsx("div", {
+                          className: "text-2xl font-bold text-brand-primary",
+                          children: r(l(u)),
+                        }),
+                        e.jsx("div", {
+                          className: "text-sm text-scale-400",
+                          children: "총 충전 잔",
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+        ],
+      }),
+    });
+  };
+export { f as default };

@@ -1,0 +1,33 @@
+import { u as n, o as a, r as t, q as i, b as l } from "./index-BafdFBMt.js";
+function f() {
+  const e = n(),
+    { login: c } = a();
+  return (
+    t.useEffect(() => {
+      (async () => {
+        const r = new URLSearchParams(window.location.search).get("code");
+        if (!r) {
+          (console.error("카카오 code 없음"), e("/"));
+          return;
+        }
+        try {
+          if (await i(r))
+            try {
+              const o = await l();
+              (o
+                ? c(o)
+                : console.error("사용자 프로필 정보를 가져올 수 없습니다."),
+                e("/"));
+            } catch (o) {
+              console.error("사용자 프로필 정보 가져오기 실패:", o);
+            }
+          else (console.error("카카오 로그인 실패"), e("/"));
+        } catch (s) {
+          (console.error("카카오 로그인 실패:", s), e("/"));
+        }
+      })();
+    }, []),
+    null
+  );
+}
+export { f as default };

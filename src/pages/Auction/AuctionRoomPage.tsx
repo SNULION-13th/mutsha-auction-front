@@ -67,7 +67,12 @@ function AuctionRoomPage() {
             "실시간 경매 상태 업데이트:",
             updatedAuctionData.current_price,
           );
-          setAuction(updatedAuctionData);
+          setAuction((prevAuction) => {
+            if (prevAuction && prevAuction.id === updatedAuctionData.id) {
+              return { ...prevAuction, ...updatedAuctionData };
+            }
+            return updatedAuctionData;
+          });
         } else {
           console.warn("수신된 데이터 형식이 다릅니다: ", updatedAuctionData);
         }
