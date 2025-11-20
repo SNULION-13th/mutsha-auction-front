@@ -1,0 +1,47 @@
+import { u as l, j as e, B as s } from "./index-BafdFBMt.js";
+function i() {
+  const a = l();
+  return e.jsx("div", {
+    className: "min-h-screen flex items-center justify-center bg-bg-default",
+    children: e.jsxs("div", {
+      className: "flex flex-col items-center gap-8 text-center",
+      children: [
+        e.jsx("div", {
+          className:
+            "w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center",
+          children: e.jsx("span", { className: "text-4xl", children: "⚠️" }),
+        }),
+        e.jsxs("div", {
+          children: [
+            e.jsx("h1", {
+              className: "text-2xl font-bold text-scale-600 mb-2",
+              children: "결제가 취소되었습니다",
+            }),
+            e.jsx("p", {
+              className: "text-scale-500",
+              children: "결제를 취소하셨습니다. 포인트는 충전되지 않았습니다.",
+            }),
+          ],
+        }),
+        e.jsxs("div", {
+          className: "flex gap-4",
+          children: [
+            e.jsx(s, {
+              variant: "gray",
+              size: "large",
+              onClick: () => a("/"),
+              children: "메인으로 돌아가기",
+            }),
+            e.jsx(s, {
+              variant: "primary",
+              size: "large",
+              onClick: () => window.history.back(),
+              children: "다시 시도하기",
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
+}
+export { i as default };
