@@ -46,6 +46,8 @@
 
   --font-weight-regular: 400;
   --font-weight-bold: 700;
+
+  --breakpoint-pc: 1200px;
 }
 
 html,
