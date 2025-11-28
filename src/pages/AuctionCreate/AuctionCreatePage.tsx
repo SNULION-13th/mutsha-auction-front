@@ -1,28 +1,28 @@
-import { Cup, File } from "@/assets/image";
 import { Button } from "@/components/Button";
-import { auctionCreateSchema } from "./schema";
-import { FormProvider, useForm } from "react-hook-form";
+import InfoModal from "@/components/Modal/InfoModal";
+import { ROUTES } from "@/constants/router";
+import { useCreateAuction } from "./hooks/useCreateAuction";
+import {
+  auctionCreateSchema,
+  AuctionCreateFormData,
+} from "@/schemas/auctionCreateSchema";
+import { buildEndTimeISO } from "@/utils/auction";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { TitleField } from "./components/TitleField";
 import { DescriptionField } from "./components/DescriptionField";
-import { ImageField } from "./components/ImageField";
+import { ImageUploadField } from "./components/ImageUploadField";
 import { StartPriceField } from "./components/StartPriceField";
 import { DurationField } from "./components/DurationField";
 
-type Props = {
-  onSubmit?: (payload: {
-    title: string;
-    description: string;
-    image: File;
-    startPriceCup: number;
-    duration: { d: number; h: number; m: number };
-  }) => void | Promise<void>;
-};
+function AuctionCreatePage() {
+  const navigate = useNavigate();
+  const createMutation = useCreateAuction();
 
-function AuctionCreatePage({ onSubmit }: Props) {
-  const methods = useForm({
+  const methods = useForm<AuctionCreateFormData>({
     resolver: zodResolver(auctionCreateSchema),
-    mode: "onChange",
+    mode: "onTouched",
     defaultValues: {
       title: "",
       description: "",
@@ -35,6 +35,48 @@ function AuctionCreatePage({ onSubmit }: Props) {
     },
   });
 
+  const {
+    handleSubmit,
+    formState,
+    reset: resetForm,
+    register,
+    control,
+  } = methods;
+
+  const {
+    mutateAsync,
+    isSuccess,
+    isError,
+    reset: resetMutation,
+  } = useCreateAuction();
+
+  const onSubmit = async (data: AuctionCreateFormData) => {
+    try {
+      const endTime = buildEndTimeISO(data.duration);
+
+      await mutateAsync({
+        title: data.title,
+        description: data.description,
+        starting_price: data.startPrice,
+        end_time: endTime,
+        image_file: data.image,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    resetMutation();
+    resetForm();
+    navigate(ROUTES.HISTORY.ROOT);
+  };
+
+  const handleModalClose = () => {
+    resetMutation();
+    resetForm();
+  };
+
   return (
     <div className="w-full px-50 py-30">
       <div className="max-w-[973px] mx-auto flex flex-col gap-25">
@@ -44,37 +86,57 @@ function AuctionCreatePage({ onSubmit }: Props) {
             당신의 애착템, 술잔으로 걸어보세요!
           </div>
         </div>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit((data) =>
-              console.log("폼 데이터 제출", data),
-            )}
-            className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
-          >
-            <div className="grid grid-cols-1 gap-12">
-              <TitleField />
-              <DescriptionField />
-              <ImageField />
 
-              <div className="w-full flex gap-38">
-                <StartPriceField />
-                <DurationField />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
+        >
+          <div className="grid grid-cols-1 gap-12">
+            <TitleField register={register} formState={formState} />
+            <DescriptionField register={register} formState={formState} />
+            <ImageUploadField control={control} />
+
+            <div className="w-full flex justify-between gap-10">
+              <div className="flex-1 min-w-0">
+                <StartPriceField control={control} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <DurationField control={control} formState={formState} />
               </div>
             </div>
+          </div>
 
-            {/* 제출 버튼 */}
-            <div className="w-full flex justify-center">
-              <Button
-                type="submit"
-                variant={methods.formState.isValid ? "primary" : "disabled"}
-                disabled={!methods.formState.isValid}
-                className="w-80 h-14"
-              >
-                상품 등록하기
-              </Button>
-            </div>
-          </form>
-        </FormProvider>
+          {/* 제출 버튼 */}
+          <div className="w-full flex justify-center">
+            <Button
+              type="submit"
+              variant={formState.isValid ? "primary" : "disabled"}
+              disabled={!formState.isValid || createMutation.isPending}
+              className="w-80 h-14"
+            >
+              {createMutation.isPending ? "등록 중 ..." : "상품 등록하기"}
+            </Button>
+          </div>
+        </form>
+
+        {/* 성공 모달 */}
+        <InfoModal
+          open={isSuccess}
+          onClose={handleModalClose}
+          title={"상품 등록이 완료되었어요!\n내 경매에서 확인해 보세요."}
+          closeButton="닫기"
+          confirmButton="내 경매 보기"
+          onConfirm={handleModalConfirm}
+        />
+        {/* 실패 모달 */}
+        <InfoModal
+          open={isError}
+          onClose={handleModalClose}
+          title="등록에 실패했습니다.\n잠시 후 다시 시도해 주세요."
+          closeButton="닫기"
+          confirmButton="확인"
+          onConfirm={handleModalConfirm}
+        />
       </div>
     </div>
   );
