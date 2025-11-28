@@ -88,10 +88,17 @@ const PaymentHistoryPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg-default flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4"></div>
-          <p className="text-scale-400">결제 내역을 불러오는 중...</p>
+      <div className="min-h-screen bg-bg-default py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-scale-600 mb-2">
+              결제 내역
+            </h1>
+            <p className="text-scale-400">
+              카카오페이를 통한 모든 결제 내역을 확인할 수 있습니다.
+            </p>
+          </div>
+          불러오는 중입니다...
         </div>
       </div>
     );

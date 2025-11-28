@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { kakaoSignIn, getUserInfo } from "@/apis/api";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserInfoProvider";
 
 export default function Auth() {
   const navigate = useNavigate();

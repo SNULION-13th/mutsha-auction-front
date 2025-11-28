@@ -23,6 +23,13 @@ import Close from "./close.svg";
 import Kakao from "./kakao.svg";
 import Edit from "./edit.svg";
 import File from "./file.svg";
+import Language from "./language.svg";
+import Card1 from "./card1.svg";
+import Card2 from "./card2.svg";
+import Card3 from "./card3.svg";
+import GradientBg from "./gradientBg.png";
+import MutSaja from "./mutsaja.svg";
+import BlackRect from "./blackRect.svg";
 
 export {
   Profile1,
@@ -50,4 +57,11 @@ export {
   Kakao,
   Edit,
   File,
+  Language,
+  Card1,
+  Card2,
+  Card3,
+  BlackRect,
+  GradientBg,
+  MutSaja,
 };

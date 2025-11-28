@@ -1,31 +1,43 @@
 import { Button } from "../Button";
-import { Edit } from "../../assets/image";
-import { useState } from "react";
+import { Dialog, DialogContent } from "../ui/dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogPortal,
-  DialogTrigger,
-  DialogClose,
-} from "../ui/dialog";
+  Profile1,
+  Profile2,
+  Profile3,
+  Profile4,
+  Profile5,
+  Profile6,
+  Edit,
+} from "../../assets/image";
+import { useState, useEffect } from "react";
+import { useUserInfo } from "@/contexts/UserInfoProvider";
+import { DialogPortal, DialogTrigger } from "@radix-ui/react-dialog";
 
-import { PROFILE_IMAGES } from "@/contexts/UserContext";
-
-type Props = {
-  imageCandidates: typeof PROFILE_IMAGES;
-  selectedProfileImage: string;
-  onSave: (img: string) => void;
-};
+const CANDIDATES = [
+  Profile1,
+  Profile2,
+  Profile3,
+  Profile4,
+  Profile5,
+  Profile6,
+] as const;
 
 export default function ProfileImageModal({
-  imageCandidates,
-  selectedProfileImage,
   onSave,
-}: Props) {
-  const [selected, setSelected] = useState<string>(selectedProfileImage);
+  isOpen,
+  onOpenChange,
+}: {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  onSave: (selected: string) => void;
+}) {
+  const { profileImage } = useUserInfo();
+  const [selected, setSelected] = useState<string>(
+    profileImage ?? CANDIDATES[0],
+  );
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogPortal />
       <DialogTrigger asChild>
         <button
@@ -41,7 +53,7 @@ export default function ProfileImageModal({
             프로필 이미지 고르기
           </div>
           <div className="grid grid-cols-3 px-10 gap-8">
-            {imageCandidates.map((candidate) => {
+            {CANDIDATES.map((candidate) => {
               const isSel = selected === candidate;
               return (
                 <button
@@ -59,17 +71,16 @@ export default function ProfileImageModal({
               );
             })}
           </div>
-          <DialogClose asChild>
-            <Button
-              variant="primary"
-              onClick={() => {
-                onSave(selected);
-              }}
-              className="w-90 h-14"
-            >
-              저장하기
-            </Button>
-          </DialogClose>
+          <Button
+            variant="primary"
+            onClick={() => {
+              onSave(selected);
+              onOpenChange(false);
+            }}
+            className="w-90 h-14"
+          >
+            저장하기
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

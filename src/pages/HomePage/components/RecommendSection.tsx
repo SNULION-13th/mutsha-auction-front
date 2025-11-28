@@ -3,6 +3,7 @@ import { YhFashion } from "@/assets/dummy";
 import { Button } from "@/components/Button";
 import { useState, useEffect } from "react";
 import { type AuctionListItem, getRecommendedAuctions } from "@/apis/api";
+import { useTranslation } from "react-i18next";
 
 type CardProps = {
   image: string;
@@ -46,6 +47,7 @@ function RecommendCard({
 
 export function RecommendSection() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [recommendedAuctions, setRecommendedAuctions] = useState<
     AuctionListItem[]
   >([]);
@@ -58,11 +60,9 @@ export function RecommendSection() {
         if (Array.isArray(auctions)) {
           setRecommendedAuctions(auctions);
         } else {
-          console.warn("getRecommendedAuctions returned non-array:", auctions);
           setRecommendedAuctions([]);
         }
       } catch (error) {
-        console.error("추천 경매 데이터 로딩 실패:", error);
         setRecommendedAuctions([]);
       }
     })();
@@ -78,10 +78,10 @@ export function RecommendSection() {
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-col gap-5">
             <div className="text-5xl font-bold text-scale-600">
-              오늘의 추천 경매
+              {t("recommend.title")}
             </div>
             <div className="text-2xl text-scale-400">
-              멋사 구성원들의 애착템에 입찰해보세요!
+              {t("recommend.description")}
             </div>
           </div>
           <Button
@@ -90,7 +90,7 @@ export function RecommendSection() {
             className="w-62.5"
             onClick={() => navigate("/auction")}
           >
-            전체 경매 보러가기
+            {t("recommend.button")}
           </Button>
         </div>
 
@@ -110,7 +110,7 @@ export function RecommendSection() {
           ) : (
             <div className="col-span-2 text-center py-20">
               <div className="text-xl text-scale-500">
-                현재 추천할 경매가 없습니다.
+                {t("recommend.no_recommend")}
               </div>
             </div>
           )}

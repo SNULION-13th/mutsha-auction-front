@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useTranslation } from "react-i18next";
 
 function FAQAccordion({
   question,
@@ -17,9 +18,7 @@ function FAQAccordion({
         <div className="text-xl font-bold truncate">{question}</div>
         <button onClick={() => setIsOpen(!isOpen)}>
           <svg
-            className={`transition-transform transform ${
-              isOpen ? "rotate-180" : "rotate-0"
-            }`}
+            className={isOpen ? "rotate-180" : "rotate-0"}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -34,37 +33,29 @@ function FAQAccordion({
           </svg>
         </button>
       </div>
-      <div
-        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-      >
-        <div className="overflow-hidden">
-          <div className="text-lg text-left mt-4">{answer}</div>
-        </div>
-      </div>
+      {isOpen && <div className="text-lg text-left mt-4">{answer}</div>}
     </div>
   );
 }
 
 export function FAQSection() {
+  const { t } = useTranslation();
   const FQAs = [
     {
-      question: "Q. 어떻게 경매에 참여하나요?",
-      answer:
-        "바로 위 블럭 확인 부탁드립니다! 아니면 등록하면서 배워보는 건 어때요?",
+      question: t("faq.question1"),
+      answer: t("faq.answer1"),
     },
     {
-      question: "Q. 경매 등록은 무료인가요?",
-      answer: "네. 누구든지 경매에 등록할 수 있습니다.",
+      question: t("faq.question2"),
+      answer: t("faq.answer2"),
     },
     {
-      question: "Q. 술잔(포인트)은 어떻게 충전하나요?",
-      answer:
-        "로그인 시 생기는 헤더 프로필 버튼을 누르면 '충전하기' 버튼을 통해 포인트를 충전하실 수 있습니다. 결제는 카카오페이로!",
+      question: t("faq.question3"),
+      answer: t("faq.answer3"),
     },
     {
-      question:
-        "Q. 네 번째 질문입니다. 만약 QNA가 너무너무 길면 어떡하나요? 전 하고 싶은 말이 너무너무 많은데 이 세상이 저에겐 너무 짧습니다.",
-      answer: "말을 줄이자!",
+      question: t("faq.question4"),
+      answer: t("faq.answer4"),
     },
   ];
 

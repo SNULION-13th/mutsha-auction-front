@@ -1,7 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { LandingBg } from "../../../assets/image";
 import { LogoWhite } from "../../../assets/image";
 
 export function MainSection() {
+  const { t } = useTranslation();
+
   return (
     <div
       className="w-full h-215 bg-cover bg-center"
@@ -12,14 +15,12 @@ export function MainSection() {
           <div className="flex flex-col gap-5">
             <img src={LogoWhite} className="w-18 h-18" />
             <div className="text-6xl font-bold text-bg-white">
-              멋쟁이
+              {t("main.great")}
               <br />
-              시장처럼
+              {t("main.likemarket")}
             </div>
           </div>
-          <div className="text-3xl text-bg-white">
-            실시간으로 경매에 참여하고, 바로 낙찰하자!
-          </div>
+          <div className="text-3xl text-bg-white">{t("main.description")}</div>
         </div>
       </div>
     </div>
