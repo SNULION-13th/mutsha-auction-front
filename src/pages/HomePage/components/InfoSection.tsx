@@ -2,18 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { Phone, Cup, Heart, Hand } from "../../../assets/image";
 import { Button } from "../../../components/Button";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
-function InfoCard({
-  image,
-  title,
-  description,
-}: {
+type InfoCardProps = {
   image: string;
   title: string;
   description: string;
-}) {
+  detail: string;
+};
+
+function InfoCardFront({ image, title, description }: InfoCardProps) {
   return (
-    <div className="w-full flex items-center bg-bg-white rounded-xl p-5 gap-5 shadow-lg">
+    <div className="w-full h-36 flex justify-center items-center rounded-xl p-5 gap-5 shadow-lg bg-white">
       <div className="w-25 h-25 shrink-0">
         <img src={image} className="w-full h-full object-contain" />
       </div>
@@ -27,11 +27,46 @@ function InfoCard({
   );
 }
 
+function InfoCardBack({ detail }: Pick<InfoCardProps, "detail">) {
+  return (
+    <div
+      className="w-full h-36 flex items-center justify-center rounded-xl p-12 gap-5 shadow-lg"
+      style={{
+        background: "linear-gradient(145deg, #EDDACE, #DF6621)",
+        color: "#2b1a10",
+      }}
+    >
+      <div className="text-base leading-relaxed break-keep">{detail}</div>
+    </div>
+  );
+}
+
+function InfoCard({ image, title, description, detail }: InfoCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const toggleCard = () => setIsFlipped((prev) => !prev);
+
+  return (
+    <div className="w-full cursor-pointer" onClick={toggleCard}>
+      {isFlipped ? (
+        <InfoCardBack detail={detail} />
+      ) : (
+        <InfoCardFront
+          image={image}
+          title={title}
+          description={description}
+          detail={detail}
+        />
+      )}
+    </div>
+  );
+}
+
 export function InfoSection() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const InfoCards = [
+  const InfoCards: InfoCardProps[] = [
     {
       image: Phone,
       title: t("info.upload.title"),
@@ -90,6 +125,7 @@ export function InfoSection() {
                 image={card.image}
                 title={card.title}
                 description={card.description}
+                detail={card.detail}
               />
             ))}
           </div>
