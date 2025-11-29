@@ -162,7 +162,7 @@ function HistoryPage() {
                             scenario: scenarioFromBid(b),
                             to: toRoom,
                           })
-	                      }
+                        }
                       />
                     );
                   })

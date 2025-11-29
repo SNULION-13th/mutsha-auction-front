@@ -27,7 +27,9 @@ export default function Header() {
         </Link>
         <div className="flex gap-10 items-center">
           <Link to="/auction" className="cursor-pointer">
-            <div className="text-lg pc:text-xl text-scale-500">{t("header.auction")}</div>
+            <div className="text-lg pc:text-xl text-scale-500">
+              {t("header.auction")}
+            </div>
           </Link>
           <Link to="/create" className="cursor-pointer">
             <div className="text-lg pc:text-xl text-scale-500">

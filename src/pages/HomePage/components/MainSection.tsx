@@ -76,11 +76,11 @@ export function MainSection() {
     const P3_END = 0.6;
     const P4_END = 0.75;
 
-    const phase1 = rangeProgress(progress, 0, P1_END);      // 0.00 ~ 0.25
+    const phase1 = rangeProgress(progress, 0, P1_END); // 0.00 ~ 0.25
     const phase2 = rangeProgress(progress, P1_END, P2_END); // 0.25 ~ 0.40
     const phase3 = rangeProgress(progress, P2_END, P3_END); // 0.40 ~ 0.60
     const phase4 = rangeProgress(progress, P3_END, P4_END); // 0.60 ~ 0.75
-    const phase5 = rangeProgress(progress, P4_END, 1);      // 0.75 ~ 1.00
+    const phase5 = rangeProgress(progress, P4_END, 1); // 0.75 ~ 1.00
 
     // === PHASE 1: 카드 들어오기 ===
     if (gradientBgRef.current) {
@@ -123,9 +123,9 @@ export function MainSection() {
 
     let overlayOpacity = 0;
     if (progress >= P1_END && progress <= P2_END) {
-      overlayOpacity = 0.4 * phase2;          // Phase2에서 점점 어두워짐
+      overlayOpacity = 0.4 * phase2; // Phase2에서 점점 어두워짐
     } else if (progress > P2_END && progress <= P3_END) {
-      overlayOpacity = 0.4 * (1 - phase3);    // Phase3로 넘어가면서 다시 밝아짐
+      overlayOpacity = 0.4 * (1 - phase3); // Phase3로 넘어가면서 다시 밝아짐
     } else {
       overlayOpacity = 0;
     }
@@ -310,7 +310,11 @@ export function MainSection() {
                 ref={section2TextGroupRef}
                 className="flex flex-col gap-6 text-bg-white opacity-0 translate-y-10"
               >
-                <img src={LogoWhite} className="w-12 h-12 pc:w-18 pc:h-18" alt="logo" />
+                <img
+                  src={LogoWhite}
+                  className="w-12 h-12 pc:w-18 pc:h-18"
+                  alt="logo"
+                />
                 <div className="text-5xl pc:text-6xl font-bold">
                   {t("main.great")}
                   <br />

@@ -70,7 +70,7 @@ function InfoCardBack({ detail }: InfoCardProps) {
 }
 
 function InfoCard({ image, title, description, detail }: InfoCardProps) {
-	const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
   const toggleCard = () => setIsFlipped((prev) => !prev);

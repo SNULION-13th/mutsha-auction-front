@@ -46,7 +46,6 @@ function FAQAccordion({
   );
 }
 
-
 export function FAQSection() {
   const { t } = useTranslation();
   const FQAs = [
