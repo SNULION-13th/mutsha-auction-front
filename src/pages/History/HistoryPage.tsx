@@ -8,6 +8,7 @@ import {
   MyBidHistory,
 } from "@/apis/api";
 import { ROUTES } from "@/constants/router";
+import { useTransition } from "@/contexts/TransitionProvider";
 
 const PAGE_SIZE = 6;
 type Tab = "bids" | "mine";
@@ -35,6 +36,7 @@ function HistoryPage() {
   const [visibleMine, setVisibleMine] = useState(PAGE_SIZE);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { playTransition } = useTransition();
 
   useEffect(() => {
     async function load() {
@@ -144,19 +146,25 @@ function HistoryPage() {
 
                     return (
                       <HistoryCard
-                        key={b.auction_id}
-                        id={b.auction_id}
-                        title={b.title}
-                        current_price={b.current_price}
-                        my_bid={b.my_bid}
-                        duration={duration}
-                        ended={ended}
-                        rightLabel="내 입찰가"
-                        resultText={resultText}
-                        win={b.is_winner}
-                        buttonText="입찰하기"
-                      />
-                    );
+                      key={b.auction_id}
+                      id={b.auction_id}
+                      title={b.title}
+                      current_price={b.current_price}
+                      my_bid={b.my_bid}
+                      duration={duration}
+                      ended={ended}
+                      rightLabel="내 입찰가"
+                      resultText={resultText}
+                      win={b.is_winner}
+                      buttonText="입찰하기"
+                      onClick={() =>
+                        playTransition({
+                          scenario: scenarioFromBid(b),
+                          to: toRoom,
+                        })
+                      }
+                    />
+                  );
                   })
                 : listMine.map((m) => {
                     const ended =
