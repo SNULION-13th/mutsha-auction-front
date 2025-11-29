@@ -57,3 +57,19 @@ class RefreshTokenExpiredError extends Error {
     this.name = "RefreshTokenExpiredError";
   }
 }
+
+// const SLOW_MS = 1500;
+// function sleep(ms: number) {
+//   return new Promise((r) => setTimeout(r, ms));
+// }
+
+// api.interceptors.response.use(
+//   async (res) => {
+//     if (SLOW_MS > 0) await sleep(SLOW_MS);
+//     return res;
+//   },
+//   async (err) => {
+//     if (SLOW_MS > 0) await sleep(SLOW_MS);
+//     return Promise.reject(err);
+//   },
+// );
