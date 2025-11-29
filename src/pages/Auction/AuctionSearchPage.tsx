@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AuctionCard } from "./components/AuctionCard";
 import Pagination from "@/components/Pagination";
 import { toAbsoluteUrl } from "@/utils/url";
+import { AuctionCardSkeleton } from "./components/AuctionCardSkeleton";
 
 const PAGE_SIZE = 6;
 
@@ -54,9 +55,11 @@ function AuctionSearchPage() {
           </div>
         </div>
         {loading ? (
-          <div className="text-center text-scale-400 py-20">
-            불러오는 중 ...
-          </div>
+            <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <AuctionCardSkeleton key={i} />
+              ))}
+            </div>
         ) : error ? (
           <div className="text-center text-point-warning py-20">{error}</div>
         ) : total === 0 ? (

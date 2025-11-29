@@ -73,14 +73,14 @@ export function RecommendSection() {
   };
 
   return (
-    <div className="w-full px-50 pt-25">
+    <div className="w-full px-36 pc:px-50 pt-25">
       <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col gap-5">
-            <div className="text-5xl font-bold text-scale-600">
+        <div className="w-full max-pc:flex-col flex max-pc:space-y-10 justify-between items-center">
+          <div className="flex flex-col gap-5 max-pc:items-center">
+            <div className="text-3xl pc:text-5xl font-bold text-scale-600">
               {t("recommend.title")}
             </div>
-            <div className="text-2xl text-scale-400">
+            <div className="text-lg pc:text-2xl text-scale-400">
               {t("recommend.description")}
             </div>
           </div>
@@ -94,7 +94,7 @@ export function RecommendSection() {
           </Button>
         </div>
 
-        <div className="w-full grid grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">
+        <div className="w-full grid grid-cols-1 pc:grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">
           {Array.isArray(recommendedAuctions) &&
           recommendedAuctions.length > 0 ? (
             recommendedAuctions.map((auction) => (
@@ -119,3 +119,4 @@ export function RecommendSection() {
     </div>
   );
 }
+
