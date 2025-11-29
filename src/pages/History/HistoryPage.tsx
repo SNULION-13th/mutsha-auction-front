@@ -1,6 +1,8 @@
 import { getRemainingTime } from "@/utils/datetime";
 import { HistoryCard } from "./components/HistoryCard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTransition } from "@/contexts/TransitionProvider";
+
 import {
   getMyAuctions,
   getMyBids,
@@ -35,6 +37,7 @@ function HistoryPage() {
   const [visibleMine, setVisibleMine] = useState(PAGE_SIZE);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { playTransition } = useTransition();
 
   useEffect(() => {
     async function load() {
@@ -155,6 +158,12 @@ function HistoryPage() {
                         resultText={resultText}
                         win={b.is_winner}
                         buttonText="입찰하기"
+                        onClick={() =>
+                          playTransition({
+                            scenario: scenarioFromBid(b),
+                            to: toRoom,
+                          })
+                        }
                       />
                     );
                   })
