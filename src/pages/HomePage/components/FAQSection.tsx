@@ -18,7 +18,9 @@ function FAQAccordion({
         <div className="text-xl font-bold truncate">{question}</div>
         <button onClick={() => setIsOpen(!isOpen)}>
           <svg
-            className={isOpen ? "rotate-180" : "rotate-0"}
+            className={`transition-transform transform ${
+              isOpen ? "rotate-180" : "rotate-0"
+            } cursor-pointer`}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -33,7 +35,13 @@ function FAQAccordion({
           </svg>
         </button>
       </div>
-      {isOpen && <div className="text-lg text-left mt-4">{answer}</div>}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      >
+        <div className="overflow-hidden">
+          <div className="text-lg text-left mt-4">{answer}</div>
+        </div>
+      </div>
     </div>
   );
 }

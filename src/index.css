@@ -170,3 +170,23 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -160% 0;
+  }
+  100% {
+    background-position: 160% 0;
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  background: linear-gradient(90deg, #eceff3 20%, #dfe3e8 50%, #eceff3 80%);
+  background-size: 350% 100%;
+  animation: skeleton-shimmer 3s linear infinite;
+  will-change: background-position;
+  transform: translateZ(0);
+}
