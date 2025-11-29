@@ -1,4 +1,7 @@
 import { useParams } from "react-router-dom";
+import Lottie from "lottie-react";
+import lonelyAnimation from "@/assets/Lonely404.json"; // 여러분의 Lottie 파일을 불러오세요
+
 
 function NotFoundPage() {
   const param = useParams();
@@ -14,6 +17,7 @@ function NotFoundPage() {
         <br />
         <br />이 곳에서는 뭘 배울 거냐면요...
       </div>
+      <Lottie animationData={lonelyAnimation} loop={true} />
     </div>
   );
 }
