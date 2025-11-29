@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { kakaoSignIn, getUserInfo } from "@/apis/api";
-import { useUser } from "@/contexts/UserInfoProvider";
+import { useUserInfo } from "@/contexts/UserInfoProvider";
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { login } = useUser();
+  const { login } = useUserInfo();
   useEffect(() => {
     (async () => {
       const code = new URLSearchParams(window.location.search).get("code");

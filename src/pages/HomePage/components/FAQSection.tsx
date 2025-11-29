@@ -18,7 +18,9 @@ function FAQAccordion({
         <div className="text-xl font-bold truncate">{question}</div>
         <button onClick={() => setIsOpen(!isOpen)}>
           <svg
-            className={isOpen ? "rotate-180" : "rotate-0"}
+            className={`transition-transform transform ${
+              isOpen ? "rotate-180" : "rotate-0"
+            } cursor-pointer`}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -33,10 +35,17 @@ function FAQAccordion({
           </svg>
         </button>
       </div>
-      {isOpen && <div className="text-lg text-left mt-4">{answer}</div>}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      >
+        <div className="overflow-hidden">
+          <div className="text-lg text-left mt-4">{answer}</div>
+        </div>
+      </div>
     </div>
   );
 }
+
 
 export function FAQSection() {
   const { t } = useTranslation();
@@ -60,9 +69,11 @@ export function FAQSection() {
   ];
 
   return (
-    <div className="w-full px-50 py-25">
-      <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
-        <div className="text-5xl font-bold text-scale-600">FAQs</div>
+    <div className="w-full px-30 pc:px-50 py-25">
+      <div className="max-w-[1160px] mx-auto flex flex-col max-pc:items-center gap-15">
+        <div className="text-4xl pc:text-5xl font-bold text-scale-600">
+          FAQs
+        </div>
         <div className="w-full flex flex-col gap-7.5">
           {FQAs.map((fqa) => (
             <FAQAccordion

@@ -8,6 +8,7 @@ import {
   MyBidHistory,
 } from "@/apis/api";
 import { ROUTES } from "@/constants/router";
+import { useTransition } from "@/contexts/TransitionProvider";
 
 const PAGE_SIZE = 6;
 type Tab = "bids" | "mine";
@@ -35,6 +36,7 @@ function HistoryPage() {
   const [visibleMine, setVisibleMine] = useState(PAGE_SIZE);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { playTransition } = useTransition();
 
   useEffect(() => {
     async function load() {
@@ -155,6 +157,12 @@ function HistoryPage() {
                         resultText={resultText}
                         win={b.is_winner}
                         buttonText="입찰하기"
+                        onClick={() =>
+                          playTransition({
+                            scenario: scenarioFromBid(b),
+                            to: toRoom,
+                          })
+	                      }
                       />
                     );
                   })
