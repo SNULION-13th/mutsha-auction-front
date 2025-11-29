@@ -4,7 +4,6 @@ import { router } from "./Router";
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserInfoProvider } from "./contexts/UserInfoProvider";
-
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {

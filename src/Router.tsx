@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { ROUTES } from "./constants/router";
 import Layout from "./layouts/Layout";
+import { TransitionProvider } from "@/contexts/TransitionProvider";
 
 const HomePage = lazy(() => import("@page/HomePage/HomePage"));
 const AuctionSearchPage = lazy(() => import("@page/Auction/AuctionSearchPage"));
@@ -93,7 +94,11 @@ const appRoutes = [
 
 export const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: (
+      <TransitionProvider>
+        <Layout />
+      </TransitionProvider>
+    ),
     children: appRoutes,
   },
 ]);
