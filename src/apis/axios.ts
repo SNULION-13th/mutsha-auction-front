@@ -57,3 +57,20 @@ class RefreshTokenExpiredError extends Error {
     this.name = "RefreshTokenExpiredError";
   }
 }
+
+// 스켈레톤 테스트용 코드
+const SLOW_MS = 1500;
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+api.interceptors.response.use(
+  async (res) => {
+    if (SLOW_MS > 0) await sleep(SLOW_MS);
+    return res;
+  },
+  async (err) => {
+    if (SLOW_MS > 0) await sleep(SLOW_MS);
+    return Promise.reject(err);
+  },
+);
