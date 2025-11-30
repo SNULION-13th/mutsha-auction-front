@@ -28,7 +28,7 @@ export const LanguageSwitcher = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer focus:outline-none">
-        <img src={Language} className="w-8" />
+        <img src={Language} className="w-6 pc:w-8" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"

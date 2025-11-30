@@ -46,16 +46,18 @@ function AuctionSearchPage() {
   }, [total, page]);
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-25">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-6 md:px-12 lg:px-24 pc:px-50 py-12 md:py-16 lg:py-20 pc:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-10 md:gap-15 lg:gap-20 pc:gap-25">
+        <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 pc:gap-5 max-pc:items-center">
+          <div className="text-2xl md:text-3xl lg:text-4xl pc:text-5xl font-bold text-scale-600 text-center pc:text-left">
+            경매 입찰하기
+          </div>
+          <div className="text-base md:text-lg lg:text-xl pc:text-2xl text-scale-400 text-center pc:text-left">
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
         {loading ? (
-          <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+          <div className="grid grid-cols-1 pc:grid-cols-3 gap-4 pc:gap-6 min-h-[400px] pc:min-h-[900px]">
             {Array.from({ length: 6 }).map((_, i) => (
               <AuctionCardSkeleton key={i} />
             ))}
@@ -68,7 +70,7 @@ function AuctionSearchPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+            <div className="grid grid-cols-1 pc:grid-cols-3 gap-4 pc:gap-6 min-h-[400px] pc:min-h-[900px]">
               {pageItems.map((a) => (
                 <AuctionCard
                   key={a.id}
