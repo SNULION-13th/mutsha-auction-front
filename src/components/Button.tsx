@@ -40,10 +40,10 @@ export function Button({
 }: ButtonProps) {
   const buttonClass = cn(
     "font-bold cursor-pointer",
-    className,
     sizeClass[size],
     isRounded ? roundClass["large"] : roundClass["small"],
     variantClass[disabled ? "disabled" : variant],
+    className, // [수정] className을 맨 뒤로 옮겨서 오버라이딩 가능하게 함
   );
 
   return (

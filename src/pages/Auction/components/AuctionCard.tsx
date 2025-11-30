@@ -20,8 +20,8 @@ export function AuctionCard({
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-109 flex flex-col bg-white shadow-lg rounded-xl">
-      <img src={img} className="w-full h-68 object-cover rounded-t-xl" />
+    <div className="w-full h-auto min-h-[400px] flex flex-col bg-white shadow-lg rounded-xl pb-4">
+      <img src={img} className="w-full h-52 md:h-68 object-cover rounded-t-xl" />
       <div className="w-full flex flex-col gap-1.5 px-6 py-5">
         <div className="text-lg font-bold text-scale-600">{title}</div>
         <div className="text-base text-scale-400 truncate max-w-70">

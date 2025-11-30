@@ -35,7 +35,7 @@ export function HistoryCard({
 
   return (
     <div
-      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-15 py-7.5 gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
+      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-6 py-6 md:px-10 md:py-7.5 lg:px-15 gap-4 md:gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
     >
       <div
         className={`text-lg font-bold ${ended ? "text-scale-400" : "text-scale-600"}`}
@@ -63,8 +63,8 @@ export function HistoryCard({
         </div>
       ) : (
         <div className="w-full flex flex-col gap-2.5">
-          <div className="w-full flex justify-between">
-            <div className="flex gap-2">
+          <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
+            <div className="flex justify-between sm:justify-start gap-2">
               <div className="text-base font-bold text-scale-400">
                 현재 입찰가
               </div>
@@ -72,8 +72,8 @@ export function HistoryCard({
                 {current_price}잔
               </div>
             </div>
-            <div className="text-scale-300">|</div>
-            <div className="flex gap-2">
+            <div className="hidden sm:block text-scale-300">|</div>
+            <div className="flex justify-between sm:justify-start gap-2">
               <div className="text-base font-bold text-scale-400">
                 {rightLabel}
               </div>

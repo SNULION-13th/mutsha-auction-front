@@ -9,7 +9,7 @@ export function DurationField({
   return (
     <div className="flex flex-col gap-2">
       <label className="text-lg font-bold text-scale-600">경매 기간</label>
-      <div className="flex items-center gap-5 text-scale-500">
+      <div className="flex items-center gap-2 md:gap-5 text-scale-500 justify-between md:justify-start">
         <Controller
           name="duration.days"
           control={control}
