@@ -73,14 +73,14 @@ export function RecommendSection() {
   };
 
   return (
-    <div className="w-full px-36 pc:px-50 pt-25">
-      <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
-        <div className="w-full max-pc:flex-col flex max-pc:space-y-10 justify-between items-center">
-          <div className="flex flex-col gap-5 max-pc:items-center">
-            <div className="text-3xl pc:text-5xl font-bold text-scale-600">
+    <div className="w-full px-6 md:px-12 lg:px-24 pc:px-50 pt-15 md:pt-20 lg:pt-25">
+      <div className="max-w-[1160px] mx-auto flex flex-col gap-10 md:gap-12 lg:gap-15">
+        <div className="w-full max-pc:flex-col flex max-pc:space-y-8 md:max-pc:space-y-10 justify-between items-center">
+          <div className="flex flex-col gap-3 md:gap-4 lg:gap-5 max-pc:items-center">
+            <div className="text-2xl md:text-3xl lg:text-4xl pc:text-5xl font-bold text-scale-600">
               {t("recommend.title")}
             </div>
-            <div className="text-lg pc:text-2xl text-scale-400">
+            <div className="text-base md:text-lg lg:text-xl pc:text-2xl text-scale-400">
               {t("recommend.description")}
             </div>
           </div>

@@ -82,17 +82,19 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-6 md:px-12 lg:px-24 pc:px-50 py-12 md:py-16 lg:py-20 pc:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-8 md:gap-12 lg:gap-14 pc:gap-16">
+        <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 pc:gap-5 max-pc:items-center">
+          <div className="text-2xl md:text-3xl lg:text-4xl pc:text-5xl font-bold text-scale-600 text-center pc:text-left">
+            내 경매
+          </div>
+          <div className="text-base md:text-lg lg:text-xl pc:text-2xl text-scale-400 text-center pc:text-left">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
         <div className="flex border-b-2 border-scale-200 relative">
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-full pc:w-30 text-base md:text-lg lg:text-xl pc:text-2xl font-bold pb-3 md:pb-4 lg:pb-5 pc:pb-6 relative ${
               tab === "bids" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("bids")}
@@ -103,7 +105,7 @@ function HistoryPage() {
             )}
           </button>
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-full pc:w-30 text-base md:text-lg lg:text-xl pc:text-2xl font-bold pb-3 md:pb-4 lg:pb-5 pc:pb-6 relative ${
               tab === "mine" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("mine")}
@@ -126,7 +128,7 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 pc:grid-cols-2 gap-4 pc:gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";

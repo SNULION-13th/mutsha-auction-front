@@ -12,11 +12,11 @@ function FAQAccordion({
 
   return (
     <div
-      className={`flex flex-col justify-center rounded-xl px-12.5 py-10 shadow-lg w-full bg-bg-white ${isOpen ? "border-2 border-brand-primary ring-4 ring-brand-primary/15" : ""}`}
+      className={`flex flex-col justify-center rounded-xl px-4 md:px-6 lg:px-10 pc:px-12.5 py-4 md:py-6 lg:py-8 pc:py-10 shadow-lg w-full bg-bg-white ${isOpen ? "border-2 border-brand-primary ring-4 ring-brand-primary/15" : ""}`}
     >
-      <div className="flex justify-between items-center">
-        <div className="text-xl font-bold truncate">{question}</div>
-        <button onClick={() => setIsOpen(!isOpen)}>
+      <div className="flex justify-between items-start">
+        <div className="text-sm md:text-base lg:text-lg pc:text-xl font-bold flex-1 pr-4">{question}</div>
+        <button onClick={() => setIsOpen(!isOpen)} className="shrink-0">
           <svg
             className={`transition-transform transform ${
               isOpen ? "rotate-180" : "rotate-0"
@@ -34,15 +34,14 @@ function FAQAccordion({
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
-        <div
-          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-        >
-          <div className="overflow-hidden">
-            <div className="text-lg text-left mt-4">{answer}</div>
-          </div>
+      </div>
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      >
+        <div className="overflow-hidden">
+          <div className="text-sm md:text-base lg:text-base pc:text-lg text-left mt-4">{answer}</div>
         </div>
       </div>
-      {isOpen && <div className="text-lg text-left mt-4">{answer}</div>}
     </div>
   );
 }
@@ -69,12 +68,12 @@ export function FAQSection() {
   ];
 
   return (
-    <div className="w-full px-30 pc:px-50 py-25">
-      <div className="max-w-[1160px] mx-auto flex flex-col max-pc:items-center gap-15">
-        <div className="text-4xl pc:text-5xl font-bold text-scale-600">
+    <div className="w-full px-6 md:px-12 lg:px-24 pc:px-50 py-12 md:py-15 lg:py-20 pc:py-25">
+      <div className="max-w-[1160px] mx-auto flex flex-col max-pc:items-center gap-8 md:gap-10 lg:gap-12 pc:gap-15">
+        <div className="text-2xl md:text-3xl lg:text-4xl pc:text-5xl font-bold text-scale-600">
           FAQs
         </div>
-        <div className="w-full flex flex-col gap-7.5">
+        <div className="w-full flex flex-col gap-4 md:gap-5 lg:gap-6 pc:gap-7.5">
           {FQAs.map((fqa) => (
             <FAQAccordion
               key={fqa.question}

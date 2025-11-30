@@ -238,7 +238,7 @@ export function MainSection() {
       <div className="h-[400vh] flex items-start">
         <div
           ref={innerRef}
-          className="sticky top-[88px] h-[calc(100vh-88px)] w-full"
+          className="sticky top-16 md:top-18 lg:top-20 pc:top-[88px] h-[calc(100vh-4rem)] md:h-[calc(100vh-4.5rem)] lg:h-[calc(100vh-5rem)] pc:h-[calc(100vh-88px)] w-full"
         >
           <div className="relative w-full h-full overflow-hidden">
             {/* 배경들 */}
@@ -265,50 +265,50 @@ export function MainSection() {
             {/* 카드 + 사자 + 첫 타이틀 */}
             <div
               ref={section1GroupRef}
-              className="relative z-10 w-full h-full flex flex-col justify-center items-center py-60 gap-12 text-bg-white"
+              className="relative z-10 w-full h-full flex flex-col justify-center items-center py-20 md:py-40 lg:py-50 pc:py-60 gap-6 md:gap-8 lg:gap-10 pc:gap-12 text-bg-white px-4 md:px-6"
             >
               <div ref={titleRef} className="text-center">
-                <div className="text-5xl pc:text-[60px] font-bold">
+                <div className="text-2xl md:text-3xl lg:text-4xl pc:text-[60px] font-bold">
                   {t("main.intro")}
                 </div>
               </div>
-              <div className="flex gap-9 mt-6 w-full h-full items-center justify-center relative">
+              <div className="flex gap-4 md:gap-6 lg:gap-8 pc:gap-9 mt-4 md:mt-5 lg:mt-6 w-full h-full items-center justify-center relative">
                 <img
                   ref={card1Ref}
                   src={Card1}
-                  className="w-40 pc:w-60 opacity-0 origin-top-right"
+                  className="w-24 md:w-32 lg:w-40 pc:w-60 opacity-0 origin-top-right"
                 />
                 <img
                   ref={card2Ref}
                   src={Card2}
-                  className="w-40 pc:w-60 opacity-0 origin-top"
+                  className="w-24 md:w-32 lg:w-40 pc:w-60 opacity-0 origin-top"
                 />
                 <img
                   ref={card3Ref}
                   src={Card3}
-                  className="w-40 pc:w-60 opacity-0 origin-top-left"
+                  className="w-24 md:w-32 lg:w-40 pc:w-60 opacity-0 origin-top-left"
                 />
                 <img
                   ref={mutSajaRef}
                   src={MutSaja}
-                  className="absolute left-1/2 -translate-x-1/2 bottom-[-280px] w-100 opacity-0 z-20"
+                  className="absolute left-1/2 -translate-x-1/2 bottom-[-200px] md:bottom-[-240px] lg:bottom-[-260px] pc:bottom-[-280px] w-60 md:w-80 lg:w-90 pc:w-100 opacity-0 z-20"
                 />
               </div>
             </div>
 
             {/* 실제 랜딩 텍스트 그룹 */}
-            <div className="absolute w-full inset-0 z-20 flex items-center justify-between px-30 pc:px-50">
+            <div className="absolute w-full inset-0 z-20 flex items-center justify-between px-6 md:px-12 lg:px-24 pc:px-50">
               <div
                 ref={section2TextGroupRef}
-                className="flex flex-col gap-6 text-bg-white opacity-0 translate-y-10"
+                className="flex flex-col gap-3 md:gap-4 lg:gap-5 pc:gap-6 text-bg-white opacity-0 translate-y-10"
               >
-                <img src={LogoWhite} className="w-12 h-12 pc:w-18 pc:h-18" />
-                <div className="text-5xl pc:text-6xl font-bold">
+                <img src={LogoWhite} className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 pc:w-18 pc:h-18" />
+                <div className="text-2xl md:text-3xl lg:text-4xl pc:text-6xl font-bold">
                   {t("main.great")}
                   <br />
                   {t("main.likemarket")}
                 </div>
-                <div className="text-2xl pc:text-3xl">
+                <div className="text-base md:text-lg lg:text-xl pc:text-3xl">
                   {t("main.description")}
                 </div>
               </div>

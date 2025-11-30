@@ -43,8 +43,8 @@ function InfoCardFront({
         <img src={image} className="w-full h-full object-contain" />
       </div>
       <div className="flex flex-col gap-2 flex-1 min-w-0 max-pc:w-full">
-        <div className="text-xl text-scale-600 font-bold">{title}</div>
-        <div className="text-base text-scale-400 flex-1 truncate">
+        <div className="text-base md:text-lg lg:text-xl text-scale-600 font-bold">{title}</div>
+        <div className="text-sm md:text-base text-scale-400 flex-1 truncate">
           {description}
         </div>
       </div>
@@ -64,7 +64,7 @@ function InfoCardBack({ detail }: InfoCardProps) {
         WebkitBackdropFilter: "blur(14px)",
       }}
     >
-      <div className="text-base leading-relaxed break-keep">{detail}</div>
+      <div className="text-sm md:text-base leading-relaxed break-keep">{detail}</div>
     </div>
   );
 }
@@ -139,29 +139,29 @@ export function InfoSection() {
   ];
 
   return (
-    <div className="w-full px-36 pc:px-50 pt-25">
-      <div className="max-w-[1160px] mx-auto flex flex-col gap-15">
-        <div className="w-full flex max-pc:flex-col max-pc:space-y-10 justify-between items-center">
-          <div className="flex flex-col gap-5 max-pc:items-center">
-            <div className="text-3xl pc:text-5xl font-bold text-scale-600">
+    <div className="w-full px-6 md:px-12 lg:px-24 pc:px-50 pt-15 md:pt-20 lg:pt-25">
+      <div className="max-w-[1160px] mx-auto flex flex-col gap-10 md:gap-12 lg:gap-15">
+        <div className="w-full flex max-pc:flex-col max-pc:space-y-8 md:max-pc:space-y-10 justify-between items-center">
+          <div className="flex flex-col gap-3 md:gap-4 lg:gap-5 max-pc:items-center">
+            <div className="text-2xl md:text-3xl lg:text-4xl pc:text-5xl font-bold text-scale-600">
               {t("info.section.title")}
             </div>
-            <div className="text-lg pc:text-2xl text-scale-400">
+            <div className="text-base md:text-lg lg:text-xl pc:text-2xl text-scale-400">
               {t("info.section.description")}
             </div>
           </div>
           <Button
             variant="primary"
             isRounded={true}
-            className="w-62.5"
+            className="w-full md:w-auto min-w-[200px] md:min-w-[250px]"
             onClick={() => navigate("/create")}
           >
             {t("info.section.goToRegister")}
           </Button>
         </div>
 
-        <div className="flex flex-col gap-10">
-          <div className="w-full text-center text-xl text-scale-400">
+        <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
+          <div className="w-full text-center text-base md:text-lg lg:text-xl text-scale-400">
             {t("info.section.howToRegister")}
           </div>
           <div className="w-full grid grid-cols-1 pc:grid-cols-2 gap-10 pb-25 border-b border-b-scale-200">

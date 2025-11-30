@@ -9,7 +9,7 @@ export default function Layout() {
     <div className="w-full bg-bg-default">
       <Header />
       <TransitionProvider>
-        <main className="min-h-screen pt-22">
+        <main className="min-h-screen pt-16 md:pt-18 lg:pt-20 pc:pt-22">
           <ScrollToTop />
           <Outlet />
         </main>
