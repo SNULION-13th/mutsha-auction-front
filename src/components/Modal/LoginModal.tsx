@@ -21,7 +21,13 @@ export default function LoginModal() {
     <Dialog>
       <DialogPortal />
       <DialogTrigger asChild>
-        <Button variant="gray">{"로그인"}</Button>
+        <Button 
+          variant="gray" 
+          size="small" 
+          className="text-xs px-2.5 py-1.5 md:text-xl md:px-5 md:py-3 whitespace-nowrap"
+        >
+          {"로그인"}
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-150">
         <div className="px-20 py-22.5 flex flex-col gap-10">

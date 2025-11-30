@@ -1,3 +1,5 @@
+// src/pages/History/HistoryPage.tsx
+
 import { getRemainingTime } from "@/utils/datetime";
 import { HistoryCard } from "./components/HistoryCard";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -82,17 +84,18 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+    // [변경] 패딩 반응형 적용
+    <div className="w-full px-6 py-10 md:px-20 md:py-20 lg:px-50 lg:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-10 lg:gap-16">
+        <div className="flex flex-col gap-3 lg:gap-5 text-center lg:text-left">
+          <div className="text-3xl lg:text-5xl font-bold text-scale-600">내 경매</div>
+          <div className="text-lg lg:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
-        <div className="flex border-b-2 border-scale-200 relative">
+        <div className="flex border-b-2 border-scale-200 relative justify-center lg:justify-start">
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-1/2 lg:w-30 text-xl lg:text-2xl font-bold pb-4 lg:pb-6 relative ${
               tab === "bids" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("bids")}
@@ -103,7 +106,7 @@ function HistoryPage() {
             )}
           </button>
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-1/2 lg:w-30 text-xl lg:text-2xl font-bold pb-4 lg:pb-6 relative ${
               tab === "mine" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("mine")}
@@ -126,7 +129,8 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            {/* [변경] 그리드 컬럼 반응형 적용 (모바일 1단, 태블릿/PC 2단) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";

@@ -28,7 +28,13 @@ export default function ProfileModal() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="gray">{"프로필"}</Button>
+        <Button 
+          variant="gray" 
+          size="small"
+          className="text-xs px-2.5 py-1.5 md:text-xl md:px-5 md:py-3 whitespace-nowrap"
+        >
+          {"프로필"}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
