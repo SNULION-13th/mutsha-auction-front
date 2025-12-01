@@ -18,7 +18,6 @@ const MESSAGE: Record<TransitionScenario, string> = {
   lose: "아쉽네요... 이번에는 다른 분이 낙찰을 가져갔어요.\n다음 경매에서는 꼭 성공하실 거예요!",
 };
 
-
 const STEP: Record<TransitionScenario, 0 | 1 | 2> = {
   "not-highest": 0,
   lose: 1,

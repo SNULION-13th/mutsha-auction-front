@@ -20,7 +20,7 @@ function InfoCardFront({
 }: InfoCardProps & {
   isHovered: boolean;
   onHoverChange: (v: boolean) => void;
-}){
+}) {
   return (
     <div
       className="w-full flex max-pc:flex-col items-center rounded-xl p-5 gap-5 shadow-lg [backface-visibility:hidden]"

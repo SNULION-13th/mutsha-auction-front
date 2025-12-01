@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls,useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import lion from "@/assets/lions/saja_3d.glb?url";
 import * as THREE from "three";
 import { Suspense } from "react";
@@ -20,7 +20,7 @@ function Model({ step, onPlay }: Props) {
   const { scene, animations } = useGLTF(lion);
   const mixer = useRef<THREE.AnimationMixer | null>(null);
   const modelRef = useRef<THREE.Object3D>(null);
-  
+
   useEffect(() => {
     mixer.current = new THREE.AnimationMixer(scene);
     return () => {
@@ -42,7 +42,7 @@ function Model({ step, onPlay }: Props) {
 
     onPlay?.(clip.duration);
   }, [step, animations, onPlay]);
-  
+
   useFrame((_, delta) => mixer.current?.update(delta));
 
   useFrame(() => {
@@ -53,7 +53,7 @@ function Model({ step, onPlay }: Props) {
     modelRef.current.position.y = -1.5;
     modelRef.current.scale.set(3, 3, 3);
   });
-  
+
   return <primitive object={scene} ref={modelRef} />;
 }
 

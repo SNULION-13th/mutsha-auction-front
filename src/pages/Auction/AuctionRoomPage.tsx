@@ -130,7 +130,7 @@ function AuctionRoomPage() {
 
   if (error || !auction) {
     return (
-      <div className="w-full px-50 pt-40">
+      <div className="w-full px-4 md:px-10 lg:px-50 pt-40">
         <div className="max-w-[1160px] mx-auto text-center">
           <div className="text-2xl text-scale-500 mb-4">{error}</div>
           <Button variant="primary" onClick={() => navigate("/auction")}>
@@ -142,97 +142,111 @@ function AuctionRoomPage() {
   }
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] mx-auto flex flex-col gap-25">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-4 md:px-10 lg:px-50 py-6 md:py-12 lg:py-30">
+      <div className="max-w-[1062px] mx-auto flex flex-col gap-8 md:gap-16 lg:gap-25">
+        <div className="flex flex-col gap-2 md:gap-5">
+          <div className="text-3xl md:text-5xl font-bold text-scale-600">
+            경매 입찰하기
+          </div>
+          <div className="text-lg md:text-2xl text-scale-400">
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
-        <div className="w-full h-full flex gap-9">
-          <div className="w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
+        <div className="w-full h-full flex flex-col lg:flex-row gap-6 lg:gap-9">
+          <div className="w-full lg:w-[470px] shrink-0 lg:min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
-              className="w-full h-[392px] object-cover rounded-t-2xl"
+              className="w-full h-[300px] sm:h-[392px] object-cover rounded-t-2xl"
             />
-            <div className="px-7 py-5 pb-12 flex flex-col gap-6">
-              <div className="text-2xl font-bold text-scale-600">
+            <div className="px-4 py-5 md:px-7 pb-8 md:pb-12 flex flex-col gap-4 md:gap-6">
+              <div className="text-xl md:text-2xl font-bold text-scale-600">
                 {auction.title}
               </div>
-              <div className="text-lg text-scale-400">
+              <div className="text-base md:text-lg text-scale-400">
                 {auction.description}
               </div>
             </div>
           </div>
-          <div className="w-full min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-14 shadow-xl px-12.5 py-20 justify-center">
+          <div className="w-full lg:min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-10 md:gap-14 shadow-xl p-6 md:p-10 lg:px-12.5 lg:py-20 justify-center">
             <div className="flex flex-col gap-4">
-              <div className="text-3xl font-bold text-scale-600">경매 정보</div>
+              <div className="text-2xl md:text-3xl font-bold text-scale-600">
+                경매 정보
+              </div>
               <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-scale-500">
+                <div className="text-lg md:text-xl font-bold text-scale-500">
                   현재 입찰가
                 </div>
                 <div className="flex items-center gap-3">
-                  <img src={Cup} className="w-10" />
-                  <div className="text-3xl font-bold text-brand-primary">
+                  <img src={Cup} className="w-8 md:w-10" />
+                  <div className="text-2xl md:text-3xl font-bold text-brand-primary">
                     {auction.current_price}잔
                   </div>
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-scale-500">
+                <div className="text-lg md:text-xl font-bold text-scale-500">
                   남은 시간
                 </div>
-                <div className="text-2xl font-bold text-scale-500">
+                <div className="text-xl md:text-2xl font-bold text-scale-500">
                   {getRemainingTime(auction.end_time)}
                 </div>
               </div>
               <div className="flex items-center w-full py-2.5">
                 <div className="w-1/2 flex flex-col gap-1.5">
-                  <div className="text-xl font-bold text-scale-500">
+                  <div className="text-lg md:text-xl font-bold text-scale-500">
                     최소 입찰가
                   </div>
-                  <div className="text-xl text-scale-400">
+                  <div className="text-lg md:text-xl text-scale-400">
                     {auction.starting_price}
                   </div>
                 </div>
                 <div className="w-1/2 flex flex-col gap-1.5">
-                  <div className="text-xl font-bold text-scale-500">판매자</div>
-                  <div className="text-xl text-scale-400">
+                  <div className="text-lg md:text-xl font-bold text-scale-500">
+                    판매자
+                  </div>
+                  <div className="text-lg md:text-xl text-scale-400">
                     {auction.seller_nickname}
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-7">
-              <div className="text-3xl font-bold text-scale-600">입찰하기</div>
+            <div className="flex flex-col gap-6 md:gap-7">
+              <div className="text-2xl md:text-3xl font-bold text-scale-600">
+                입찰하기
+              </div>
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    disabled={isEnded}
-                    min={Math.max(
-                      auction.starting_price ?? 0,
-                      (auction.current_price ?? 0) + 1,
-                    )}
-                    value={bidInput}
-                    onChange={(e) => {
-                      const v = e.target.value.replace(/[^\d]/g, "");
-                      setBidInput(v.replace(/^0+(?=\d)/, ""));
-                    }}
-                    placeholder={isEnded ? "이미 종료된 경매" : "입찰가 입력"}
-                    className={`flex-1 h-12 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
-                      isEnded
-                        ? "bg-scale-100 text-scale-300 cursor-not-allowed"
-                        : "text-scale-600 focus:ring-2 focus:ring-brand-primary/40"
-                    }`}
-                  />
-                  <span className="text-xl text-scale-600">잔</span>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="relative flex-1">
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      disabled={isEnded}
+                      min={Math.max(
+                        auction.starting_price ?? 0,
+                        (auction.current_price ?? 0) + 1,
+                      )}
+                      value={bidInput}
+                      onChange={(e) => {
+                        const v = e.target.value.replace(/[^\d]/g, "");
+                        setBidInput(v.replace(/^0+(?=\d)/, ""));
+                      }}
+                      placeholder={
+                        isEnded ? "이미 종료된 경매" : "입찰가 입력"
+                      }
+                      className={`w-full h-12 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
+                        isEnded
+                          ? "bg-scale-100 text-scale-300 cursor-not-allowed"
+                          : "text-scale-600 focus:ring-2 focus:ring-brand-primary/40"
+                      }`}
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-lg md:text-xl text-scale-600">
+                      잔
+                    </span>
+                  </div>
                   {isEnded ? (
                     <Button
                       variant="darkgray"
-                      className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center cursor-not-allowed"
+                      className="h-12 w-full sm:w-auto px-6 flex gap-2.5 items-center justify-center cursor-not-allowed"
                     >
                       경매 종료
                     </Button>
@@ -248,7 +262,7 @@ function AuctionRoomPage() {
                         variant="primary"
                         disabled={!isValidBid}
                         onClick={() => setIsPayOpen(true)}
-                        className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center"
+                        className="h-12 w-full sm:w-auto px-6 flex gap-2.5 items-center justify-center"
                       >
                         <img src={LogoWhite} className="w-5" />
                         입찰하기

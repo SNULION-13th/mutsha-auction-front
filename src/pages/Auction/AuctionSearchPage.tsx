@@ -54,13 +54,13 @@ function AuctionSearchPage() {
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
-      {loading ? (
-       <div className="grid grid-cols-3 gap-6 min-h-[900px]">
-         {Array.from({ length: 6 }).map((_, i) => (
-           <AuctionCardSkeleton key={i} />
-          ))}
-       </div>
-      ) : error ? (
+        {loading ? (
+          <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <AuctionCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : error ? (
           <div className="text-center text-point-warning py-20">{error}</div>
         ) : total === 0 ? (
           <div className="text-center text-scale-400 py-20">

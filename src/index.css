@@ -54,7 +54,6 @@ body {
   font-family: var(--font-pretendard);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
 }
 
 @theme inline {
@@ -172,7 +171,6 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
 
 @keyframes skeleton-shimmer {
   0% {
