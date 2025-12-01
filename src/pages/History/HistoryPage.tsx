@@ -82,7 +82,7 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
+    <div className="w-full px-40 pc:px-50 py-30">
       <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
         <div className="flex flex-col gap-5">
           <div className="text-5xl font-bold text-scale-600">내 경매</div>
@@ -126,7 +126,7 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 pc:grid-cols-2 gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";

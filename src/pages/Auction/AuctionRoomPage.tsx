@@ -142,7 +142,7 @@ function AuctionRoomPage() {
   }
 
   return (
-    <div className="w-full px-50 py-30">
+    <div className="w-full px-15 pc:px-50 py-30">
       <div className="max-w-[1062px] mx-auto flex flex-col gap-25">
         <div className="flex flex-col gap-5">
           <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
@@ -151,7 +151,7 @@ function AuctionRoomPage() {
           </div>
         </div>
         <div className="w-full h-full flex gap-9">
-          <div className="w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
+          <div className="w-[310px] pc:w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
               className="w-full h-[392px] object-cover rounded-t-2xl"
@@ -165,7 +165,7 @@ function AuctionRoomPage() {
               </div>
             </div>
           </div>
-          <div className="w-full min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-14 shadow-xl px-12.5 py-20 justify-center">
+          <div className="w-[350px] pc:w-full min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-14 shadow-xl px-12.5 py-20 justify-center">
             <div className="flex flex-col gap-4">
               <div className="text-3xl font-bold text-scale-600">경매 정보</div>
               <div className="flex items-center justify-between">
@@ -222,7 +222,7 @@ function AuctionRoomPage() {
                       setBidInput(v.replace(/^0+(?=\d)/, ""));
                     }}
                     placeholder={isEnded ? "이미 종료된 경매" : "입찰가 입력"}
-                    className={`flex-1 h-12 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
+                    className={`flex-1 h-12 w-37 pc:w-50 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
                       isEnded
                         ? "bg-scale-100 text-scale-300 cursor-not-allowed"
                         : "text-scale-600 focus:ring-2 focus:ring-brand-primary/40"
@@ -251,7 +251,7 @@ function AuctionRoomPage() {
                         className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center"
                       >
                         <img src={LogoWhite} className="w-5" />
-                        입찰하기
+                        <div className="max-pc:hidden">입찰하기</div>
                       </Button>
                     </PointPayModal>
                   )}
