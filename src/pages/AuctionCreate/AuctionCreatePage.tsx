@@ -96,7 +96,7 @@ function AuctionCreatePage() {
             <DescriptionField register={register} formState={formState} />
             <ImageUploadField control={control} />
 
-            <div className="w-full flex justify-between gap-10">
+            <div className="w-full flex flex-col md:flex-row justify-between gap-10">
               <div className="flex-1 min-w-0">
                 <StartPriceField control={control} />
               </div>

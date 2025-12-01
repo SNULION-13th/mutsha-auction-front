@@ -30,6 +30,8 @@ import Card3 from "./card3.svg";
 import GradientBg from "./gradientBg.png";
 import MutSaja from "./mutsaja.svg";
 import BlackRect from "./blackRect.svg";
+import snulion1 from "./snulion1.png";
+import snulion2 from "./snulion2.png";
 
 export {
   Profile1,
@@ -64,4 +66,6 @@ export {
   BlackRect,
   GradientBg,
   MutSaja,
+  snulion1,
+  snulion2,
 };

@@ -4,6 +4,7 @@ import { router } from "./Router";
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserInfoProvider } from "./contexts/UserInfoProvider";
+import { CursorFollower } from "./components/CursorFollower";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -23,6 +24,7 @@ function App() {
         <Suspense fallback={null}>
           <RouterProvider router={router} />
         </Suspense>
+        <CursorFollower />
       </UserInfoProvider>
     </QueryClientProvider>
   );

@@ -150,8 +150,8 @@ function AuctionRoomPage() {
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
-        <div className="w-full h-full flex gap-9">
-          <div className="w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
+        <div className="w-full h-full flex lg:flex-row flex-col gap-9">
+          <div className="w-full lg:w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
               className="w-full h-[392px] object-cover rounded-t-2xl"
@@ -207,32 +207,34 @@ function AuctionRoomPage() {
             <div className="flex flex-col gap-7">
               <div className="text-3xl font-bold text-scale-600">입찰하기</div>
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    disabled={isEnded}
-                    min={Math.max(
-                      auction.starting_price ?? 0,
-                      (auction.current_price ?? 0) + 1,
-                    )}
-                    value={bidInput}
-                    onChange={(e) => {
-                      const v = e.target.value.replace(/[^\d]/g, "");
-                      setBidInput(v.replace(/^0+(?=\d)/, ""));
-                    }}
-                    placeholder={isEnded ? "이미 종료된 경매" : "입찰가 입력"}
-                    className={`flex-1 h-12 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
-                      isEnded
-                        ? "bg-scale-100 text-scale-300 cursor-not-allowed"
-                        : "text-scale-600 focus:ring-2 focus:ring-brand-primary/40"
-                    }`}
-                  />
-                  <span className="text-xl text-scale-600">잔</span>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="flex items-center gap-2 flex-1">
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      disabled={isEnded}
+                      min={Math.max(
+                        auction.starting_price ?? 0,
+                        (auction.current_price ?? 0) + 1,
+                      )}
+                      value={bidInput}
+                      onChange={(e) => {
+                        const v = e.target.value.replace(/[^\d]/g, "");
+                        setBidInput(v.replace(/^0+(?=\d)/, ""));
+                      }}
+                      placeholder={isEnded ? "이미 종료된 경매" : "입찰가 입력"}
+                      className={`flex-1 h-12 rounded-sm border border-scale-200 px-4 placeholder:text-scale-300 focus:outline-none ${
+                        isEnded
+                          ? "bg-scale-100 text-scale-300 cursor-not-allowed"
+                          : "text-scale-600 focus:ring-2 focus:ring-brand-primary/40"
+                      }`}
+                    />
+                    <span className="text-xl text-scale-600">잔</span>
+                  </div>
                   {isEnded ? (
                     <Button
                       variant="darkgray"
-                      className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center cursor-not-allowed"
+                      className="h-12 w-full sm:w-50 px-6 flex gap-2.5 items-center justify-center cursor-not-allowed"
                     >
                       경매 종료
                     </Button>
@@ -248,7 +250,7 @@ function AuctionRoomPage() {
                         variant="primary"
                         disabled={!isValidBid}
                         onClick={() => setIsPayOpen(true)}
-                        className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center"
+                        className="h-12 w-full sm:w-50 px-6 flex gap-2.5 items-center justify-center"
                       >
                         <img src={LogoWhite} className="w-5" />
                         입찰하기
