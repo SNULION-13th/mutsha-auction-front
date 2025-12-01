@@ -35,26 +35,26 @@ export function HistoryCard({
 
   return (
     <div
-      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-15 py-7.5 gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
+      className={`w-full min-h-[200px] flex flex-col rounded-xl shadow-lg px-4 sm:px-8 md:px-15 py-5 sm:py-6 md:py-7.5 gap-4 sm:gap-5 md:gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
     >
       <div
-        className={`text-lg font-bold ${ended ? "text-scale-400" : "text-scale-600"}`}
+        className={`text-base sm:text-lg font-bold line-clamp-2 ${ended ? "text-scale-400" : "text-scale-600"}`}
       >
         {title}
       </div>
       {ended ? (
-        <div className="w-full h-full flex flex-col gap-2.5">
-          <div className="w-full flex justify-between">
-            <div className="text-base font-bold text-scale-400">경매 종료</div>
-            <div className="text-xl font-bold text-scale-600">
+        <div className="w-full flex flex-col gap-2 sm:gap-2.5 flex-grow">
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="text-sm sm:text-base font-bold text-scale-400">경매 종료</div>
+            <div className="text-lg sm:text-xl font-bold text-scale-600 whitespace-nowrap">
               {current_price}잔
             </div>
           </div>
           {typeof resultText === "string" && (
-            <div className="w-full flex justify-between">
-              <div className="text-base font-bold text-scale-400">결과</div>
+            <div className="w-full flex justify-between items-center gap-2">
+              <div className="text-sm sm:text-base font-bold text-scale-400">결과</div>
               <div
-                className={`text-lg font-bold ${win ? "text-[#39A058]" : "text-[#CF5951]"}`}
+                className={`text-base sm:text-lg font-bold whitespace-nowrap ${win ? "text-[#39A058]" : "text-[#CF5951]"}`}
               >
                 {resultText}
               </div>
@@ -62,38 +62,38 @@ export function HistoryCard({
           )}
         </div>
       ) : (
-        <div className="w-full flex flex-col gap-2.5">
-          <div className="w-full flex justify-between">
-            <div className="flex gap-2">
-              <div className="text-base font-bold text-scale-400">
+        <div className="w-full flex flex-col gap-2 sm:gap-2.5 flex-grow">
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="flex gap-1 sm:gap-2 items-center min-w-0">
+              <div className="text-xs sm:text-sm md:text-base font-bold text-scale-400 whitespace-nowrap">
                 현재 입찰가
               </div>
-              <div className="text-xl font-bold text-brand-primary">
+              <div className="text-base sm:text-lg md:text-xl font-bold text-brand-primary whitespace-nowrap">
                 {current_price}잔
               </div>
             </div>
-            <div className="text-scale-300">|</div>
-            <div className="flex gap-2">
-              <div className="text-base font-bold text-scale-400">
+            <div className="text-scale-300 hidden sm:inline">|</div>
+            <div className="flex gap-1 sm:gap-2 items-center min-w-0">
+              <div className="text-xs sm:text-sm md:text-base font-bold text-scale-400 whitespace-nowrap">
                 {rightLabel}
               </div>
-              <div className="text-lg font-bold text-scale-600">{my_bid}잔</div>
+              <div className="text-base sm:text-lg font-bold text-scale-600 whitespace-nowrap">{my_bid}잔</div>
             </div>
           </div>
-          <div className="w-full flex justify-between">
-            <div className="text-base font-bold text-scale-400">남은 시간</div>
-            <div className="text-lg font-bold text-scale-600">{duration}</div>
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="text-sm sm:text-base font-bold text-scale-400">남은 시간</div>
+            <div className="text-base sm:text-lg font-bold text-scale-600 whitespace-nowrap">{duration}</div>
           </div>
         </div>
       )}
       <Button
         variant={`${ended ? "darkgray" : "primary"}`}
-        className="w-full flex gap-2.5 rounded-sm p-2.5 items-center justify-center"
+        className="w-full flex gap-2 sm:gap-2.5 rounded-sm p-2 sm:p-2.5 items-center justify-center flex-shrink-0"
         onClick={handleClick}
       >
-        {ended ? "" : <img src={LogoWhite} className="w-4" />}
+        {ended ? "" : <img src={LogoWhite} className="w-3 sm:w-4" />}
         <div
-          className={`text-base font-bold ${ended ? "text-scale-300" : "text-bg-white"}`}
+          className={`text-sm sm:text-base font-bold ${ended ? "text-scale-300" : "text-bg-white"}`}
         >
           {ended ? "경매 보러가기" : buttonText}
         </div>
