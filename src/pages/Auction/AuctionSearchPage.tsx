@@ -46,7 +46,7 @@ function AuctionSearchPage() {
   }, [total, page]);
 
   return (
-    <div className="w-full px-50 py-30">
+    <div className="w-full px-20 pc:px-50 py-30">
       <div className="max-w-[1062px] flex flex-col mx-auto gap-25">
         <div className="flex flex-col gap-5">
           <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
@@ -55,7 +55,7 @@ function AuctionSearchPage() {
           </div>
         </div>
         {loading ? (
-          <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+          <div className="grid grid-cols-2 pc:grid-cols-3 gap-6 min-h-[900px]">
             {Array.from({ length: 6 }).map((_, i) => (
               <AuctionCardSkeleton key={i} />
             ))}
@@ -68,7 +68,7 @@ function AuctionSearchPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+            <div className="grid grid-cols-2 pc:grid-cols-3 gap-6 min-h-[900px]">
               {pageItems.map((a) => (
                 <AuctionCard
                   key={a.id}
