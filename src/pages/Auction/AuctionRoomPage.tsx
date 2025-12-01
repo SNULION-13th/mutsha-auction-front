@@ -146,11 +146,11 @@ function AuctionRoomPage() {
       <div className="max-w-[1062px] mx-auto flex flex-col gap-25">
         <div className="flex flex-col gap-5">
           <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
+          <div className="text-lg pc:text-2xl text-scale-400">
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
-        <div className="w-full h-full flex gap-9">
+        <div className="w-full h-full flex max-pc:flex-col gap-9">
           <div className="w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
@@ -165,7 +165,7 @@ function AuctionRoomPage() {
               </div>
             </div>
           </div>
-          <div className="w-full min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-14 shadow-xl px-12.5 py-20 justify-center">
+          <div className="w-full max-pc:w-[470px] min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-14 shadow-xl px-12.5 py-20 justify-center">
             <div className="flex flex-col gap-4">
               <div className="text-3xl font-bold text-scale-600">경매 정보</div>
               <div className="flex items-center justify-between">
@@ -248,7 +248,7 @@ function AuctionRoomPage() {
                         variant="primary"
                         disabled={!isValidBid}
                         onClick={() => setIsPayOpen(true)}
-                        className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center"
+                        className="h-12 w-50 px-6 max-pc:text-sm flex gap-2.5 items-center justify-center"
                       >
                         <img src={LogoWhite} className="w-5" />
                         입찰하기

@@ -63,7 +63,7 @@ export function HistoryCard({
         </div>
       ) : (
         <div className="w-full flex flex-col gap-2.5">
-          <div className="w-full flex justify-between">
+          <div className="w-full flex max-pc:flex-col justify-between">
             <div className="flex gap-2">
               <div className="text-base font-bold text-scale-400">
                 현재 입찰가
@@ -72,7 +72,7 @@ export function HistoryCard({
                 {current_price}잔
               </div>
             </div>
-            <div className="text-scale-300">|</div>
+            <div className="max-pc:hidden text-scale-300">|</div>
             <div className="flex gap-2">
               <div className="text-base font-bold text-scale-400">
                 {rightLabel}
