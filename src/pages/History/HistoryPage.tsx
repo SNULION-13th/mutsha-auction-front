@@ -82,18 +82,21 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-4 md:px-10 lg:px-50 py-6 md:py-12 lg:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-8 md:gap-16">
+        <div className="flex flex-col gap-2 md:gap-5">
+          <div className="text-3xl md:text-5xl font-bold text-scale-600">
+            내 경매
+          </div>
+          <div className="text-lg md:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
-        <div className="flex border-b-2 border-scale-200 relative">
+        <div className="flex border-b-2 border-scale-200">
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${tab === "bids" ? "text-brand-primary" : "text-scale-300"
-              }`}
+            className={`flex-1 sm:flex-none sm:w-30 text-center text-xl md:text-2xl font-bold pb-4 md:pb-6 relative ${
+              tab === "bids" ? "text-brand-primary" : "text-scale-300"
+            }`}
             onClick={() => setTab("bids")}
           >
             입찰 중
@@ -102,8 +105,9 @@ function HistoryPage() {
             )}
           </button>
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${tab === "mine" ? "text-brand-primary" : "text-scale-300"
-              }`}
+            className={`flex-1 sm:flex-none sm:w-30 text-center text-xl md:text-2xl font-bold pb-4 md:pb-6 relative ${
+              tab === "mine" ? "text-brand-primary" : "text-scale-300"
+            }`}
             onClick={() => setTab("mine")}
           >
             내 등록
@@ -124,69 +128,69 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
-                  const ended = isEnded(b.end_time) || b.status === "ended";
-                  const duration = ended
-                    ? "00d 00h 00m"
-                    : getRemainingTime(b.end_time);
-                  const resultText = ended
-                    ? b.is_winner
-                      ? "낙찰 성공"
-                      : "낙찰 실패"
-                    : undefined;
+                    const ended = isEnded(b.end_time) || b.status === "ended";
+                    const duration = ended
+                      ? "00d 00h 00m"
+                      : getRemainingTime(b.end_time);
+                    const resultText = ended
+                      ? b.is_winner
+                        ? "낙찰 성공"
+                        : "낙찰 실패"
+                      : undefined;
 
-                  const toRoom = ROUTES.AUCTION.ROOM.replace(
-                    ":auctionId",
-                    String(b.auction_id),
-                  );
+                    const toRoom = ROUTES.AUCTION.ROOM.replace(
+                      ":auctionId",
+                      String(b.auction_id),
+                    );
 
-                  return (
-                    <HistoryCard
-                      key={b.auction_id}
-                      id={b.auction_id}
-                      title={b.title}
-                      current_price={b.current_price}
-                      my_bid={b.my_bid}
-                      duration={duration}
-                      ended={ended}
-                      rightLabel="내 입찰가"
-                      resultText={resultText}
-                      win={b.is_winner}
-                      buttonText="입찰하기"
-                      onClick={() =>
-                        playTransition({
-                          scenario: scenarioFromBid(b),
-                          to: toRoom,
-                        })
-                      }
-                    />
-                  );
-                })
+                    return (
+                      <HistoryCard
+                        key={b.auction_id}
+                        id={b.auction_id}
+                        title={b.title}
+                        current_price={b.current_price}
+                        my_bid={b.my_bid}
+                        duration={duration}
+                        ended={ended}
+                        rightLabel="내 입찰가"
+                        resultText={resultText}
+                        win={b.is_winner}
+                        buttonText="입찰하기"
+                        onClick={() =>
+                          playTransition({
+                            scenario: scenarioFromBid(b),
+                            to: toRoom,
+                          })
+                        }
+                      />
+                    );
+                  })
                 : listMine.map((m) => {
-                  const ended =
-                    isEnded(m.end_time) ||
-                    m.status === "ended" ||
-                    m.status === "cancelled";
-                  const duration = ended
-                    ? "00d 00h 00m"
-                    : getRemainingTime(m.end_time);
+                    const ended =
+                      isEnded(m.end_time) ||
+                      m.status === "ended" ||
+                      m.status === "cancelled";
+                    const duration = ended
+                      ? "00d 00h 00m"
+                      : getRemainingTime(m.end_time);
 
-                  return (
-                    <HistoryCard
-                      key={m.auction_id}
-                      id={m.auction_id}
-                      title={m.title}
-                      current_price={m.current_price}
-                      my_bid={m.start_price}
-                      duration={duration}
-                      ended={ended}
-                      rightLabel="최소 입찰가"
-                      buttonText="경매 보러가기"
-                    />
-                  );
-                })}
+                    return (
+                      <HistoryCard
+                        key={m.auction_id}
+                        id={m.auction_id}
+                        title={m.title}
+                        current_price={m.current_price}
+                        my_bid={m.start_price}
+                        duration={duration}
+                        ended={ended}
+                        rightLabel="최소 입찰가"
+                        buttonText="경매 보러가기"
+                      />
+                    );
+                  })}
             </div>
             <div ref={sentinelRef} className="h-8" />
           </>
