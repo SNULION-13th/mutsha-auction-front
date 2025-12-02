@@ -87,7 +87,9 @@ function HistoryPage() {
     <div className="w-full px-4 pc:px-50 py-10 pc:py-30">
       <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
         <div className="flex flex-col gap-5">
-          <div className="text-3xl pc:text-5xl font-bold text-scale-600">내 경매</div>
+          <div className="text-3xl pc:text-5xl font-bold text-scale-600">
+            내 경매
+          </div>
           <div className="text-lg pc:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>

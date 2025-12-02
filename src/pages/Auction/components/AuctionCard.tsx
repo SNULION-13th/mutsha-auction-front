@@ -51,7 +51,9 @@ export function AuctionCard({
           onClick={() => navigate(`/auction/${id}`)}
         >
           <img src={LogoWhite} className="w-3 pc:w-4" />
-          <div className="text-sm pc:text-base font-bold text-bg-white">입찰</div>
+          <div className="text-sm pc:text-base font-bold text-bg-white">
+            입찰
+          </div>
         </Button>
       </div>
     </div>
