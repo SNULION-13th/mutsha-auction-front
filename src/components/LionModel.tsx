@@ -60,7 +60,7 @@ function Model({ step, onPlay }: Props) {
 export function LionCanvas({ step, onPlay }: Props) {
   return (
     <Canvas
-      style={{ width: 400, height: 400 }}
+      className="w-[240px] h-[240px] pc:w-[400px] pc:h-[400px]"
       camera={{ position: [0, 0, 8], fov: 35 }}
     >
       <ambientLight intensity={1.5} />

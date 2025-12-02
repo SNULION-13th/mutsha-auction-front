@@ -40,10 +40,10 @@ export function Button({
 }: ButtonProps) {
   const buttonClass = cn(
     "font-bold cursor-pointer",
-    className,
     sizeClass[size],
     isRounded ? roundClass["large"] : roundClass["small"],
     variantClass[disabled ? "disabled" : variant],
+    className,
   );
 
   return (
