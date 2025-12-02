@@ -142,16 +142,18 @@ function AuctionRoomPage() {
   }
 
   return (
-    <div className="w-full px-50 py-30">
+    <div className="w-full px-4 pc:px-50 py-10 pc:py-30">
       <div className="max-w-[1062px] mx-auto flex flex-col gap-25">
         <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
+          <div className="text-3xl pc:text-5xl font-bold text-scale-600">
+            경매 입찰하기
+          </div>
+          <div className="text-lg pc:text-2xl text-scale-400">
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
-        <div className="w-full h-full flex gap-9">
-          <div className="w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
+        <div className="w-full h-full flex flex-col pc:flex-row gap-9">
+          <div className="w-full pc:w-[470px] shrink-0 min-h-[577px] rounded-2xl bg-bg-white flex flex-col gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
               className="w-full h-[392px] object-cover rounded-t-2xl"
@@ -187,8 +189,8 @@ function AuctionRoomPage() {
                   {getRemainingTime(auction.end_time)}
                 </div>
               </div>
-              <div className="flex items-center w-full py-2.5">
-                <div className="w-1/2 flex flex-col gap-1.5">
+              <div className="flex flex-col pc:flex-row items-center w-full py-2.5 gap-4 pc:gap-0">
+                <div className="w-full pc:w-1/2 flex flex-col gap-1.5">
                   <div className="text-xl font-bold text-scale-500">
                     최소 입찰가
                   </div>
@@ -196,7 +198,7 @@ function AuctionRoomPage() {
                     {auction.starting_price}
                   </div>
                 </div>
-                <div className="w-1/2 flex flex-col gap-1.5">
+                <div className="w-full pc:w-1/2 flex flex-col gap-1.5">
                   <div className="text-xl font-bold text-scale-500">판매자</div>
                   <div className="text-xl text-scale-400">
                     {auction.seller_nickname}
@@ -248,10 +250,10 @@ function AuctionRoomPage() {
                         variant="primary"
                         disabled={!isValidBid}
                         onClick={() => setIsPayOpen(true)}
-                        className="h-12 w-50 px-6 flex gap-2.5 items-center justify-center"
+                        className="h-12 w-12 px-0 pc:w-auto pc:px-6 flex gap-2.5 items-center justify-center"
                       >
                         <img src={LogoWhite} className="w-5" />
-                        입찰하기
+                        <span className="hidden pc:inline">입찰하기</span>
                       </Button>
                     </PointPayModal>
                   )}

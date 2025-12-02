@@ -72,10 +72,10 @@ export default function PointPayModal({
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogPortal />
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="w-[532px]">
+        <DialogContent className="w-11/12 pc:w-[532px]">
           <div className="px-8 pt-20 pb-5 flex flex-col items-center gap-5">
             {!isInsufficient ? (
-              <p className="text-scale-600 text-2xl font-bold text-center">
+              <p className="text-scale-600 text-lg pc:text-2xl font-bold text-center">
                 <span className="font-bold text-brand-primary">
                   {formatNumber(bid)}
                 </span>
@@ -84,17 +84,17 @@ export default function PointPayModal({
                 입찰할까요?
               </p>
             ) : (
-              <p className="text-scale-600 text-2xl font-bold text-center">
+              <p className="text-scale-600 text-lg pc:text-2xl font-bold text-center">
                 포인트가 부족합니다. <br /> 지금 바로 충전하시겠습니까?
               </p>
             )}
             <div>
-              <span className="text-xl font-bold text-scale-500">
+              <span className="text-base pc:text-xl font-bold text-scale-500">
                 내 포인트 :
                 {loading ? "불러오는 중..." : ` ${formatNumber(myPoints)} 잔`}
               </span>
             </div>
-            <div className="flex w-full items-center justify-center pt-5 gap-5">
+            <div className="flex flex-col pc:flex-row w-full items-center justify-center pt-5 gap-5">
               <Button
                 variant="outlined"
                 onClick={() => onOpenChange(false)}

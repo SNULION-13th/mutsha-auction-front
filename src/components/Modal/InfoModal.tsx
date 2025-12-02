@@ -22,12 +22,12 @@ export default function InfoModal({
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[532px]">
+      <DialogContent className="w-11/12 pc:w-[532px]">
         <div className="flex flex-col px-8 pb-5 pt-20 gap-10 items-center">
-          <div className="text-2xl font-bold text-scale-600 whitespace-pre-line text-center">
+          <div className="text-lg pc:text-2xl font-bold text-scale-600 whitespace-pre-line text-center">
             {title}
           </div>
-          <div className="flex w-full gap-5">
+          <div className="flex flex-col pc:flex-row w-full gap-5">
             <Button variant="outlined" className="flex-1" onClick={onClose}>
               {closeButton}
             </Button>
