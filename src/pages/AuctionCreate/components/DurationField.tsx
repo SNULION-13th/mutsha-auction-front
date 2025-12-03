@@ -9,12 +9,12 @@ export function DurationField({
   return (
     <div className="flex flex-col gap-2">
       <label className="text-lg font-bold text-scale-600">경매 기간</label>
-      <div className="flex items-center gap-5 text-scale-500">
+      <div className="flex items-center gap-3 md:gap-5 text-scale-500">
         <Controller
           name="duration.days"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <input
                 inputMode="numeric"
                 value={value}
@@ -22,9 +22,9 @@ export function DurationField({
                   const digits = digitsOnly(e.target.value);
                   onChange(digits ? Number(digits) : 0);
                 }}
-                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+                className="w-12 md:w-16 text-2xl md:text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
               />
-              <span className="text-3xl pb-1">d</span>
+              <span className="text-2xl md:text-3xl pb-1">d</span>
             </div>
           )}
         />
@@ -32,7 +32,7 @@ export function DurationField({
           name="duration.hours"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <input
                 inputMode="numeric"
                 value={String(value).padStart(2, "0")}
@@ -41,9 +41,9 @@ export function DurationField({
                   const num = digits ? Number(digits) : 0;
                   onChange(Math.min(num, 23));
                 }}
-                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+                className="w-12 md:w-16 text-2xl md:text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
               />
-              <span className="text-3xl pb-1">h</span>
+              <span className="text-2xl md:text-3xl pb-1">h</span>
             </div>
           )}
         />
@@ -51,7 +51,7 @@ export function DurationField({
           name="duration.minutes"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <input
                 inputMode="numeric"
                 value={String(value).padStart(2, "0")}
@@ -60,9 +60,9 @@ export function DurationField({
                   const num = digits ? Number(digits) : 0;
                   onChange(Math.min(num, 59));
                 }}
-                className="w-16 text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
+                className="w-12 md:w-16 text-2xl md:text-3xl font-bold bg-transparent border-b-2 border-scale-300 focus:border-brand-primary outline-none text-center"
               />
-              <span className="text-3xl pb-1">m</span>
+              <span className="text-2xl md:text-3xl pb-1">m</span>
             </div>
           )}
         />

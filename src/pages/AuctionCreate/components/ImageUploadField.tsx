@@ -39,7 +39,7 @@ export function ImageUploadField({ control }: Pick<FormFieldProps, "control">) {
                 e.preventDefault();
                 e.stopPropagation();
               }}
-              className={`w-full h-[320px] rounded-md border ${
+              className={`w-full h-[200px] md:h-[320px] rounded-md border ${
                 preview ? "border-transparent" : "border-scale-200"
               } overflow-hidden cursor-pointer flex items-center justify-center`}
               title={
