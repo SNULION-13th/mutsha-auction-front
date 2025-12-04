@@ -46,29 +46,33 @@ function AuctionSearchPage() {
   }, [total, page]);
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-25">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-50 py-6 sm:py-12 md:py-20 lg:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-6 sm:gap-12 md:gap-20 lg:gap-25">
+        <div className="flex flex-col gap-2 sm:gap-4 lg:gap-5">
+          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-scale-600">
+            경매 입찰하기
+          </div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-2xl text-scale-400">
             멋사 구성원들의 애착템에 입찰해보세요!
           </div>
         </div>
         {loading ? (
-          <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 min-h-[400px] sm:min-h-[600px] lg:min-h-[900px]">
             {Array.from({ length: 6 }).map((_, i) => (
               <AuctionCardSkeleton key={i} />
             ))}
           </div>
         ) : error ? (
-          <div className="text-center text-point-warning py-20">{error}</div>
+          <div className="text-center text-point-warning py-10 sm:py-16 lg:py-20 text-sm sm:text-base">
+            {error}
+          </div>
         ) : total === 0 ? (
-          <div className="text-center text-scale-400 py-20">
+          <div className="text-center text-scale-400 py-10 sm:py-16 lg:py-20 text-sm sm:text-base">
             아직 진행 중인 경매가 없어요.
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 min-h-[400px] sm:min-h-[600px] lg:min-h-[900px]">
               {pageItems.map((a) => (
                 <AuctionCard
                   key={a.id}
@@ -85,7 +89,7 @@ function AuctionSearchPage() {
               pageSize={PAGE_SIZE}
               currentPage={page}
               onPageChange={setPage}
-              className="mt-8"
+              className="mt-4 sm:mt-6 lg:mt-8"
             />
           </>
         )}

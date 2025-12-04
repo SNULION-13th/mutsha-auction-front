@@ -78,25 +78,27 @@ function AuctionCreatePage() {
   };
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[973px] mx-auto flex flex-col gap-25">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 등록하기</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-50 py-6 sm:py-12 md:py-20 lg:py-30">
+      <div className="max-w-[973px] mx-auto flex flex-col gap-6 sm:gap-12 md:gap-20 lg:gap-25">
+        <div className="flex flex-col gap-2 sm:gap-4 lg:gap-5">
+          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-scale-600">
+            경매 등록하기
+          </div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-2xl text-scale-400">
             당신의 애착템, 술잔으로 걸어보세요!
           </div>
         </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
+          className="w-full rounded-xl lg:rounded-2xl bg-bg-white flex flex-col gap-6 sm:gap-12 md:gap-20 lg:gap-25 shadow-xl px-4 py-6 sm:px-6 sm:py-10 md:px-10 md:py-16 lg:px-35 lg:py-22.5"
         >
-          <div className="grid grid-cols-1 gap-12">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
             <TitleField register={register} formState={formState} />
             <DescriptionField register={register} formState={formState} />
             <ImageUploadField control={control} />
 
-            <div className="w-full flex justify-between gap-10">
+            <div className="w-full flex flex-col sm:flex-row justify-between gap-6 sm:gap-8 lg:gap-10">
               <div className="flex-1 min-w-0">
                 <StartPriceField control={control} />
               </div>
@@ -112,7 +114,7 @@ function AuctionCreatePage() {
               type="submit"
               variant={formState.isValid ? "primary" : "disabled"}
               disabled={!formState.isValid || createMutation.isPending}
-              className="w-80 h-14"
+              className="w-full sm:w-64 md:w-80 h-12 sm:h-13 lg:h-14 text-sm sm:text-base"
             >
               {createMutation.isPending ? "등록 중 ..." : "상품 등록하기"}
             </Button>
