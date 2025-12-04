@@ -35,7 +35,7 @@ export function HistoryCard({
 
   return (
     <div
-      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-15 py-7.5 gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
+      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-6 md:px-15 py-7.5 gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
     >
       <div
         className={`text-lg font-bold ${ended ? "text-scale-400" : "text-scale-600"}`}
