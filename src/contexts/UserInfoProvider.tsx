@@ -151,3 +151,5 @@ export function useUserInfo() {
   }
   return context;
 }
+
+export const useUser = useUserInfo;
