@@ -82,11 +82,13 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
+    <div className="w-full px-5 py-10 md:px-50 md:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-10 md:gap-16">
         <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+          <div className="text-3xl md:text-5xl font-bold text-scale-600">
+            내 경매
+          </div>
+          <div className="text-xl md:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
@@ -126,7 +128,7 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";
