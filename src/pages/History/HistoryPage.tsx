@@ -82,17 +82,19 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-50 py-6 sm:py-12 md:py-20 lg:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-4 sm:gap-8 md:gap-12 lg:gap-16">
+        <div className="flex flex-col gap-2 sm:gap-4 lg:gap-5">
+          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-scale-600">
+            내 경매
+          </div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
-        <div className="flex border-b-2 border-scale-200 relative">
+        <div className="flex border-b-2 border-scale-200 relative overflow-x-auto">
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-24 sm:w-28 lg:w-30 text-base sm:text-lg md:text-xl lg:text-2xl font-bold pb-3 sm:pb-4 lg:pb-6 relative whitespace-nowrap ${
               tab === "bids" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("bids")}
@@ -103,7 +105,7 @@ function HistoryPage() {
             )}
           </button>
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-24 sm:w-28 lg:w-30 text-base sm:text-lg md:text-xl lg:text-2xl font-bold pb-3 sm:pb-4 lg:pb-6 relative whitespace-nowrap ${
               tab === "mine" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("mine")}
@@ -115,18 +117,18 @@ function HistoryPage() {
           </button>
         </div>
         {loading ? (
-          <div className="w-full py-20 text-center text-scale-400">
+          <div className="w-full py-10 sm:py-16 lg:py-20 text-center text-scale-400 text-sm sm:text-base">
             불러오는 중입니다...
           </div>
         ) : (tab === "bids" ? listBids.length === 0 : listMine.length === 0) ? (
-          <div className="text-center text-scale-400 py-20">
+          <div className="text-center text-scale-400 py-10 sm:py-16 lg:py-20 text-sm sm:text-base">
             {tab === "bids"
               ? "입찰한 경매가 없습니다."
               : "등록한 경매가 없습니다."}
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";
@@ -190,7 +192,7 @@ function HistoryPage() {
                     );
                   })}
             </div>
-            <div ref={sentinelRef} className="h-8" />
+            <div ref={sentinelRef} className="h-4 sm:h-6 lg:h-8" />
           </>
         )}
       </div>
