@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AuctionCard } from "./components/AuctionCard";
 import Pagination from "@/components/Pagination";
 import { toAbsoluteUrl } from "@/utils/url";
+import { AuctionCardSkeleton } from "./components/AuctionCardSkeleton";
 
 const PAGE_SIZE = 6;
 
@@ -45,27 +46,70 @@ function AuctionSearchPage() {
   }, [total, page]);
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-25">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">경매 입찰하기</div>
-          <div className="text-2xl text-scale-400">
-            멋사 구성원들의 애착템에 입찰해보세요!
-          </div>
+    <div className="w-full min-h-screen bg-white">
+      <div className="max-w-[1280px] mx-auto px-8 sm:px-12 lg:px-20 py-12 lg:py-20">
+        <div className="mb-12 lg:mb-16">
+          <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-3 tracking-tight">
+            경매 입찰하기
+          </h1>
+          <p className="text-base lg:text-lg text-gray-500">
+            멋사 구성원들의 애착템에 입찰해보세요
+          </p>
         </div>
+
         {loading ? (
-          <div className="text-center text-scale-400 py-20">
-            불러오는 중 ...
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <AuctionCardSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
-          <div className="text-center text-point-warning py-20">{error}</div>
+          <div className="flex flex-col items-center justify-center py-24 lg:py-32">
+            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <svg
+                className="w-8 h-8 text-red-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {error}
+            </h3>
+            <p className="text-gray-500">잠시 후 다시 시도해주세요</p>
+          </div>
         ) : total === 0 ? (
-          <div className="text-center text-scale-400 py-20">
-            아직 진행 중인 경매가 없어요.
+          <div className="flex flex-col items-center justify-center py-24 lg:py-32">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+              <svg
+                className="w-8 h-8 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              진행 중인 경매가 없습니다
+            </h3>
+            <p className="text-gray-500">곧 새로운 경매가 시작될 예정입니다</p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-3 gap-6 min-h-[900px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {pageItems.map((a) => (
                 <AuctionCard
                   key={a.id}
@@ -77,13 +121,14 @@ function AuctionSearchPage() {
                 />
               ))}
             </div>
-            <Pagination
-              totalItems={total}
-              pageSize={PAGE_SIZE}
-              currentPage={page}
-              onPageChange={setPage}
-              className="mt-8"
-            />
+            <div className="mt-12 lg:mt-16">
+              <Pagination
+                totalItems={total}
+                pageSize={PAGE_SIZE}
+                currentPage={page}
+                onPageChange={setPage}
+              />
+            </div>
           </>
         )}
       </div>

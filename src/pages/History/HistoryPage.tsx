@@ -8,6 +8,7 @@ import {
   MyBidHistory,
 } from "@/apis/api";
 import { ROUTES } from "@/constants/router";
+import { useTransition } from "@/contexts/TransitionProvider";
 
 const PAGE_SIZE = 6;
 type Tab = "bids" | "mine";
@@ -24,17 +25,88 @@ function scenarioFromBid(
   return b.my_bid >= b.current_price ? "highest" : "not-highest";
 }
 
+function LoadingState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-20 sm:py-24 md:py-32">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p className="text-gray-400 text-sm sm:text-base">불러오는 중...</p>
+    </div>
+  );
+}
+
+function EmptyState({ tab }: { tab: Tab }) {
+  const messages = {
+    bids: {
+      title: "입찰한 경매가 없습니다",
+      description: "경매에 참여하고 멋진 애착템을 만나보세요",
+    },
+    mine: {
+      title: "등록한 경매가 없습니다",
+      description: "당신의 애착템을 경매에 등록해보세요",
+    },
+  };
+
+  const { title, description } = messages[tab];
+
+  return (
+    <div className="flex flex-col items-center justify-center py-20 sm:py-24 md:py-32">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4 sm:mb-6">
+        <svg
+          className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+          />
+        </svg>
+      </div>
+      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+        {title}
+      </h3>
+      <p className="text-sm sm:text-base text-gray-500">{description}</p>
+    </div>
+  );
+}
+
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      className={`relative pb-4 sm:pb-5 md:pb-6 text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-200 ${
+        active ? "text-brand-primary" : "text-gray-400 hover:text-gray-600"
+      }`}
+      onClick={onClick}
+    >
+      {children}
+      {active && (
+        <span className="absolute bottom-[-2px] left-0 w-full h-[3px] bg-brand-primary rounded-t-full transition-all duration-300" />
+      )}
+    </button>
+  );
+}
+
 function HistoryPage() {
   const [tab, setTab] = useState<Tab>("bids");
-
   const [myBids, setMyBids] = useState<MyBidHistory[]>([]);
   const [myAuctions, setMyAuctions] = useState<MyAuctionHistory[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [visibleBids, setVisibleBids] = useState(PAGE_SIZE);
   const [visibleMine, setVisibleMine] = useState(PAGE_SIZE);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { playTransition } = useTransition();
 
   useEffect(() => {
     async function load() {
@@ -54,6 +126,7 @@ function HistoryPage() {
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
+
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries[0]?.isIntersecting) return;
@@ -65,6 +138,7 @@ function HistoryPage() {
       },
       { rootMargin: "200px 0px" },
     );
+
     io.observe(el);
     return () => io.disconnect();
   }, [tab, myBids.length, myAuctions.length]);
@@ -79,52 +153,37 @@ function HistoryPage() {
     [myAuctions, visibleMine],
   );
 
+  const currentList = tab === "bids" ? listBids : listMine;
+  const isEmpty = currentList.length === 0;
+
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
-          <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
-            나의 입찰과 등록 현황을 한눈에 확인하세요.
-          </div>
-        </div>
-        <div className="flex border-b-2 border-scale-200 relative">
-          <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
-              tab === "bids" ? "text-brand-primary" : "text-scale-300"
-            }`}
-            onClick={() => setTab("bids")}
-          >
+    <div className="w-full min-h-screen bg-white">
+      <div className="max-w-[1280px] mx-auto px-6 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-12 md:py-16 lg:py-20">
+        <header className="mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
+            내 경매
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-500">
+            나의 입찰과 등록 현황을 한눈에 확인하세요
+          </p>
+        </header>
+
+        <nav className="flex gap-8 sm:gap-12 border-b-2 border-gray-100 mb-8 sm:mb-10 md:mb-12 relative">
+          <TabButton active={tab === "bids"} onClick={() => setTab("bids")}>
             입찰 중
-            {tab === "bids" && (
-              <span className="absolute bottom-[-2px] left-0 w-full h-[2px] bg-brand-primary" />
-            )}
-          </button>
-          <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
-              tab === "mine" ? "text-brand-primary" : "text-scale-300"
-            }`}
-            onClick={() => setTab("mine")}
-          >
+          </TabButton>
+          <TabButton active={tab === "mine"} onClick={() => setTab("mine")}>
             내 등록
-            {tab === "mine" && (
-              <span className="absolute bottom-[-2px] left-0 w-full h-[2px] bg-brand-primary" />
-            )}
-          </button>
-        </div>
+          </TabButton>
+        </nav>
+
         {loading ? (
-          <div className="w-full py-20 text-center text-scale-400">
-            불러오는 중입니다...
-          </div>
-        ) : (tab === "bids" ? listBids.length === 0 : listMine.length === 0) ? (
-          <div className="text-center text-scale-400 py-20">
-            {tab === "bids"
-              ? "입찰한 경매가 없습니다."
-              : "등록한 경매가 없습니다."}
-          </div>
+          <LoadingState />
+        ) : isEmpty ? (
+          <EmptyState tab={tab} />
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";
@@ -136,11 +195,6 @@ function HistoryPage() {
                         ? "낙찰 성공"
                         : "낙찰 실패"
                       : undefined;
-
-                    const toRoom = ROUTES.AUCTION.ROOM.replace(
-                      ":auctionId",
-                      String(b.auction_id),
-                    );
 
                     return (
                       <HistoryCard
@@ -155,6 +209,15 @@ function HistoryPage() {
                         resultText={resultText}
                         win={b.is_winner}
                         buttonText="입찰하기"
+                        onClick={() =>
+                          playTransition({
+                            scenario: scenarioFromBid(b),
+                            to: ROUTES.AUCTION.ROOM.replace(
+                              ":auctionId",
+                              String(b.auction_id),
+                            ),
+                          })
+                        }
                       />
                     );
                   })
