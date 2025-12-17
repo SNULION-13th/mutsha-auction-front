@@ -78,25 +78,25 @@ function AuctionCreatePage() {
   };
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[973px] mx-auto flex flex-col gap-25">
-        <div className="flex flex-col gap-5">
+    <div className="w-full px-5 sm:px-8 md:px-12 lg:px-50 py-12 sm:py-16 lg:py-30">
+      <div className="max-w-[973px] mx-auto flex flex-col gap-16 sm:gap-20 lg:gap-25">
+        <div className="flex flex-col gap-3 sm:gap-5">
           <div className="text-5xl font-bold text-scale-600">경매 등록하기</div>
-          <div className="text-2xl text-scale-400">
+          <div className="text-lg sm:text-xl lg:text-2xl text-scale-400">
             당신의 애착템, 술잔으로 걸어보세요!
           </div>
         </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full rounded-2xl bg-bg-white flex flex-col gap-25 shadow-xl px-35 py-22.5"
+          className="w-full rounded-2xl bg-bg-white flex flex-col gap-16 sm:gap-20 lg:gap-25 shadow-xl px-5 sm:px-10 md:px-20 lg:px-35 py-10 sm:py-16 lg:py-22.5"
         >
           <div className="grid grid-cols-1 gap-12">
             <TitleField register={register} formState={formState} />
             <DescriptionField register={register} formState={formState} />
             <ImageUploadField control={control} />
 
-            <div className="w-full flex justify-between gap-10">
+            <div className="w-full flex flex-col md:flex-row gap-6 md:gap-10">
               <div className="flex-1 min-w-0">
                 <StartPriceField control={control} />
               </div>
@@ -112,7 +112,7 @@ function AuctionCreatePage() {
               type="submit"
               variant={formState.isValid ? "primary" : "disabled"}
               disabled={!formState.isValid || createMutation.isPending}
-              className="w-80 h-14"
+              className="w-full sm:w-80 h-14"
             >
               {createMutation.isPending ? "등록 중 ..." : "상품 등록하기"}
             </Button>

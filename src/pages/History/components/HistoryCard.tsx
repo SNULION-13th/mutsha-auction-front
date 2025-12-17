@@ -35,10 +35,10 @@ export function HistoryCard({
 
   return (
     <div
-      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-15 py-7.5 gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
+      className={`w-full h-full flex flex-col rounded-xl shadow-lg px-6 sm:px-10 md:px-15 py-6 sm:py-7.5 gap-5 sm:gap-6 ${ended ? "bg-scale-100" : "bg-bg-white"}`}
     >
       <div
-        className={`text-lg font-bold ${ended ? "text-scale-400" : "text-scale-600"}`}
+        className={`text-base sm:text-lg font-bold ${ended ? "text-scale-400" : "text-scale-600"}`}
       >
         {title}
       </div>
@@ -63,8 +63,8 @@ export function HistoryCard({
         </div>
       ) : (
         <div className="w-full flex flex-col gap-2.5">
-          <div className="w-full flex justify-between">
-            <div className="flex gap-2">
+          <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+            <div className="flex flex-wrap gap-2">
               <div className="text-base font-bold text-scale-400">
                 현재 입찰가
               </div>
@@ -72,8 +72,8 @@ export function HistoryCard({
                 {current_price}잔
               </div>
             </div>
-            <div className="text-scale-300">|</div>
-            <div className="flex gap-2">
+            <div className="hidden sm:block text-scale-300">|</div>
+            <div className="flex flex-wrap gap-2">
               <div className="text-base font-bold text-scale-400">
                 {rightLabel}
               </div>
@@ -88,7 +88,7 @@ export function HistoryCard({
       )}
       <Button
         variant={`${ended ? "darkgray" : "primary"}`}
-        className="w-full flex gap-2.5 rounded-sm p-2.5 items-center justify-center"
+        className="w-full flex gap-2.5 rounded-sm py-3 px-4 sm:p-2.5 items-center justify-center"
         onClick={handleClick}
       >
         {ended ? "" : <img src={LogoWhite} className="w-4" />}
