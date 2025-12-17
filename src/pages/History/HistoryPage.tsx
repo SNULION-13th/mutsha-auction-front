@@ -82,17 +82,17 @@ function HistoryPage() {
   );
 
   return (
-    <div className="w-full px-50 py-30">
-      <div className="max-w-[1062px] flex flex-col mx-auto gap-16">
-        <div className="flex flex-col gap-5">
+    <div className="w-full px-5 sm:px-8 md:px-12 lg:px-50 py-12 sm:py-16 lg:py-30">
+      <div className="max-w-[1062px] flex flex-col mx-auto gap-12 sm:gap-16">
+        <div className="flex flex-col gap-3 sm:gap-5">
           <div className="text-5xl font-bold text-scale-600">내 경매</div>
-          <div className="text-2xl text-scale-400">
+          <div className="text-lg sm:text-xl lg:text-2xl text-scale-400">
             나의 입찰과 등록 현황을 한눈에 확인하세요.
           </div>
         </div>
-        <div className="flex border-b-2 border-scale-200 relative">
+        <div className="flex gap-4 sm:gap-0 border-b-2 border-scale-200 relative overflow-x-auto">
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-1/2 sm:w-30 text-lg sm:text-2xl font-bold pb-4 sm:pb-6 relative shrink-0 ${
               tab === "bids" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("bids")}
@@ -103,7 +103,7 @@ function HistoryPage() {
             )}
           </button>
           <button
-            className={`w-30 text-2xl font-bold pb-6 relative ${
+            className={`w-1/2 sm:w-30 text-lg sm:text-2xl font-bold pb-4 sm:pb-6 relative shrink-0 ${
               tab === "mine" ? "text-brand-primary" : "text-scale-300"
             }`}
             onClick={() => setTab("mine")}
@@ -126,7 +126,7 @@ function HistoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {tab === "bids"
                 ? listBids.map((b) => {
                     const ended = isEnded(b.end_time) || b.status === "ended";
