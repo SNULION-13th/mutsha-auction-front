@@ -57,7 +57,7 @@ function AuctionSearchPage() {
           </div>
         </div>
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px] md:min-h-[900px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 pc:grid-cols-3 gap-4 sm:gap-6 min-h-[600px] sm:min-h-[900px]">
             {Array.from({ length: 6 }).map((_, i) => (
               <AuctionCardSkeleton key={i} />
             ))}
@@ -70,7 +70,7 @@ function AuctionSearchPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px] md:min-h-[900px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 pc:grid-cols-3 gap-4 sm:gap-6 min-h-[600px] sm:min-h-[900px]">
               {pageItems.map((a) => (
                 <AuctionCard
                   key={a.id}

@@ -91,14 +91,14 @@ function AuctionCreatePage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full rounded-2xl bg-bg-white flex flex-col gap-10 md:gap-25 shadow-xl px-5 sm:px-10 md:px-20 lg:px-35 py-10 md:py-22.5"
+          className="w-full rounded-2xl bg-bg-white flex flex-col gap-10 lg:gap-25 shadow-xl px-5 sm:px-10 lg:px-35 py-10 lg:py-22.5"
         >
           <div className="grid grid-cols-1 gap-6 md:gap-12">
             <TitleField register={register} formState={formState} />
             <DescriptionField register={register} formState={formState} />
             <ImageUploadField control={control} />
 
-            <div className="w-full flex flex-col md:flex-row justify-between gap-6 md:gap-10">
+            <div className="w-full flex flex-col lg:flex-row justify-between gap-6 lg:gap-10">
               <div className="flex-1 min-w-0">
                 <StartPriceField control={control} />
               </div>

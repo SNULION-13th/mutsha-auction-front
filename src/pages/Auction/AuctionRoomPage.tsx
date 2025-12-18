@@ -153,7 +153,7 @@ function AuctionRoomPage() {
           </div>
         </div>
         <div className="w-full h-full flex flex-col lg:flex-row gap-6 md:gap-9">
-          <div className="w-full lg:w-[470px] shrink-0 rounded-2xl bg-bg-white flex flex-col gap-4 md:gap-5 shadow-xl">
+          <div className="w-full lg:w-[470px] rounded-2xl bg-bg-white flex flex-col gap-4 md:gap-5 shadow-xl">
             <img
               src={String(auction.image_file)}
               className="w-full h-64 md:h-[392px] object-cover rounded-t-2xl"
